@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 180">
+  <polygon points="30,150 30,30 190,150" fill="#e0e7ff" stroke="#333" stroke-width="2"/>
+  <rect x="30" y="130" width="20" height="20" fill="none" stroke="#333" stroke-width="1"/>
+  <text x="80" y="105" text-anchor="middle" font-size="14" fill="#333">c</text>
+  <text x="35" y="100" font-size="13" fill="#333" transform="rotate(-90,35,90)">a</text>
+  <text x="120" y="165" text-anchor="middle" font-size="13" fill="#333">b</text>
+</svg>

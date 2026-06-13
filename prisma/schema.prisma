@@ -1,0 +1,51 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  firstName     String?
+  lastName      String?
+  plan          String   @default("free") // "free" or "premium"
+  premiumUntil  DateTime?
+  subscriptions Subscription[]
+  testResults   TestResult[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model TestResult {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testId        String
+  testName      String
+  totalScore    Int
+  readingScore  Int
+  mathScore     Int
+  readingCorrect Int
+  readingTotal  Int
+  mathCorrect   Int
+  mathTotal     Int
+  answers       Json?
+  completedAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([testId])
+}
+
+model Subscription {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status          String   @default("active") // "active", "expired", "cancelled"
+  paymentProvider String?  // "stripe", "click", "payme", etc.
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
