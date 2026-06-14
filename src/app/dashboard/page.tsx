@@ -94,36 +94,33 @@ export default function MainDashboard() {
           </div>
         </div>
 
-        <div className="mb-8 max-w-lg mx-auto">
-          <CountdownTimer />
-        </div>
-
-        <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8 mb-10">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center">
-                <BookOpen className="w-5 h-5 text-[#0d9488]" />
+        <div className="grid md:grid-cols-5 gap-6 mb-10">
+          <div className="md:col-span-3">
+            <CountdownTimer />
+          </div>
+          <div className="md:col-span-2 bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center">
+                <BookOpen className="w-3.5 h-3.5 text-[#0d9488]" />
               </div>
-              <div>
-                <h3 className="font-semibold text-slate-800">Recent Activity</h3>
-                <p className="text-xs text-slate-400">Your latest test results</p>
-              </div>
+              <h3 className="font-semibold text-slate-800 text-sm">Recent Activity</h3>
             </div>
             {results.length === 0 ? (
-              <p className="text-sm text-slate-400 py-6 text-center">No tests completed yet. Start your first practice test!</p>
+              <p className="text-xs text-slate-400 py-3 text-center">No tests yet</p>
             ) : (
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 {results.slice(0, 4).map((r) => (
-                  <div key={r.id} className="flex items-center justify-between py-3 px-3 rounded-lg hover:bg-slate-50 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
+                  <div key={r.id} className="flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 shrink-0">
                         {r.totalScore >= 1200 ? "✓" : "!"}
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-slate-700">{r.testName}</p>
-                        <p className="text-xs text-slate-400">{new Date(r.completedAt).toLocaleDateString()}</p>
+                      <div className="min-w-0">
+                        <p className="text-xs font-medium text-slate-700 truncate">{r.testName}</p>
+                        <p className="text-[10px] text-slate-400">{new Date(r.completedAt).toLocaleDateString()}</p>
                       </div>
                     </div>
-                    <span className={`text-sm font-bold ${r.totalScore >= 1200 ? "text-emerald-600" : "text-slate-400"}`}>
+                    <span className={`text-xs font-bold shrink-0 ${r.totalScore >= 1200 ? "text-emerald-600" : "text-slate-400"}`}>
                       {r.totalScore}
                     </span>
                   </div>
@@ -131,6 +128,7 @@ export default function MainDashboard() {
               </div>
             )}
           </div>
+        </div>
 
         <h2 className="text-lg font-semibold text-slate-800 mb-5">Study Resources</h2>
         <DashboardGrid />
