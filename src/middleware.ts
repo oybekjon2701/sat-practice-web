@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
   "/pricing",
   "/sitemap.xml",
   "/robots.txt",
+  "/favicon.svg",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -17,6 +18,6 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    "/((?!_next|static|favicon.ico|visuals|sitemap.xml|robots.txt).*)",
+    "/((?!_next|static|favicon|visuals|sitemap.xml|robots.txt).*)",
   ],
 };
