@@ -1,11 +1,67 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, Lock, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, Lock, ShieldCheck, Calendar, Clock } from "lucide-react";
+
+const SAT_DATES = [
+  { label: "August 22, 2026", value: "2026-08-22" },
+  { label: "October 3, 2026", value: "2026-10-03" },
+  { label: "November 7, 2026", value: "2026-11-07" },
+  { label: "December 5, 2026", value: "2026-12-05" },
+  { label: "March 13, 2027", value: "2027-03-13" },
+  { label: "May 8, 2027", value: "2027-05-08" },
+  { label: "June 5, 2027", value: "2027-06-05" },
+];
+
+function getRemaining(target: Date) {
+  const diff = target.getTime() - Date.now();
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
+  return {
+    days: Math.floor(diff / 86400000),
+    hours: Math.floor((diff % 86400000) / 3600000),
+    minutes: Math.floor((diff % 3600000) / 60000),
+    seconds: Math.floor((diff % 60000) / 1000),
+    expired: false,
+  };
+}
 
 export default function Dashboard() {
   const { user, isSignedIn } = useUser();
+  const [savedDate, setSavedDate] = useState<string | null>(null);
+  const [remaining, setRemaining] = useState<ReturnType<typeof getRemaining> | null>(null);
+  const [selected, setSelected] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("satExamDate");
+    if (stored) {
+      setSavedDate(stored);
+      setRemaining(getRemaining(new Date(stored)));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!savedDate) return;
+    const interval = setInterval(() => {
+      setRemaining(getRemaining(new Date(savedDate)));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [savedDate]);
+
+  function handleSave() {
+    if (!selected) return;
+    const dateStr = `${selected}T08:00:00`;
+    localStorage.setItem("satExamDate", dateStr);
+    setSavedDate(dateStr);
+    setRemaining(getRemaining(new Date(dateStr)));
+  }
+
+  function handleClear() {
+    localStorage.removeItem("satExamDate");
+    setSavedDate(null);
+    setRemaining(null);
+  }
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
@@ -34,25 +90,86 @@ export default function Dashboard() {
       <main>
         <section className="bg-gradient-to-br from-[#1e293b] to-[#334155] text-white">
           <div className="max-w-5xl mx-auto px-6 md:px-10 py-16 md:py-20">
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-yellow-400" />
-              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Official SAT Practice</span>
-            </div>
-            <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">Ace the SAT.<br />Your way.</h1>
-            <p className="text-slate-300 text-base md:text-lg mb-8 max-w-xl">
-              Full-length adaptive tests, targeted practice, and video lessons — all in one place.
-            </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
-                className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#0f766e] transition-colors shadow-sm"
-              >
-                Start Full-Length Practice Test
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/15 border border-emerald-400/30 rounded-lg">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span className="text-xs font-medium text-emerald-300">100% Realistic &middot; Adaptive Scoring</span>
+            <div className="grid md:grid-cols-5 gap-8 items-start">
+              <div className="md:col-span-3">
+                <div className="flex items-center gap-2 mb-4">
+                  <Sparkles className="w-5 h-5 text-yellow-400" />
+                  <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Official SAT Practice</span>
+                </div>
+                <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">Ace the SAT.<br />Your way.</h1>
+                <p className="text-slate-300 text-base md:text-lg mb-8 max-w-xl">
+                  Full-length adaptive tests, targeted practice, and video lessons — all in one place.
+                </p>
+                <div className="flex flex-wrap items-center gap-4">
+                  <Link
+                    href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
+                    className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#0f766e] transition-colors shadow-sm"
+                  >
+                    Start Full-Length Practice Test
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/15 border border-emerald-400/30 rounded-lg">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span className="text-xs font-medium text-emerald-300">100% Realistic &middot; Adaptive Scoring</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="md:col-span-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5">
+                {!savedDate || !remaining ? (
+                  <>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Calendar className="w-4 h-4 text-teal-400" />
+                      <h3 className="text-sm font-semibold text-white">Set Your SAT Date</h3>
+                    </div>
+                    <select
+                      value={selected}
+                      onChange={(e) => setSelected(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white/10 border border-white/20 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/50 appearance-none cursor-pointer mb-3"
+                    >
+                      <option value="" className="text-slate-800">Choose an exam date</option>
+                      {SAT_DATES.map((d) => (
+                        <option key={d.value} value={d.value} className="text-slate-800">{d.label}</option>
+                      ))}
+                    </select>
+                    <button
+                      onClick={handleSave}
+                      disabled={!selected}
+                      className="w-full bg-teal-500 text-white text-sm font-semibold py-2.5 rounded-lg hover:bg-teal-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Save &amp; Start Countdown
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-red-400" />
+                        <h3 className="text-sm font-semibold text-white">SAT Countdown</h3>
+                      </div>
+                      <button onClick={handleClear} className="text-[11px] text-slate-400 hover:text-white transition-colors">
+                        Change
+                      </button>
+                    </div>
+                    <p className="text-[11px] text-slate-400 mb-3">
+                      {SAT_DATES.find((d) => savedDate.startsWith(d.value))?.label || "Your exam"} &middot; 8:00 AM
+                    </p>
+                    <div className="grid grid-cols-4 gap-2">
+                      {[
+                        { label: "Days", value: remaining.days },
+                        { label: "Hours", value: remaining.hours },
+                        { label: "Minutes", value: remaining.minutes },
+                        { label: "Seconds", value: remaining.seconds },
+                      ].map((u) => (
+                        <div key={u.label} className="text-center bg-red-500/20 rounded-lg py-2.5">
+                          <div className="text-xl font-bold text-red-400 tabular-nums">{String(u.value).padStart(2, "0")}</div>
+                          <div className="text-[10px] text-red-300/80 mt-0.5">{u.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                    {remaining.expired && <p className="text-xs text-yellow-400 mt-2 text-center">Your exam date has passed. Set a new one.</p>}
+                  </>
+                )}
               </div>
             </div>
           </div>
