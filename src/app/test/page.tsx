@@ -23,6 +23,11 @@ function Directions({ onStart }: { onStart: () => void }) {
   const { state } = useTest();
   const isReading = state.currentSection === "reading";
 
+  function handleStart() {
+    try { document.documentElement.requestFullscreen(); } catch (_) {}
+    onStart();
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
       <div className="bg-white border border-gray-200 w-full max-w-lg mx-4 rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
@@ -52,7 +57,7 @@ function Directions({ onStart }: { onStart: () => void }) {
           </div>
 
           <button
-            onClick={onStart}
+            onClick={handleStart}
             className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-gray-300 hover:bg-[#d4a600] cursor-pointer rounded-full"
             style={{ fontFamily: "Arial, sans-serif" }}
           >
@@ -157,8 +162,8 @@ function TestContent() {
         onOpenHighlightPanel={() => setHighlightPanel(!highlightPanel)}
       />
 
-      <div className="flex items-center justify-center shrink-0 bg-[#edf2fa]" style={{ borderBottom: "3px dashed #cbd5e1" }}>
-        <span className="text-[11px] font-bold text-white bg-[#1a4972] px-6 py-2 uppercase tracking-wider my-2" style={{ width: "calc(100% - 48px)", maxWidth: "900px", textAlign: "center" }}>This is a practice test</span>
+      <div className="flex items-center justify-center shrink-0 bg-[#edf2fa]">
+        <span className="text-[11px] font-bold text-white bg-[#1a4972] px-6 uppercase tracking-wider" style={{ width: "calc(100% - 48px)", maxWidth: "900px", textAlign: "center", lineHeight: "28px" }}>This is a practice test</span>
       </div>
 
       <AnnotationProvider>
@@ -183,7 +188,7 @@ function TestContent() {
           )}
 
           <div className={`overflow-hidden flex flex-col bg-[#fafafa] ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
-            <div className="flex items-center gap-3 px-4 py-2 bg-white" style={{ borderBottom: "3px dashed #cbd5e1" }}>
+            <div className="flex items-center gap-3 px-4 py-2 bg-white" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
               <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-900 text-white text-sm font-bold">
                 {currentQ.questionNumber}
               </div>
@@ -204,7 +209,9 @@ function TestContent() {
                   crossOutMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
-                ABC <span className={`text-[9px] ${crossOutMode ? "" : "line-through"}`}>ABC</span>
+                <span className={crossOutMode ? "" : "line-through"}>A</span>
+                <span className={crossOutMode ? "" : "line-through"}>B</span>
+                <span className={crossOutMode ? "" : "line-through"}>C</span>
               </button>
             </div>
 
@@ -321,16 +328,6 @@ function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onE
   if (!show) return null;
   return (
     <div className="fixed right-4 top-[108px] bg-white border border-gray-200 z-50 min-w-[200px] rounded-lg shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-gray-100 text-sm text-gray-500">
-        <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <rect x="1" y="6" width="15" height="9" rx="1" />
-          <rect x="16" y="9" width="2" height="3" rx="0.5" />
-          <rect x="3" y="8" width="3" height="5" fill="currentColor" opacity="0.8" />
-          <rect x="7" y="8" width="3" height="5" fill="currentColor" opacity="0.8" />
-          <rect x="11" y="8" width="3" height="5" fill="currentColor" opacity="0.6" />
-        </svg>
-        Battery 85%
-      </div>
       {isMath && (
         <>
           <button onClick={() => { onCalc(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Calculator</button>

@@ -34,7 +34,7 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
 
   return (
     <div className="shrink-0 bg-[#edf2fa]" style={{ fontFamily: "Arial, sans-serif" }}>
-      <div className="h-16 flex items-center px-6" style={{ borderBottom: "3px dashed #cbd5e1" }}>
+      <div className="h-16 flex items-center px-6" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
         <div className="flex items-center gap-8 w-[320px]">
           <div>
             <h1 className="text-base font-bold text-gray-800">Section 1, Module 1: {sectionLabel}</h1>
@@ -61,19 +61,31 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
           </button>
         </div>
 
-        <div className="flex items-center gap-5 w-[320px] justify-end">
-          <button
-            onClick={() => { setHighlightActive(!highlightActive); onOpenHighlightPanel(); }}
-            className={`text-sm cursor-pointer ${highlightActive ? "text-[#0033aa] underline font-bold" : "text-[#0033aa] underline"}`}
-          >
-            Highlights &amp; Notes
-          </button>
-          <div className="relative">
-            <button onClick={onOpenMore} className="cursor-pointer p-1.5 hover:bg-gray-200 rounded-full transition-colors">
-              <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-                <circle cx="10" cy="4" r="2" /><circle cx="10" cy="10" r="2" /><circle cx="10" cy="16" r="2" />
+        <div className="flex items-center gap-6 w-[320px] justify-end">
+          <div className="flex flex-col items-center gap-0.5">
+            <button
+              onClick={() => { setHighlightActive(!highlightActive); onOpenHighlightPanel(); }}
+              className="cursor-pointer p-1 hover:bg-gray-200 rounded transition-colors"
+            >
+              <svg className="w-5 h-5 text-gray-600" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                <rect x="3" y="2" width="14" height="16" rx="1" />
+                <line x1="6" y1="6" x2="14" y2="6" />
+                <line x1="6" y1="9" x2="14" y2="9" />
+                <line x1="6" y1="12" x2="11" y2="12" />
               </svg>
             </button>
+            <span className={`text-[10px] ${highlightActive ? "text-[#0033aa] font-bold" : "text-gray-500"}`}>Annotation</span>
+          </div>
+          <div className="flex flex-col items-center gap-0.5 relative">
+            <div className="relative">
+              <span className="absolute -top-3 right-0 text-[9px] text-gray-400 font-medium">85%</span>
+              <button onClick={onOpenMore} className="cursor-pointer p-1 hover:bg-gray-200 rounded transition-colors">
+                <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                  <circle cx="10" cy="4" r="2" /><circle cx="10" cy="10" r="2" /><circle cx="10" cy="16" r="2" />
+                </svg>
+              </button>
+            </div>
+            <span className="text-[10px] text-gray-500">More</span>
           </div>
         </div>
       </div>
