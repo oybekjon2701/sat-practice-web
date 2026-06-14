@@ -377,7 +377,7 @@ function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onE
           </div>
         </div>
       )}
-      <div className="fixed right-4 top-[140px] bg-white border border-gray-200 z-50 min-w-[200px] rounded-lg shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="fixed right-4 top-[170px] bg-white border border-gray-200 z-50 min-w-[200px] rounded-lg shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
         <button onClick={() => { onToggleFullscreen(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer flex items-center gap-2">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             {isFullscreen

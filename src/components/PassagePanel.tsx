@@ -159,7 +159,6 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
     if (!popup) return;
     if (highlights.some(h => h.text.toLowerCase() === popup.text.toLowerCase())) return;
     addHighlight({ id: `h-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: popup.text, color });
-    setPopup(null);
   }
 
   function handleAddUnderline(style: "single" | "dashed" | "dotted") {
