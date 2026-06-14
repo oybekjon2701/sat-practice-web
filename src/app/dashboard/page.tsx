@@ -103,89 +103,116 @@ export default function Dashboard() {
       <main>
         <section className="bg-gradient-to-br from-[#1e293b] to-[#334155] text-white">
           <div className="max-w-5xl mx-auto px-6 md:px-10 py-16 md:py-20">
-            <div className="grid md:grid-cols-5 gap-8 items-start">
-              <div className="md:col-span-3">
-                <div className="flex items-center gap-2 mb-4">
-                  <Sparkles className="w-5 h-5 text-yellow-400" />
-                  <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Official SAT Practice</span>
-                </div>
-                <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">Ace the SAT.<br />Your way.</h1>
-                <p className="text-slate-300 text-base md:text-lg mb-8 max-w-xl">
-                  Full-length adaptive tests, targeted practice, and video lessons — all in one place.
-                </p>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Link
-                    href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
-                    className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#0f766e] transition-colors shadow-sm"
-                  >
-                    Start Full-Length Practice Test
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/15 border border-emerald-400/30 rounded-lg">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span className="text-xs font-medium text-emerald-300">100% Realistic &middot; Adaptive Scoring</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="md:col-span-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5">
-                {!savedDate || !remaining ? (
-                  <>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Calendar className="w-4 h-4 text-teal-400" />
-                      <h3 className="text-sm font-semibold text-white">Set Your SAT Date</h3>
-                    </div>
-                    <select
-                      value={selected}
-                      onChange={(e) => setSelected(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-lg bg-white/10 border border-white/20 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500/50 appearance-none cursor-pointer mb-3"
-                    >
-                      <option value="" className="text-slate-800">Choose an exam date</option>
-                      {SAT_DATES.map((d) => (
-                        <option key={d.value} value={d.value} className="text-slate-800">{d.label}</option>
-                      ))}
-                    </select>
-                    <button
-                      onClick={handleSave}
-                      disabled={!selected}
-                      className="w-full bg-teal-500 text-white text-sm font-semibold py-2.5 rounded-lg hover:bg-teal-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                    >
-                      Save &amp; Start Countdown
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-red-400" />
-                        <h3 className="text-sm font-semibold text-white">SAT Countdown</h3>
-                      </div>
-                      <button onClick={handleClear} className="text-[11px] text-slate-400 hover:text-white transition-colors">
-                        Change
-                      </button>
-                    </div>
-                    <p className="text-[11px] text-slate-400 mb-3">{examLabel} &middot; 8:00 AM GMT+5</p>
-                    <div className="flex items-baseline justify-center gap-3 mb-1">
-                      {[
-                        { label: "Days", value: remaining.days },
-                        { label: "Hours", value: remaining.hours },
-                        { label: "Minutes", value: remaining.minutes },
-                        { label: "Seconds", value: remaining.seconds },
-                      ].map((u) => (
-                        <div key={u.label} className="text-center">
-                          <span className="text-3xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_6px_rgba(220,38,38,0.4)]">
-                            {String(u.value).padStart(2, "0")}
-                          </span>
-                          <div className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-wider">{u.label}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-center text-sm font-semibold text-red-300 mt-2">until your SAT exam</p>
-                    {remaining.expired && <p className="text-xs text-yellow-400 mt-2 text-center">Your exam date has passed. Set a new one.</p>}
-                  </>
-                )}
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="w-5 h-5 text-yellow-400" />
+              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Official SAT Practice</span>
+            </div>
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">Ace the SAT.<br />Your way.</h1>
+            <p className="text-slate-300 text-base md:text-lg mb-8 max-w-xl">
+              Full-length adaptive tests, targeted practice, and video lessons — all in one place.
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
+                className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#0f766e] transition-colors shadow-sm"
+              >
+                Start Full-Length Practice Test
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/15 border border-emerald-400/30 rounded-lg">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span className="text-xs font-medium text-emerald-300">100% Realistic &middot; Adaptive Scoring</span>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="bg-[#0f172a] border-y border-slate-700/50">
+          <div className="max-w-5xl mx-auto px-6 md:px-10 py-10 md:py-14">
+            {!savedDate || !remaining ? (
+              <div className="max-w-md mx-auto text-center">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <Calendar className="w-5 h-5 text-teal-400" />
+                  <h3 className="text-lg font-bold text-white">Set Your SAT Exam Date</h3>
+                </div>
+                <p className="text-sm text-slate-400 mb-5">Choose your test date and we&apos;ll count down every second.</p>
+                <select
+                  value={selected}
+                  onChange={(e) => setSelected(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-600 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50 appearance-none cursor-pointer mb-3"
+                >
+                  <option value="" className="text-slate-800">Choose an exam date</option>
+                  {SAT_DATES.map((d) => (
+                    <option key={d.value} value={d.value} className="text-slate-800">{d.label}</option>
+                  ))}
+                </select>
+                <button
+                  onClick={handleSave}
+                  disabled={!selected}
+                  className="w-full bg-teal-500 text-white font-semibold py-3 rounded-lg hover:bg-teal-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Save &amp; Start Countdown
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <Clock className="w-5 h-5 text-red-400" />
+                  <h3 className="text-lg font-bold text-white">Countdown to SAT</h3>
+                  <button onClick={handleClear} className="text-xs text-slate-500 hover:text-slate-300 ml-2 transition-colors">
+                    Change date
+                  </button>
+                </div>
+                <p className="text-sm text-slate-500 mb-6">{examLabel} &middot; 8:00 AM GMT+5</p>
+
+                <div className="flex items-center justify-center gap-0 mb-2 select-none">
+                  <div className="text-center">
+                    <span className="text-5xl md:text-7xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_12px_rgba(220,38,38,0.5)]">
+                      {String(remaining.days).padStart(2, "0")}
+                    </span>
+                    <div className="text-xs text-slate-500 mt-1 uppercase tracking-widest">Days</div>
+                  </div>
+                  <span className="text-4xl md:text-6xl font-black text-[#dc2626] mx-2 md:mx-3 mt-[-1.5rem] opacity-70">:</span>
+                  <div className="text-center">
+                    <span className="text-5xl md:text-7xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_12px_rgba(220,38,38,0.5)]">
+                      {String(remaining.hours).padStart(2, "0")}
+                    </span>
+                    <div className="text-xs text-slate-500 mt-1 uppercase tracking-widest">Hours</div>
+                  </div>
+                  <span className="text-4xl md:text-6xl font-black text-[#dc2626] mx-2 md:mx-3 mt-[-1.5rem] opacity-70">:</span>
+                  <div className="text-center">
+                    <span className="text-5xl md:text-7xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_12px_rgba(220,38,38,0.5)]">
+                      {String(remaining.minutes).padStart(2, "0")}
+                    </span>
+                    <div className="text-xs text-slate-500 mt-1 uppercase tracking-widest">Minutes</div>
+                  </div>
+                  <span className="text-4xl md:text-6xl font-black text-[#dc2626] mx-2 md:mx-3 mt-[-1.5rem] opacity-70">:</span>
+                  <div className="text-center">
+                    <span className="text-5xl md:text-7xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_12px_rgba(220,38,38,0.5)]">
+                      {String(remaining.seconds).padStart(2, "0")}
+                    </span>
+                    <div className="text-xs text-slate-500 mt-1 uppercase tracking-widest">Seconds</div>
+                  </div>
+                </div>
+
+                <p className="text-base font-bold text-red-400 mt-4 mb-6">Time is running. Every second counts.</p>
+
+                <div className="inline-flex items-center gap-3 bg-gradient-to-r from-[#0d9488] to-[#0f766e] rounded-xl px-6 py-4 shadow-lg">
+                  <div className="text-left">
+                    <p className="text-white font-bold text-sm">Go Premium — unlock full tests, all lessons &amp; more</p>
+                    <p className="text-teal-200 text-xs mt-0.5">Don&apos;t let time slip away. Prepare with everything you need.</p>
+                  </div>
+                  <Link
+                    href="/pricing"
+                    className="shrink-0 bg-white text-[#0d9488] font-bold text-sm px-5 py-2.5 rounded-lg hover:bg-slate-100 transition-colors"
+                  >
+                    See plans
+                  </Link>
+                </div>
+
+                {remaining.expired && <p className="text-yellow-400 mt-4 text-sm">Your exam date has passed. Set a new one.</p>}
+              </div>
+            )}
           </div>
         </section>
 
