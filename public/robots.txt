@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /sign-in/
+Disallow: /sign-up/
+
+Sitemap: https://www.satpractice.uz/sitemap.xml
