@@ -21,7 +21,7 @@ export default function HighlightsPanel({ onClose }: Props) {
   const count = highlights.length + underlines.length + notes.length;
 
   return (
-    <div className="w-72 border-l border-black bg-white flex flex-col shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
+    <div className="w-80 border-l border-gray-200 bg-white flex flex-col shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
       <div className="flex items-center justify-between px-3 py-2 border-b border-black bg-[#f0f2f5]">
         <span className="text-xs font-bold text-black">Annotations ({count})</span>
         <button onClick={onClose} className="text-black cursor-pointer hover:opacity-70">

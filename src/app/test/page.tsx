@@ -157,6 +157,10 @@ function TestContent() {
         onOpenHighlightPanel={() => setHighlightPanel(!highlightPanel)}
       />
 
+      <div className="h-11 bg-[#1a4972] flex items-center px-5 shrink-0">
+        <span className="text-xs font-bold text-white tracking-wider uppercase">This is a practice test</span>
+      </div>
+
       <AnnotationProvider>
         <div ref={splitRef} className="flex-1 flex overflow-hidden" style={{ cursor: dragging ? "col-resize" : undefined }}>
           {currentQ.passage && (
@@ -205,10 +209,10 @@ function TestContent() {
             </div>
             <div className="border-b border-dashed border-black" />
 
-            <div className="flex-1 overflow-y-auto px-4 py-3">
+            <div className="flex-1 overflow-y-auto px-6 py-6">
               {currentQ.imageUrl && (
-                <div className="mb-3">
-                  <img src={currentQ.imageUrl} alt={currentQ.imageAlt || "Figure"} className="max-w-[240px] max-h-[180px] h-auto border border-black" />
+                <div className="mb-4">
+                  <img src={currentQ.imageUrl} alt={currentQ.imageAlt || "Figure"} className="max-w-[240px] max-h-[180px] h-auto border border-gray-300" />
                 </div>
               )}
 
@@ -217,7 +221,7 @@ function TestContent() {
               </div>
 
               {currentQ.type === "mcq" && currentQ.choices && (
-                <div className="space-y-1.5 max-w-xl">
+                <div className="space-y-3 max-w-xl">
                   {currentQ.choices.map((c) => (
                     <AnswerChoice
                       key={c.label}

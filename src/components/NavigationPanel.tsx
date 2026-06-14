@@ -115,7 +115,7 @@ export default function NavigationPanel({ crossOutMode, onToggleCrossOut }: Prop
           onCancel={() => setShowSubmitConfirm(false)}
         />
       )}
-      <div className="h-12 bg-white border-t border-gray-200 flex items-center px-4 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="h-14 bg-white border-t border-gray-200 flex items-center px-5 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500 font-medium">{state.userName || "Student"}</span>
         </div>

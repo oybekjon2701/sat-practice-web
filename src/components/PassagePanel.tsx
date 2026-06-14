@@ -215,12 +215,15 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
         onMouseUp={handleMouseUp}
         onContextMenu={handleContextMenu}
       >
+        <div className="mb-4">
+          <span className="text-[10px] font-bold text-white bg-[#1a4972] px-3 py-1 rounded-full uppercase tracking-wider">This is a practice test</span>
+        </div>
         {imageUrl && (
-          <div className="mb-3">
-            <img src={imageUrl} alt={imageAlt || "Figure"} className="max-w-[300px] max-h-[200px] h-auto border border-black" />
+          <div className="mb-4">
+            <img src={imageUrl} alt={imageAlt || "Figure"} className="max-w-[300px] max-h-[200px] h-auto border border-gray-300" />
           </div>
         )}
-        <div className="text-lg leading-relaxed text-black space-y-4 whitespace-pre-line font-serif" style={{ fontFamily: "Georgia, 'Times New Roman', serif", lineHeight: "1.6" }}>
+        <div className="text-[22px] leading-[1.7] text-gray-900 space-y-5 whitespace-pre-line font-serif" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
           {paragraphs.map((parts, i) => {
             const fullText = parts.map(p => p.text).join("");
             if (isTableBlock(fullText)) return <div key={i}>{renderTableBlock(fullText)}</div>;
