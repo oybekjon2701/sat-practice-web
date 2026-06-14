@@ -129,42 +129,35 @@ export default function NavigationPanel() {
           onCancel={() => setShowSubmitConfirm(false)}
         />
       )}
-      <div className="h-14 bg-white border-t border-slate-200 flex items-center px-4 justify-between shrink-0">
-        <div className="w-[120px]">
-          <button
-            onClick={() => dispatch({ type: "PREV_QUESTION" })}
-            disabled={isFirst}
-            className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-slate-700"
-          >
-            Back
-          </button>
+      <div className="h-11 bg-[#f0f2f5] border-t border-black flex items-center px-3 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
+        <button
+          onClick={() => dispatch({ type: "PREV_QUESTION" })}
+          disabled={isFirst}
+          className="px-4 py-1.5 text-sm border border-black bg-white hover:bg-[#e0e2e5] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+        >
+          Back
+        </button>
+
+        <div className="px-4 py-1 bg-black text-white text-sm font-bold select-none">
+          Question {currentQ?.questionNumber ?? 1} of {totalQ}
         </div>
 
         <button
-          onClick={() => setShowGrid(true)}
-          className="text-sm font-medium text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 hover:text-slate-800 transition-colors px-4 py-1.5 rounded-full cursor-pointer"
-        >
-          Question {currentQ?.questionNumber ?? 1} of {totalQ}
-        </button>
-
-        <div className="w-[120px] flex justify-end">
-          <button
-            onClick={() => {
-              if (isLast) {
-                if (state.currentSection === "math" && state.currentModule > 1) {
-                  dispatch({ type: "SHOW_REVIEW" });
-                } else {
-                  setShowSubmitConfirm(true);
-                }
+          onClick={() => {
+            if (isLast) {
+              if (state.currentSection === "math" && state.currentModule > 1) {
+                dispatch({ type: "SHOW_REVIEW" });
               } else {
-                dispatch({ type: "NEXT_QUESTION" });
+                setShowSubmitConfirm(true);
               }
-            }}
-            className="px-5 py-2 text-sm bg-[#1a73e8] text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer font-semibold"
-          >
-            {isLast ? "Review & Submit" : "Next"}
-          </button>
-        </div>
+            } else {
+              dispatch({ type: "NEXT_QUESTION" });
+            }
+          }}
+          className="px-5 py-1.5 text-sm bg-[#0033aa] text-white hover:bg-[#002288] cursor-pointer font-semibold border border-[#0033aa]"
+        >
+          {isLast ? "Review & Submit" : "Next"}
+        </button>
       </div>
 
       {showGrid && (

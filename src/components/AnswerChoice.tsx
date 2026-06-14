@@ -16,36 +16,36 @@ export default function AnswerChoice({ label, text, selected, crossedOut, onSele
       <button
         onClick={onSelect}
         onContextMenu={(e) => { e.preventDefault(); onCrossOut(); }}
-        className={`flex-1 text-left flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ${
+        className={`flex-1 text-left flex items-start gap-2 px-3 py-2 border transition-all cursor-pointer ${
           selected
-            ? "border-[#1a73e8] bg-blue-50/50"
+            ? "border-2 border-[#0033aa] bg-[#e8f0fe]"
             : crossedOut
-            ? "border-slate-200 bg-slate-50 opacity-50"
-            : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
+            ? "border border-black bg-[#f0f2f5] opacity-50"
+            : "border border-black bg-white hover:bg-[#f0f2f5]"
         }`}
       >
         <span
-          className={`shrink-0 w-8 h-8 flex items-center justify-center rounded-full text-sm font-semibold ${
+          className={`shrink-0 w-7 h-7 flex items-center justify-center text-sm font-bold ${
             selected
-              ? "bg-[#1a73e8] text-white"
+              ? "bg-[#0033aa] text-white"
               : crossedOut
-              ? "bg-slate-200 text-slate-400"
-              : "bg-white text-slate-600 border border-slate-300"
+              ? "bg-[#f0f2f5] text-black"
+              : "bg-white text-black border border-black"
           }`}
         >
           {label}
         </span>
-        <span className={`text-sm leading-relaxed pt-1 ${crossedOut ? "text-slate-400 line-through" : "text-slate-800"}`}>
+        <span className={`text-sm pt-0.5 ${crossedOut ? "text-black line-through" : "text-black"}`} style={{ fontFamily: "Arial, sans-serif" }}>
           {renderMath(text)}
         </span>
       </button>
       <button
         onClick={onCrossOut}
         title={crossedOut ? "Remove cross-out" : "Cross out this option"}
-        className={`shrink-0 w-9 h-8 mt-3 flex items-center justify-center rounded text-xs border transition-colors cursor-pointer ${
+        className={`shrink-0 w-7 h-7 mt-1.5 flex items-center justify-center text-xs border border-black transition-colors cursor-pointer ${
           crossedOut
-            ? "bg-red-50 text-red-500 border-red-300 font-bold"
-            : "bg-white text-slate-300 border-slate-200 hover:text-red-400 hover:border-red-300"
+            ? "bg-black text-white font-bold"
+            : "bg-white text-black hover:bg-[#f0f2f5]"
         }`}
       >
         {crossedOut ? "✓" : "✕"}

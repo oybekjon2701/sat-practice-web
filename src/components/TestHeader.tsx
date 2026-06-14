@@ -19,32 +19,23 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore }: Props)
   const timerWarning = min < 5;
 
   return (
-    <header className="h-12 bg-white border-b border-slate-200 flex items-center px-4 shrink-0 z-40">
+    <header className="h-10 bg-[#f0f2f5] border-b border-black flex items-center px-3 shrink-0 z-40" style={{ fontFamily: "Arial, sans-serif" }}>
       <div className="w-[200px]">
-        <span className="text-sm text-slate-600 font-medium">{sectionLabel} · Module {state.currentModule}</span>
+        <span className="text-xs text-black font-semibold">{sectionLabel} · Module {state.currentModule}</span>
       </div>
-
       <div className="flex-1 flex justify-center">
-        <button
-          onClick={() => dispatch({ type: "TOGGLE_TIMER" })}
-          className={`font-mono text-xl font-bold tabular-nums tracking-wider cursor-pointer ${timerWarning ? "text-red-500" : "text-slate-800"}`}
-        >
+        <span className={`text-lg font-bold tabular-nums tracking-wider ${timerWarning ? "text-red-600" : "text-black"}`} style={{ fontFamily: "Arial, sans-serif" }}>
           {state.timerHidden ? "--:--" : timeStr}
-        </button>
+        </span>
       </div>
-
-      <div className="flex items-center gap-1 w-[200px] justify-end">
+      <div className="flex items-center gap-3 w-[200px] justify-end">
         {isMath && (
           <>
-            <button onClick={onOpenCalc} className="px-2 py-1 text-xs text-slate-500 hover:bg-slate-50 rounded transition-colors cursor-pointer">Calc</button>
-            <button onClick={onOpenRef} className="px-2 py-1 text-xs text-slate-500 hover:bg-slate-50 rounded transition-colors cursor-pointer">Ref</button>
+            <button onClick={onOpenCalc} className="text-xs text-black underline cursor-pointer">Calculator</button>
+            <button onClick={onOpenRef} className="text-xs text-black underline cursor-pointer">Reference</button>
           </>
         )}
-        <button onClick={onOpenMore} className="px-2 py-1 text-slate-500 hover:bg-slate-50 rounded transition-colors cursor-pointer">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <circle cx="10" cy="4" r="1.5" /><circle cx="10" cy="10" r="1.5" /><circle cx="10" cy="16" r="1.5" />
-          </svg>
-        </button>
+        <button onClick={onOpenMore} className="text-xs text-black underline cursor-pointer">More</button>
       </div>
     </header>
   );
