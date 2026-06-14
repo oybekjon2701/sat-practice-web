@@ -125,6 +125,21 @@ function TestContent() {
     }
   }, [state.timeRemaining, state.section, dispatch]);
 
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "F11" || e.key === "f") {
+        e.preventDefault();
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          document.documentElement.requestFullscreen();
+        }
+      }
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, []);
+
   if (!currentQ) return null;
 
   const answered = state.answers[currentQ.id] ?? "";
@@ -162,8 +177,8 @@ function TestContent() {
         onOpenHighlightPanel={() => setHighlightPanel(!highlightPanel)}
       />
 
-      <div className="flex items-center justify-center shrink-0 bg-[#edf2fa]">
-        <span className="text-[11px] font-bold text-white bg-[#1a4972] px-6 uppercase tracking-wider" style={{ width: "calc(100% - 48px)", maxWidth: "900px", textAlign: "center", lineHeight: "28px" }}>This is a practice test</span>
+      <div className="flex items-center justify-center shrink-0 bg-white">
+        <span className="text-[11px] font-bold text-white bg-[#1a4972] px-6 uppercase tracking-wider rounded" style={{ width: "calc(100% - 48px)", maxWidth: "900px", textAlign: "center", lineHeight: "28px" }}>This is a practice test</span>
       </div>
 
       <AnnotationProvider>
@@ -188,7 +203,7 @@ function TestContent() {
           )}
 
           <div className={`overflow-hidden flex flex-col bg-[#fafafa] ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
-            <div className="flex items-center gap-3 px-4 py-2 bg-white" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
+            <div className="flex items-center gap-3 px-8 py-2 bg-white" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
               <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-900 text-white text-sm font-bold">
                 {currentQ.questionNumber}
               </div>
@@ -215,7 +230,7 @@ function TestContent() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-6">
+            <div className="flex-1 overflow-y-auto px-8 py-6">
               {currentQ.imageUrl && (
                 <div className="mb-4">
                   <img src={currentQ.imageUrl} alt={currentQ.imageAlt || "Figure"} className="max-w-[240px] max-h-[180px] h-auto border border-gray-300" />
@@ -235,6 +250,7 @@ function TestContent() {
                       text={c.text}
                       selected={answered === c.label}
                       crossedOut={crossedOut.includes(c.label)}
+                      showCrossOut={crossOutMode}
                       onSelect={() =>
                         dispatch({
                           type: "ANSWER_QUESTION",

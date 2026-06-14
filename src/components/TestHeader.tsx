@@ -74,7 +74,7 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
                 <line x1="6" y1="12" x2="11" y2="12" />
               </svg>
             </button>
-            <span className={`text-[10px] ${highlightActive ? "text-[#0033aa] font-bold" : "text-gray-500"}`}>Annotation</span>
+            <span className={`text-[10px] ${highlightActive ? "text-[#0033aa] font-bold" : "text-gray-500"}`}>Highlighting &amp; Notes</span>
           </div>
           <div className="flex flex-col items-center gap-0.5 relative">
             <div className="relative">

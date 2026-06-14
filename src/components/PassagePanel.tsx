@@ -211,7 +211,7 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
     <div className="h-full flex flex-col overflow-hidden bg-white">
       <div
         ref={contentRef}
-        className="flex-1 overflow-y-auto px-4 py-3 relative"
+        className="flex-1 overflow-y-auto px-6 py-4 relative"
         onMouseUp={handleMouseUp}
         onContextMenu={handleContextMenu}
       >
