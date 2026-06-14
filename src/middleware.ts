@@ -1,11 +1,5 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-
-const isPublic = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)", "/pricing"]);
-
-export default clerkMiddleware(async (auth, req) => {
-  if (!isPublic(req)) await auth.protect();
-});
+export default function middleware() {}
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next|sitemap|robots).*)"],
+  matcher: [],
 };
