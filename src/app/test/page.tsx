@@ -2,7 +2,7 @@
 
 import { useTest, TestProvider } from "@/lib/TestContext";
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { FREE_TEST_IDS } from "@/lib/constants";
@@ -15,6 +15,8 @@ import Calculator from "@/components/Calculator";
 import ReferenceSheet from "@/components/ReferenceSheet";
 import ModuleReviewScreen from "@/components/ModuleReviewScreen";
 import ModuleTransitionScreen from "@/components/ModuleTransitionScreen";
+import HighlightsPanel from "@/components/HighlightsPanel";
+import { AnnotationProvider } from "@/lib/AnnotationContext";
 import { renderMath } from "@/lib/renderMath";
 
 function Directions({ onStart }: { onStart: () => void }) {
@@ -99,6 +101,8 @@ function TestContent() {
   const [showRef, setShowRef] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [crossOutMode, setCrossOutMode] = useState(false);
+  const [highlightPanel, setHighlightPanel] = useState(false);
 
   const currentMod = state.modules[0];
   const currentQ = currentMod?.questions[state.currentQuestionIndex];
@@ -121,162 +125,209 @@ function TestContent() {
   const answered = state.answers[currentQ.id] ?? "";
   const crossedOut = state.crossedOut[currentQ.id] || [];
 
+  const splitRef = useRef<HTMLDivElement>(null);
+  const [splitPos, setSplitPos] = useState(50);
+  const [dragging, setDragging] = useState(false);
+
+  const handleDividerMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setDragging(true);
+  }, []);
+
+  useEffect(() => {
+    if (!dragging) return;
+    function onMouseMove(e: MouseEvent) {
+      if (!splitRef.current) return;
+      const rect = splitRef.current.getBoundingClientRect();
+      const pct = ((e.clientX - rect.left) / rect.width) * 100;
+      setSplitPos(Math.max(20, Math.min(80, pct)));
+    }
+    function onMouseUp() { setDragging(false); }
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    return () => { document.removeEventListener("mousemove", onMouseMove); document.removeEventListener("mouseup", onMouseUp); };
+  }, [dragging]);
+
   return (
     <div className="h-screen flex flex-col bg-white">
       <TestHeader
         onOpenCalc={() => setShowCalc(true)}
         onOpenRef={() => setShowRef(true)}
         onOpenMore={() => setShowMore(!showMore)}
+        onOpenHighlightPanel={() => setHighlightPanel(!highlightPanel)}
       />
 
-      <div className="flex-1 flex overflow-hidden">
-        {currentQ.passage && (
-          <div className="w-1/2 overflow-hidden flex flex-col border-r border-black shrink-0">
-            <PassagePanel
-              passage={currentQ.passage}
-              imageUrl={currentQ.passageImageUrl}
-              imageAlt={currentQ.passageImageAlt}
-              underlinedPart={currentQ.underlinedPart}
-            />
-          </div>
-        )}
+      <AnnotationProvider>
+        <div ref={splitRef} className="flex-1 flex overflow-hidden" style={{ cursor: dragging ? "col-resize" : undefined }}>
+          {currentQ.passage && (
+            <>
+              <div className="overflow-hidden flex flex-col border-r border-black shrink-0" style={{ width: `${splitPos}%` }}>
+                <PassagePanel
+                  passage={currentQ.passage}
+                  imageUrl={currentQ.passageImageUrl}
+                  imageAlt={currentQ.passageImageAlt}
+                  underlinedPart={currentQ.underlinedPart}
+                />
+              </div>
+              <div
+                className="w-1.5 bg-[#f0f2f5] border-l border-r border-black shrink-0 cursor-col-resize hover:bg-gray-300 flex items-center justify-center"
+                onMouseDown={handleDividerMouseDown}
+              >
+                <div className="w-0.5 h-6 bg-gray-400" />
+              </div>
+            </>
+          )}
 
-        <div className={`flex-1 flex flex-col overflow-hidden bg-white ${currentQ.passage ? "" : "max-w-2xl mx-auto"}`}>
-          <div className="flex-1 overflow-y-auto px-4 py-3">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-sm font-bold text-black" style={{ fontFamily: "Arial, sans-serif" }}>{currentQ.questionNumber}</span>
+          <div className={`overflow-hidden flex flex-col bg-[#fafafa] ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
+            <div className="bg-black flex items-stretch min-h-[28px]">
+              <div className="inline-flex items-center px-2.5">
+                <span className="text-[11px] font-bold text-white">{currentQ.questionNumber}</span>
+              </div>
               <button
                 onClick={() => currentQ && dispatch({ type: "TOGGLE_REVIEW", questionId: currentQ.id })}
-                className={`text-xs cursor-pointer ${
-                  state.flaggedForReview.includes(currentQ.id)
-                    ? "text-red-600 font-bold"
-                    : "text-black underline"
+                className={`inline-flex items-center px-2.5 text-[10px] border-l border-white/30 cursor-pointer ${
+                  state.flaggedForReview.includes(currentQ.id) ? "bg-red-600 text-white" : "bg-transparent text-white hover:bg-white/10"
                 }`}
-                style={{ fontFamily: "Arial, sans-serif" }}
               >
                 {state.flaggedForReview.includes(currentQ.id) ? "✓ Marked for Review" : "Mark for Review"}
               </button>
-              {currentQ.type === "gridin" && (
-                <span className="text-xs text-black border border-black px-1" style={{ fontFamily: "Arial, sans-serif" }}>Student-produced response</span>
-              )}
-            </div>
-
-            {currentQ.imageUrl && (
-              <div className="mb-3">
-                <img src={currentQ.imageUrl} alt={currentQ.imageAlt || "Figure"} className="max-w-[240px] max-h-[180px] h-auto border border-black" />
+              <div className="ml-auto inline-flex items-stretch">
+                <span className="w-px bg-white/30" />
+                <button
+                  onClick={() => setCrossOutMode(!crossOutMode)}
+                  className={`text-[10px] px-2.5 cursor-pointer flex items-center gap-1 ${
+                    crossOutMode ? "bg-white text-black" : "bg-transparent text-white hover:bg-white/10"
+                  }`}
+                >
+                  ABC <span className="line-through text-[8px]">ABC</span>
+                </button>
               </div>
-            )}
-
-            <div className="text-base leading-relaxed text-black mb-6 whitespace-pre-line" style={{ fontFamily: "Arial, sans-serif", lineHeight: "1.5" }}>
-              {renderMath(currentQ.stem)}
             </div>
+            <div className="border-b border-dashed border-black" />
 
-            {currentQ.type === "mcq" && currentQ.choices && (
-              <div className="space-y-1.5 max-w-xl">
-                {currentQ.choices.map((c) => (
-                  <AnswerChoice
-                    key={c.label}
-                    label={c.label}
-                    text={c.text}
-                    selected={answered === c.label}
-                    crossedOut={crossedOut.includes(c.label)}
-                    onSelect={() =>
+            <div className="flex-1 overflow-y-auto px-4 py-3">
+              {currentQ.imageUrl && (
+                <div className="mb-3">
+                  <img src={currentQ.imageUrl} alt={currentQ.imageAlt || "Figure"} className="max-w-[240px] max-h-[180px] h-auto border border-black" />
+                </div>
+              )}
+
+              <div className="text-sm leading-relaxed text-black mb-5 whitespace-pre-line" style={{ fontFamily: "Arial, sans-serif", lineHeight: "1.5" }}>
+                {renderMath(currentQ.stem)}
+              </div>
+
+              {currentQ.type === "mcq" && currentQ.choices && (
+                <div className="space-y-1.5 max-w-xl">
+                  {currentQ.choices.map((c) => (
+                    <AnswerChoice
+                      key={c.label}
+                      label={c.label}
+                      text={c.text}
+                      selected={answered === c.label}
+                      crossedOut={crossedOut.includes(c.label)}
+                      onSelect={() =>
+                        dispatch({
+                          type: "ANSWER_QUESTION",
+                          questionId: currentQ.id,
+                          answer: c.label,
+                        })
+                      }
+                      onCrossOut={() => {
+                        if (crossOutMode) {
+                          dispatch({ type: "CROSS_OUT", questionId: currentQ.id, label: c.label });
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {currentQ.type === "gridin" && (
+                <div className="max-w-md">
+                  <GridIn
+                    value={answered}
+                    onChange={(val) =>
                       dispatch({
                         type: "ANSWER_QUESTION",
                         questionId: currentQ.id,
-                        answer: c.label,
-                      })
-                    }
-                    onCrossOut={() =>
-                      dispatch({
-                        type: "CROSS_OUT",
-                        questionId: currentQ.id,
-                        label: c.label,
+                        answer: val,
                       })
                     }
                   />
-                ))}
-              </div>
-            )}
-
-            {currentQ.type === "gridin" && (
-              <div className="max-w-md">
-                <GridIn
-                  value={answered}
-                  onChange={(val) =>
-                    dispatch({
-                      type: "ANSWER_QUESTION",
-                      questionId: currentQ.id,
-                      answer: val,
-                    })
-                  }
-                />
-              </div>
-            )}
+                </div>
+              )}
+            </div>
+            <div className="border-t border-dashed border-black" />
           </div>
-        </div>
-      </div>
 
-      <NavigationPanel />
-
-      {showMore && (
-        <div className="fixed right-4 top-12 bg-white border border-black z-50 min-w-[150px]" style={{ fontFamily: "Arial, sans-serif" }}>
-          {isMath && (
-            <>
-              <button onClick={() => { setShowCalc(true); setShowMore(false); }} className="block w-full text-left px-3 py-2 text-sm text-black border-b border-black hover:bg-[#f0f2f5] cursor-pointer">
-                Calculator
-              </button>
-              <button onClick={() => { setShowRef(true); setShowMore(false); }} className="block w-full text-left px-3 py-2 text-sm text-black border-b border-black hover:bg-[#f0f2f5] cursor-pointer">
-                Reference Sheet
-              </button>
-            </>
-          )}
-          <button onClick={() => { dispatch({ type: "SHOW_REVIEW" }); setShowMore(false); }} className="block w-full text-left px-3 py-2 text-sm text-black border-b border-black hover:bg-[#f0f2f5] cursor-pointer">
-            Review
-          </button>
-          <button onClick={() => { dispatch({ type: "UNSCHEDULED_BREAK" }); setShowMore(false); }} className="block w-full text-left px-3 py-2 text-sm text-black border-b border-black hover:bg-[#f0f2f5] cursor-pointer">
-            Unscheduled Break
-          </button>
-          <button onClick={() => { setShowMore(false); setShowExitConfirm(true); }} className="block w-full text-left px-3 py-2 text-sm text-black hover:bg-[#f0f2f5] cursor-pointer">
-            Exit Test
-          </button>
+          {highlightPanel && <HighlightsPanel onClose={() => setHighlightPanel(false)} />}
         </div>
-      )}
+      </AnnotationProvider>
+
+      <NavigationPanel crossOutMode={crossOutMode} onToggleCrossOut={() => setCrossOutMode(!crossOutMode)} />
+
+      <MoreMenu
+        show={showMore}
+        onClose={() => setShowMore(false)}
+        isMath={isMath}
+        onCalc={() => setShowCalc(true)}
+        onRef={() => setShowRef(true)}
+        onReview={() => { dispatch({ type: "SHOW_REVIEW" }); setShowMore(false); }}
+        onBreak={() => { dispatch({ type: "UNSCHEDULED_BREAK" }); setShowMore(false); }}
+        onExit={() => { setShowMore(false); setShowExitConfirm(true); }}
+      />
 
       {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
       {showRef && <ReferenceSheet onClose={() => setShowRef(false)} />}
 
       {showExitConfirm && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
           <div className="bg-white border border-black p-5 max-w-sm mx-4" style={{ fontFamily: "Arial, sans-serif" }}>
             <h3 className="text-base font-bold text-black mb-2">Exit Test?</h3>
-            <p className="text-sm text-black mb-5">Your progress for this module will be lost. You can start a new test anytime.</p>
+            <p className="text-sm text-black mb-5">Your progress for this module will be lost.</p>
             <div className="flex gap-3">
-              <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-2 border border-black text-black text-sm bg-white hover:bg-[#f0f2f5] cursor-pointer">
-                Cancel
-              </button>
-              <button onClick={() => router.push("/my-tests")} className="flex-1 py-2 border border-black text-white text-sm bg-black hover:bg-[#333] cursor-pointer">
-                Exit
-              </button>
+              <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-2 border border-black text-black text-sm bg-white hover:bg-[#f0f2f5] cursor-pointer">Cancel</button>
+              <button onClick={() => router.push("/my-tests")} className="flex-1 py-2 border border-black text-white text-sm bg-black hover:bg-[#333] cursor-pointer">Exit</button>
             </div>
           </div>
         </div>
       )}
 
       {state.section === "break" && state.breakTimer !== undefined && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
           <div className="bg-white border border-black p-6 max-w-sm mx-4 text-center" style={{ fontFamily: "Arial, sans-serif" }}>
             <h3 className="text-base font-bold text-black mb-1">Break</h3>
-            <p className="text-sm text-black mb-5">Timer is paused. Come back when you&apos;re ready.</p>
-            <button
-              onClick={() => dispatch({ type: "RESUME_BREAK" })}
-              className="w-full py-2 border border-black bg-black text-white text-sm hover:bg-[#333] cursor-pointer"
-            >
-              Resume Test
-            </button>
+            <p className="text-sm text-black mb-5">Timer is paused.</p>
+            <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="w-full py-2 border border-black bg-black text-white text-sm hover:bg-[#333] cursor-pointer">Resume Test</button>
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onExit }: {
+  show: boolean; onClose: () => void; isMath: boolean;
+  onCalc: () => void; onRef: () => void;
+  onReview: () => void; onBreak: () => void; onExit: () => void;
+}) {
+  if (!show) return null;
+  return (
+    <div className="fixed right-4 top-[104px] bg-white border border-black z-50 min-w-[180px]" style={{ fontFamily: "Arial, sans-serif" }}>
+      {isMath && (
+        <>
+          <button onClick={() => { onCalc(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Calculator</button>
+          <button onClick={() => { onRef(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Reference Sheet</button>
+        </>
+      )}
+      <button onClick={() => { onReview(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Review</button>
+      <button onClick={() => { onBreak(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Unscheduled Break</button>
+      <div className="border-b border-black" />
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Help</button>
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Keyboard Shortcuts</button>
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Assistive Technology</button>
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Line Reader</button>
+      <button onClick={() => { onExit(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black hover:bg-[#edf2fa] cursor-pointer">Save &amp; Exit</button>
     </div>
   );
 }

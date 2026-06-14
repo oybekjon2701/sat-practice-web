@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, useCallback, useMemo } from "react";
+import { useRef, useCallback, useMemo, useEffect, useState } from "react";
 import { renderMath } from "@/lib/renderMath";
+import { useAnnotations, colorMap, underlineStyles, Highlight, Underline, Note } from "@/lib/AnnotationContext";
 
 interface Props {
   passage: string;
@@ -11,44 +12,16 @@ interface Props {
   underlinedPart?: string;
 }
 
-type HighlightColor = "yellow" | "green" | "pink" | "blue";
-
-interface Highlight {
-  id: string;
-  text: string;
-  color: HighlightColor;
-}
-
-interface Annotation {
-  id: string;
-  text: string;
-}
-
-interface Note {
-  id: string;
-  text: string;
-  content: string;
-}
-
-type ToolMode = "read" | "highlight" | "underline" | "note";
-
-const colorMap: Record<HighlightColor, string> = {
-  yellow: "bg-yellow-200",
-  green: "bg-green-200",
-  pink: "bg-pink-200",
-  blue: "bg-blue-200",
-};
-
 interface TextPart {
   text: string;
-  highlight?: HighlightColor;
+  highlight?: string;
   underline?: string;
   note?: string;
   preUnderline?: boolean;
 }
 
-function annotateText(text: string, highlights: Highlight[], underlines: Annotation[], notes: Note[], underlinedPart?: string): TextPart[] {
-  const all: { pos: number; end: number; type: "highlight" | "underline" | "note" | "preUnderline"; val: any }[] = [];
+function annotateText(text: string, highlights: Highlight[], underlines: Underline[], notes: Note[], underlinedPart?: string): TextPart[] {
+  const all: { pos: number; end: number; type: string; val: any }[] = [];
   if (underlinedPart) {
     const lower = underlinedPart.toLowerCase();
     const idx = text.toLowerCase().indexOf(lower);
@@ -62,7 +35,7 @@ function annotateText(text: string, highlights: Highlight[], underlines: Annotat
   for (const u of underlines) {
     const lower = u.text.toLowerCase();
     const idx = text.toLowerCase().indexOf(lower);
-    if (idx !== -1) all.push({ pos: idx, end: idx + u.text.length, type: "underline", val: true });
+    if (idx !== -1) all.push({ pos: idx, end: idx + u.text.length, type: "underline", val: u.style });
   }
   for (const n of notes) {
     const lower = n.text.toLowerCase();
@@ -79,20 +52,10 @@ function annotateText(text: string, highlights: Highlight[], underlines: Annotat
     if (a.pos > cursor) parts.push({ text: text.slice(cursor, a.pos) });
     if (a.pos < cursor) continue;
     const matched = text.slice(a.pos, a.end);
-    if (a.type === "highlight") {
-      parts.push({ text: matched, highlight: a.val });
-    } else if (a.type === "preUnderline") {
-      parts.push({ text: matched, preUnderline: true });
-    } else if (a.type === "underline") {
-      const existing = parts.findIndex(p => p.text === matched && p.underline);
-      if (existing >= 0) {
-        parts[existing] = { ...parts[existing], underline: "yes" };
-      } else {
-        parts.push({ text: matched, underline: "yes" });
-      }
-    } else if (a.type === "note") {
-      parts.push({ text: matched, note: a.val });
-    }
+    if (a.type === "highlight") parts.push({ text: matched, highlight: a.val });
+    else if (a.type === "preUnderline") parts.push({ text: matched, preUnderline: true });
+    else if (a.type === "underline") parts.push({ text: matched, underline: a.val });
+    else if (a.type === "note") parts.push({ text: matched, note: a.val });
     cursor = a.end;
   }
   if (cursor < text.length) parts.push({ text: text.slice(cursor) });
@@ -142,62 +105,101 @@ function renderTableBlock(text: string) {
 }
 
 export default function PassagePanel({ passage, title, imageUrl, imageAlt, underlinedPart }: Props) {
-  const [highlights, setHighlights] = useState<Highlight[]>([]);
-  const [underlines, setUnderlines] = useState<Annotation[]>([]);
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [activeColor, setActiveColor] = useState<HighlightColor>("yellow");
-  const [mode, setMode] = useState<ToolMode>("read");
+  const { highlights, underlines, notes, addHighlight, removeHighlight, addUnderline, removeUnderline, addNote, removeNote, openNoteId, setOpenNoteId } = useAnnotations();
+  const [popup, setPopup] = useState<{ x: number; y: number; text: string } | null>(null);
+  const [contextPopup, setContextPopup] = useState<{ x: number; y: number; text: string } | null>(null);
   const [editingNote, setEditingNote] = useState<{ text: string; content: string } | null>(null);
-  const [openNoteId, setOpenNoteId] = useState<string | null>(null);
+  const [showUnderlineDropdown, setShowUnderlineDropdown] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        setPopup(null);
+        setShowUnderlineDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function getSelectionInfo(): { text: string; range: Range } | null {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) return null;
+    const text = sel.toString().trim();
+    const range = sel.getRangeAt(0);
+    return { text, range };
+  }
+
+  function getPopupPosition(range: Range): { x: number; y: number } {
+    const rect = range.getBoundingClientRect();
+    const container = contentRef.current;
+    if (!container) return { x: rect.left, y: rect.bottom + 4 };
+    const containerRect = container.getBoundingClientRect();
+    return { x: rect.left - containerRect.left, y: rect.bottom - containerRect.top + 4 };
+  }
 
   const handleMouseUp = useCallback(() => {
-    if (mode === "read") return;
+    const selInfo = getSelectionInfo();
+    if (!selInfo) { setPopup(null); return; }
+    const pos = getPopupPosition(selInfo.range);
+    setPopup({ x: pos.x, y: pos.y, text: selInfo.text });
+    window.getSelection()?.removeAllRanges();
+  }, []);
+
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     const sel = window.getSelection();
     if (!sel || sel.isCollapsed || !sel.toString().trim()) return;
-    const text = sel.toString().trim();
+    setContextPopup({ x: e.clientX, y: e.clientY, text: sel.toString().trim() });
+  }, []);
 
-    if (mode === "highlight") {
-      if (highlights.some((h) => h.text.toLowerCase() === text.toLowerCase())) {
-        sel.removeAllRanges();
-        return;
-      }
-      const id = `h-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-      setHighlights((prev) => [...prev, { id, text, color: activeColor }]);
-    } else if (mode === "underline") {
-      if (underlines.some((u) => u.text.toLowerCase() === text.toLowerCase())) {
-        sel.removeAllRanges();
-        return;
-      }
-      const id = `u-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-      setUnderlines((prev) => [...prev, { id, text }]);
-    } else if (mode === "note") {
-      if (notes.some((n) => n.text.toLowerCase() === text.toLowerCase())) {
-        sel.removeAllRanges();
-        return;
-      }
-      setEditingNote({ text, content: "" });
-    }
-    sel.removeAllRanges();
-  }, [mode, activeColor, highlights, underlines, notes]);
-
-  function removeHighlight(id: string) {
-    setHighlights((prev) => prev.filter((h) => h.id !== id));
+  function handleAddHighlight(color: "yellow" | "pink" | "blue") {
+    if (!popup) return;
+    if (highlights.some(h => h.text.toLowerCase() === popup.text.toLowerCase())) return;
+    addHighlight({ id: `h-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: popup.text, color });
+    setPopup(null);
   }
 
-  function removeUnderline(id: string) {
-    setUnderlines((prev) => prev.filter((u) => u.id !== id));
+  function handleAddUnderline(style: "single" | "dashed" | "dotted") {
+    if (!popup) return;
+    if (underlines.some(u => u.text.toLowerCase() === popup.text.toLowerCase())) return;
+    addUnderline({ id: `u-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: popup.text, style });
+    setPopup(null);
+    setShowUnderlineDropdown(false);
   }
 
-  function removeNote(id: string) {
-    setNotes((prev) => prev.filter((n) => n.id !== id));
+  function handleAddNoteFromPopup() {
+    if (!popup) return;
+    if (notes.some(n => n.text.toLowerCase() === popup.text.toLowerCase())) return;
+    setEditingNote({ text: popup.text, content: "" });
+    setPopup(null);
   }
 
-  function saveNote() {
+  function handleRemoveForText(text: string) {
+    highlights.filter(h => h.text.toLowerCase() === text.toLowerCase()).forEach(h => removeHighlight(h.id));
+    underlines.filter(u => u.text.toLowerCase() === text.toLowerCase()).forEach(u => removeUnderline(u.id));
+  }
+
+  function handleSaveNote() {
     if (!editingNote || !editingNote.content.trim()) return;
-    const id = `n-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-    setNotes((prev) => [...prev, { id, text: editingNote.text, content: editingNote.content.trim() }]);
+    addNote({ id: `n-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: editingNote.text, content: editingNote.content.trim() });
     setEditingNote(null);
+  }
+
+  function contextAddHighlight(color: "yellow" | "pink" | "blue") {
+    if (!contextPopup) return;
+    if (highlights.some(h => h.text.toLowerCase() === contextPopup.text.toLowerCase())) return;
+    addHighlight({ id: `h-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: contextPopup.text, color });
+    setContextPopup(null);
+  }
+
+  function contextAddUnderline() {
+    if (!contextPopup) return;
+    if (underlines.some(u => u.text.toLowerCase() === contextPopup.text.toLowerCase())) return;
+    addUnderline({ id: `u-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: contextPopup.text, style: "single" });
+    setContextPopup(null);
   }
 
   const paragraphs = useMemo(() => {
@@ -205,25 +207,13 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
     return passage.split("\n\n").map((para) => annotateText(para, highlights, underlines, notes, underlinedPart));
   }, [passage, highlights, underlines, notes, underlinedPart]);
 
-  const allAnns = useMemo(() => {
-    return [...highlights.map(h => ({ ...h, type: "highlight" as const })),
-            ...underlines.map(u => ({ ...u, type: "underline" as const })),
-            ...notes.map(n => ({ ...n, type: "note" as const }))];
-  }, [highlights, underlines, notes]);
-
-  const toolLabel: Record<ToolMode, string> = {
-    read: "Read",
-    highlight: "Highlighting",
-    underline: "Underlining",
-    note: "Notes",
-  };
-
   return (
     <div className="h-full flex flex-col overflow-hidden bg-white">
       <div
         ref={contentRef}
-        className="flex-1 overflow-y-auto px-4 py-3"
+        className="flex-1 overflow-y-auto px-4 py-3 relative"
         onMouseUp={handleMouseUp}
+        onContextMenu={handleContextMenu}
       >
         {imageUrl && (
           <div className="mb-3">
@@ -233,33 +223,25 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
         <div className="text-lg leading-relaxed text-black space-y-4 whitespace-pre-line font-serif" style={{ fontFamily: "Georgia, 'Times New Roman', serif", lineHeight: "1.6" }}>
           {paragraphs.map((parts, i) => {
             const fullText = parts.map(p => p.text).join("");
-            if (isTableBlock(fullText)) {
-              return <div key={i}>{renderTableBlock(fullText)}</div>;
-            }
+            if (isTableBlock(fullText)) return <div key={i}>{renderTableBlock(fullText)}</div>;
             return (
               <p key={i}>
                 {parts.map((part, j) => {
-                  if (part.highlight) {
-                    return <mark key={j} className={`${colorMap[part.highlight]} text-gray-800 rounded-sm px-0.5`}>{renderMath(renderTextWithBlanks(part.text))}</mark>;
-                  }
-                  if (part.preUnderline) {
-                    return <span key={j} className="underline decoration-orange-500 decoration-2 underline-offset-2 text-red-700 font-medium">{renderMath(renderTextWithBlanks(part.text))}</span>;
-                  }
+                  if (part.highlight) return <mark key={j} className={`${colorMap[part.highlight as keyof typeof colorMap]} text-black px-0.5`}>{renderMath(renderTextWithBlanks(part.text))}</mark>;
+                  if (part.preUnderline) return <span key={j} className="underline decoration-orange-500 decoration-2 underline-offset-2 text-red-700 font-medium">{renderMath(renderTextWithBlanks(part.text))}</span>;
                   if (part.underline) {
-                    return <span key={j} className="underline decoration-blue-500 decoration-2 underline-offset-2">{renderMath(renderTextWithBlanks(part.text))}</span>;
+                    const us = underlineStyles[part.underline] || underlineStyles.single;
+                    return <span key={j} className={`${us} decoration-blue-500 underline-offset-2`}>{renderMath(renderTextWithBlanks(part.text))}</span>;
                   }
                   if (part.note) {
                     const note = notes.find(n => n.id === part.note);
                     return (
                       <span key={j} className="relative group">
-                        <span
-                          className="cursor-help border-b-2 border-dashed border-green-500"
-                          onClick={() => setOpenNoteId(openNoteId === part.note ? null : (part.note ?? null))}
-                        >
+                        <span className="cursor-help border-b-2 border-dashed border-green-500" onClick={() => setOpenNoteId(openNoteId === part.note ? null : (part.note ?? null))}>
                           {renderMath(renderTextWithBlanks(part.text))}
                         </span>
                         {openNoteId === part.note && note && (
-                          <span className="absolute z-30 bottom-full left-0 mb-1 w-56 bg-white border border-gray-200 rounded-lg shadow-lg p-3 text-xs text-gray-700">
+                          <span className="absolute z-30 bottom-full left-0 mb-1 w-56 bg-white border border-black p-3 text-xs text-black">
                             <span className="font-medium text-green-700 block mb-0.5">Note</span>
                             {renderMath(note.content)}
                           </span>
@@ -274,43 +256,108 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
           })}
         </div>
 
-        {allAnns.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-sat-border">
-            <p className="text-xs font-semibold text-sat-gray mb-2">Annotations</p>
-            <div className="space-y-1 max-h-32 overflow-y-auto">
-              {allAnns.map((a) => (
-                <div key={a.id} className="flex items-center gap-2 text-xs">
-                  {a.type === "highlight" && (
-                    <span className={`px-1.5 py-0.5 rounded ${colorMap[(a as Highlight).color]} flex-1 truncate`}>
-                      {a.text}
-                    </span>
-                  )}
-                  {a.type === "underline" && (
-                    <span className="underline decoration-blue-500 decoration-2 flex-1 truncate px-1">
-                      {a.text}
-                    </span>
-                  )}
-                  {a.type === "note" && (
-                    <span className="flex-1 truncate border-b border-dashed border-green-500 px-1">
-                      {a.text} — <span className="text-green-700">{(a as Note).content}</span>
-                    </span>
-                  )}
-                  <button
-                    onClick={() => {
-                      if (a.type === "highlight") removeHighlight(a.id);
-                      else if (a.type === "underline") removeUnderline(a.id);
-                      else if (a.type === "note") removeNote(a.id);
-                    }}
-                    className="text-sat-red hover:text-red-700 cursor-pointer shrink-0"
-                  >
-                    ×
-                  </button>
+        {popup && (
+          <div
+            ref={popupRef}
+            className="absolute z-50 flex items-center gap-1 bg-white border border-black px-1.5 py-1"
+            style={{ left: popup.x, top: popup.y, fontFamily: "Arial, sans-serif" }}
+          >
+            <button onClick={() => handleAddHighlight("yellow")} className="w-3.5 h-3.5 rounded-full bg-yellow-300 border border-black cursor-pointer hover:ring-1 hover:ring-black" title="Yellow highlight" />
+            <button onClick={() => handleAddHighlight("pink")} className="w-3.5 h-3.5 rounded-full bg-pink-300 border border-black cursor-pointer hover:ring-1 hover:ring-black" title="Pink highlight" />
+            <button onClick={() => handleAddHighlight("blue")} className="w-3.5 h-3.5 rounded-full bg-blue-300 border border-black cursor-pointer hover:ring-1 hover:ring-black" title="Blue highlight" />
+            <div className="w-px h-4 bg-gray-300 mx-0.5" />
+            <div className="relative">
+              <button onClick={() => setShowUnderlineDropdown(!showUnderlineDropdown)} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Underline">U</button>
+              {showUnderlineDropdown && (
+                <div className="absolute left-0 top-full mt-0.5 bg-white border border-black z-50 min-w-[80px]">
+                  <button onClick={() => handleAddUnderline("single")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-[#f0f2f5] cursor-pointer underline decoration-1">Single</button>
+                  <button onClick={() => handleAddUnderline("dashed")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-[#f0f2f5] cursor-pointer underline decoration-dashed decoration-1">Dashed</button>
+                  <button onClick={() => handleAddUnderline("dotted")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-[#f0f2f5] cursor-pointer underline decoration-dotted decoration-1">Dotted</button>
                 </div>
-              ))}
+              )}
+            </div>
+            <button onClick={handleAddNoteFromPopup} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Add note">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                <rect x="3" y="2" width="14" height="16" rx="1" />
+                <line x1="6" y1="6" x2="14" y2="6" />
+                <line x1="6" y1="9" x2="14" y2="9" />
+                <line x1="6" y1="12" x2="11" y2="12" />
+              </svg>
+            </button>
+            <div className="w-px h-4 bg-gray-300 mx-0.5" />
+            <button onClick={() => { handleRemoveForText(popup.text); }} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Remove">
+              <svg className="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                <circle cx="10" cy="10" r="7" />
+                <path strokeLinecap="round" d="M7 7l6 6M13 7l-6 6" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {contextPopup && (
+          <div
+            className="fixed z-50 bg-white border border-black px-2 py-1.5 flex items-center gap-1"
+            style={{ left: contextPopup.x, top: contextPopup.y, fontFamily: "Arial, sans-serif" }}
+          >
+            <button onClick={() => contextAddHighlight("yellow")} className="w-3.5 h-3.5 rounded-full bg-yellow-300 border border-black cursor-pointer hover:ring-1 hover:ring-black" />
+            <button onClick={() => contextAddHighlight("pink")} className="w-3.5 h-3.5 rounded-full bg-pink-300 border border-black cursor-pointer hover:ring-1 hover:ring-black" />
+            <button onClick={() => contextAddHighlight("blue")} className="w-3.5 h-3.5 rounded-full bg-blue-300 border border-black cursor-pointer hover:ring-1 hover:ring-black" />
+            <div className="w-px h-4 bg-gray-300 mx-0.5" />
+            <button onClick={contextAddUnderline} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">U</button>
+            <button onClick={() => setContextPopup(null)} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">
+              <svg className="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                <circle cx="10" cy="10" r="7" />
+                <path strokeLinecap="round" d="M7 7l6 6M13 7l-6 6" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {editingNote && (
+          <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+            <div className="bg-white border border-black p-4 w-72" style={{ fontFamily: "Arial, sans-serif" }}>
+              <p className="text-xs font-medium text-black mb-1">Add Note</p>
+              <p className="text-[11px] text-black mb-2 italic">&ldquo;{editingNote.text}&rdquo;</p>
+              <textarea autoFocus value={editingNote.content} onChange={(e) => setEditingNote({ ...editingNote, content: e.target.value })} className="w-full border border-black text-xs p-1.5 mb-2 text-black resize-none" rows={3} />
+              <div className="flex gap-2">
+                <button onClick={() => setEditingNote(null)} className="flex-1 py-1 text-xs border border-black text-black bg-white hover:bg-[#f0f2f5] cursor-pointer">Cancel</button>
+                <button onClick={handleSaveNote} className="flex-1 py-1 text-xs bg-black text-white hover:bg-[#333] cursor-pointer border border-black">Save</button>
+              </div>
             </div>
           </div>
         )}
       </div>
+
+      {(highlights.length > 0 || underlines.length > 0 || notes.length > 0) && (
+        <div className="border-t border-black px-3 py-1.5 max-h-16 overflow-y-auto">
+          <div className="flex flex-wrap gap-1">
+            {highlights.map(h => (
+              <span key={h.id} className={`inline-flex items-center gap-0.5 px-1 text-[10px] ${colorMap[h.color]} text-black`}>
+                {h.text.slice(0, 20)}{h.text.length > 20 ? "..." : ""}
+                <button onClick={() => removeHighlight(h.id)} className="cursor-pointer hover:opacity-70">
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 5l10 10M15 5L5 15" /></svg>
+                </button>
+              </span>
+            ))}
+            {underlines.map(u => (
+              <span key={u.id} className={`inline-flex items-center gap-0.5 px-1 text-[10px] text-black ${underlineStyles[u.style]} decoration-blue-500`}>
+                {u.text.slice(0, 20)}{u.text.length > 20 ? "..." : ""}
+                <button onClick={() => removeUnderline(u.id)} className="cursor-pointer hover:opacity-70">
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 5l10 10M15 5L5 15" /></svg>
+                </button>
+              </span>
+            ))}
+            {notes.map(n => (
+              <span key={n.id} className="inline-flex items-center gap-0.5 px-1 text-[10px] text-green-700 border-b border-dashed border-green-500">
+                {n.text.slice(0, 15)}{n.text.length > 15 ? "..." : ""}
+                <button onClick={() => removeNote(n.id)} className="cursor-pointer hover:opacity-70">
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 5l10 10M15 5L5 15" /></svg>
+                </button>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
