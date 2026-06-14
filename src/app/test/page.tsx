@@ -108,6 +108,21 @@ function TestContent() {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [crossOutMode, setCrossOutMode] = useState(false);
   const [highlightPanel, setHighlightPanel] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    function handleChange() { setIsFullscreen(!!document.fullscreenElement); }
+    document.addEventListener("fullscreenchange", handleChange);
+    return () => document.removeEventListener("fullscreenchange", handleChange);
+  }, []);
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  }
 
   const currentMod = state.modules[0];
   const currentQ = currentMod?.questions[state.currentQuestionIndex];
@@ -305,6 +320,8 @@ function TestContent() {
         onReview={() => { dispatch({ type: "SHOW_REVIEW" }); setShowMore(false); }}
         onBreak={() => { dispatch({ type: "UNSCHEDULED_BREAK" }); setShowMore(false); }}
         onExit={() => { setShowMore(false); setShowExitConfirm(true); }}
+        onToggleFullscreen={toggleFullscreen}
+        isFullscreen={isFullscreen}
       />
 
       {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
@@ -336,29 +353,58 @@ function TestContent() {
   );
 }
 
-function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onExit }: {
+function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onExit, onToggleFullscreen, isFullscreen }: {
   show: boolean; onClose: () => void; isMath: boolean;
   onCalc: () => void; onRef: () => void;
   onReview: () => void; onBreak: () => void; onExit: () => void;
+  onToggleFullscreen: () => void; isFullscreen: boolean;
 }) {
+  const [showShortcuts, setShowShortcuts] = useState(false);
+
   if (!show) return null;
   return (
-    <div className="fixed right-4 top-[108px] bg-white border border-gray-200 z-50 min-w-[200px] rounded-lg shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
-      {isMath && (
-        <>
-          <button onClick={() => { onCalc(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Calculator</button>
-          <button onClick={() => { onRef(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Reference Sheet</button>
-        </>
+    <>
+      {showShortcuts && (
+        <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center">
+          <div className="bg-white border border-gray-200 w-full max-w-xs mx-4 p-5 rounded-2xl shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
+            <h3 className="font-bold text-gray-800 text-base mb-3">Keyboard Shortcuts</h3>
+            <div className="space-y-2 text-sm text-gray-700">
+              <div className="flex justify-between"><span>Toggle Fullscreen</span><span className="text-gray-500 font-mono">F11 / f</span></div>
+              <div className="flex justify-between"><span>Next Question</span><span className="text-gray-500 font-mono">Enter</span></div>
+              <div className="flex justify-between"><span>Previous Question</span><span className="text-gray-500 font-mono">Shift+Enter</span></div>
+              <div className="flex justify-between"><span>Mark for Review</span><span className="text-gray-500 font-mono">Ctrl+M</span></div>
+              <div className="flex justify-between"><span>Cross-Out Mode</span><span className="text-gray-500 font-mono">Ctrl+Shift+X</span></div>
+            </div>
+            <button onClick={() => setShowShortcuts(false)} className="w-full mt-4 py-2 bg-[#0033aa] text-white text-sm font-medium cursor-pointer rounded-full hover:bg-[#002288]">Close</button>
+          </div>
+        </div>
       )}
-      <button onClick={() => { onReview(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Review</button>
-      <button onClick={() => { onBreak(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Unscheduled Break</button>
-      <div className="border-b border-gray-100" />
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Help</button>
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Keyboard Shortcuts</button>
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Assistive Technology</button>
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Line Reader</button>
-      <button onClick={() => { onExit(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-gray-50 cursor-pointer">Save &amp; Exit</button>
-    </div>
+      <div className="fixed right-4 top-[140px] bg-white border border-gray-200 z-50 min-w-[200px] rounded-lg shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
+        <button onClick={() => { onToggleFullscreen(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer flex items-center gap-2">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            {isFullscreen
+              ? <><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></>
+              : <><path strokeLinecap="round" strokeLinejoin="round" d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" /></>
+            }
+          </svg>
+          {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+        </button>
+        {isMath && (
+          <>
+            <button onClick={() => { onCalc(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Calculator</button>
+            <button onClick={() => { onRef(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Reference Sheet</button>
+          </>
+        )}
+        <button onClick={() => { onReview(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Review</button>
+        <button onClick={() => { onBreak(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Unscheduled Break</button>
+        <div className="border-b border-gray-100" />
+        <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Help</button>
+        <button onClick={() => { setShowShortcuts(true); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Keyboard Shortcuts</button>
+        <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Assistive Technology</button>
+        <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Line Reader</button>
+        <button onClick={() => { onExit(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-gray-50 cursor-pointer">Save &amp; Exit</button>
+      </div>
+    </>
   );
 }
 
