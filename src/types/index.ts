@@ -77,6 +77,7 @@ export interface TestState {
   adaptivePath: "easy" | "hard" | null;
   timerHidden: boolean;
   nextSectionName: string;
+  breakTimer?: number;
   readingCorrect?: number;
   readingTotal?: number;
   mathCorrect?: number;

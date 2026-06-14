@@ -93,9 +93,11 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
 
 function TestContent() {
   const { state, dispatch } = useTest();
+  const router = useRouter();
   const [showCalc, setShowCalc] = useState(false);
   const [showRef, setShowRef] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [leftWidth, setLeftWidth] = useState(50);
   const [dragging, setDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -276,13 +278,19 @@ function TestContent() {
               </button>
             </>
           )}
-          <button onClick={() => { dispatch({ type: "END_MODULE" }); setShowMore(false); }} className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded cursor-pointer">
+          <button onClick={() => { dispatch({ type: "SHOW_REVIEW" }); setShowMore(false); }} className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded cursor-pointer">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
             Review
           </button>
-          <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded cursor-pointer">
+          <button onClick={() => { dispatch({ type: "UNSCHEDULED_BREAK" }); setShowMore(false); }} className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded cursor-pointer">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Unscheduled Break
+          </button>
+          <button onClick={() => { setShowMore(false); setShowExitConfirm(true); }} className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded cursor-pointer">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
@@ -293,6 +301,43 @@ function TestContent() {
 
       {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
       {showRef && <ReferenceSheet onClose={() => setShowRef(false)} />}
+
+      {showExitConfirm && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm mx-4">
+            <h3 className="text-lg font-bold text-slate-800 mb-2">Exit Test?</h3>
+            <p className="text-sm text-slate-500 mb-6">Your progress for this module will be lost. You can start a new test anytime.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-2.5 border border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 cursor-pointer">
+                Cancel
+              </button>
+              <button onClick={() => router.push("/my-tests")} className="flex-1 py-2.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 cursor-pointer">
+                Exit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {state.section === "break" && state.breakTimer !== undefined && (
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
+          <div className="bg-white rounded-xl shadow-xl p-8 max-w-sm mx-4 text-center">
+            <div className="w-14 h-14 rounded-full bg-teal-50 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-7 h-7 text-[#0d9488]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-slate-800 mb-1">Break</h3>
+            <p className="text-sm text-slate-500 mb-6">Timer is paused. Come back when you&apos;re ready.</p>
+            <button
+              onClick={() => dispatch({ type: "RESUME_BREAK" })}
+              className="w-full py-2.5 bg-[#0d9488] text-white rounded-lg text-sm font-bold hover:bg-[#0f766e] transition-colors cursor-pointer"
+            >
+              Resume Test
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -321,7 +366,7 @@ function TestPageInner() {
     return <ModuleTransitionScreen />;
   }
 
-  if (state.section === "break") {
+  if (state.section === "break" && state.breakTimer === undefined) {
     return <BreakScreen onEndBreak={() => dispatch({ type: "END_BREAK" })} />;
   }
 

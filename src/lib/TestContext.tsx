@@ -38,6 +38,7 @@ function getInitialState(mockId: string): TestState {
     adaptivePath: null,
     timerHidden: false,
     nextSectionName: "",
+    breakTimer: undefined,
   };
 }
 
@@ -89,7 +90,9 @@ type Action =
   | { type: "END_BREAK" }
   | { type: "FINISH_TRANSITION" }
   | { type: "CONFIRM_SUBMIT" }
-  | { type: "REVIEW_GO_TO_QUESTION"; index: number };
+  | { type: "REVIEW_GO_TO_QUESTION"; index: number }
+  | { type: "UNSCHEDULED_BREAK" }
+  | { type: "RESUME_BREAK" };
 
 function reducer(state: TestState, action: Action): TestState {
   switch (action.type) {
@@ -118,6 +121,7 @@ function reducer(state: TestState, action: Action): TestState {
         adaptivePath: null,
         timerHidden: false,
         nextSectionName: "",
+        breakTimer: undefined,
       };
     }
 
@@ -409,6 +413,23 @@ function reducer(state: TestState, action: Action): TestState {
         mathScore,
         totalScore,
         section: "results",
+      };
+    }
+
+    case "UNSCHEDULED_BREAK":
+      return { ...state, section: "break", breakTimer: state.timeRemaining };
+
+    case "RESUME_BREAK": {
+      const test = mockTests.find((t) => t.id === state.mockId);
+      if (!test) return state;
+      const modules = state.currentSection === "reading" ? test.readingModules : test.mathModules;
+      const modIdx = Math.min(state.currentModule - 1, modules.length - 1);
+      const mod = modules[modIdx];
+      if (!mod) return state;
+      return {
+        ...state,
+        section: "testing",
+        timeRemaining: state.breakTimer ?? state.timeRemaining,
       };
     }
 
