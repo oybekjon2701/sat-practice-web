@@ -52,11 +52,11 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col items-center">
+        <div className="flex-1 flex flex-col items-center gap-0.5">
           <span className={`text-2xl font-bold tabular-nums tracking-wider ${timerWarning ? "text-red-600" : "text-gray-800"}`}>
             {state.timerHidden ? "--:--" : timeStr}
           </span>
-          <button onClick={() => dispatch({ type: "TOGGLE_TIMER" })} className="text-[11px] text-[#0033aa] underline cursor-pointer leading-none -mt-0.5">
+          <button onClick={() => dispatch({ type: "TOGGLE_TIMER" })} className="text-[10px] text-gray-500 border border-gray-300 rounded-full px-2.5 py-0.5 cursor-pointer hover:bg-gray-100 transition-colors leading-tight">
             {state.timerHidden ? "Show" : "Hide"}
           </button>
         </div>

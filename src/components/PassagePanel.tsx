@@ -142,7 +142,7 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
 
   const handleMouseUp = useCallback(() => {
     const selInfo = getSelectionInfo();
-    if (!selInfo) { setPopup(null); return; }
+    if (!selInfo) return;
     const pos = getPopupPosition(selInfo.range);
     setPopup({ x: pos.x, y: pos.y, text: selInfo.text });
     window.getSelection()?.removeAllRanges();

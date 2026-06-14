@@ -116,13 +116,13 @@ export default function NavigationPanel({ crossOutMode, onToggleCrossOut }: Prop
         />
       )}
       <div className="h-14 bg-white border-t border-gray-200 flex items-center px-5 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 font-medium">{state.userName || "Student"}</span>
+        <div className="flex items-center gap-2 w-40">
+          <span className="text-xs text-gray-400 font-medium">{state.userName || "Student"}</span>
         </div>
 
         <button
           onClick={() => setShowGrid(true)}
-          className="px-4 py-1.5 bg-white text-gray-800 text-sm font-semibold cursor-pointer border-2 border-gray-200 rounded-full hover:border-gray-300 hover:bg-gray-50 transition-colors"
+          className="h-9 px-5 bg-gray-900 text-white text-sm font-semibold cursor-pointer rounded-full hover:bg-gray-800 transition-colors shadow-sm"
         >
           Question {isNaN(state.currentQuestionIndex + 1) ? "?" : state.currentQuestionIndex + 1} of {totalQ}
         </button>
@@ -139,7 +139,7 @@ export default function NavigationPanel({ crossOutMode, onToggleCrossOut }: Prop
               dispatch({ type: "NEXT_QUESTION" });
             }
           }}
-          className="px-6 py-2 text-sm bg-[#0033aa] text-white hover:bg-[#002288] cursor-pointer font-semibold rounded-full transition-colors"
+          className="h-10 px-8 text-sm bg-[#0033aa] text-white hover:bg-[#002288] cursor-pointer font-semibold rounded-full transition-colors shadow-sm flex items-center justify-center"
         >
           {isLast ? "Submit" : "Next"}
         </button>
