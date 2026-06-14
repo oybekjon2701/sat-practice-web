@@ -25,7 +25,7 @@ function Directions({ onStart }: { onStart: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="bg-white border border-black w-full max-w-lg mx-4" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="bg-white border border-gray-200 w-full max-w-lg mx-4 rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="p-6">
           <h1 className="text-lg font-bold text-black mb-1">
             {isReading ? "Reading and Writing" : "Math"} — Module 1
@@ -53,7 +53,7 @@ function Directions({ onStart }: { onStart: () => void }) {
 
           <button
             onClick={onStart}
-            className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-black hover:bg-[#d4a600] cursor-pointer"
+            className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-gray-300 hover:bg-[#d4a600] cursor-pointer rounded-full"
             style={{ fontFamily: "Arial, sans-serif" }}
           >
             Continue
@@ -75,7 +75,7 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="bg-white border border-black w-full max-w-sm mx-4 p-6 text-center" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="bg-white border border-gray-200 w-full max-w-sm mx-4 p-6 text-center rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
         <h1 className="text-lg font-bold text-black mb-2">Break</h1>
         <p className="text-sm text-black mb-5">
           Take a short break. The next section will begin automatically.
@@ -85,7 +85,7 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
         </div>
         <button
           onClick={onEndBreak}
-          className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-black hover:bg-[#d4a600] cursor-pointer"
+          className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-gray-300 hover:bg-[#d4a600] cursor-pointer rounded-full"
         >
           {timeLeft > 0 ? "Skip Break" : "Start Math Section"}
         </button>
@@ -282,12 +282,12 @@ function TestContent() {
 
       {showExitConfirm && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-          <div className="bg-white border border-black p-5 max-w-sm mx-4" style={{ fontFamily: "Arial, sans-serif" }}>
-            <h3 className="text-base font-bold text-black mb-2">Exit Test?</h3>
-            <p className="text-sm text-black mb-5">Your progress for this module will be lost.</p>
+          <div className="bg-white border border-gray-200 p-5 max-w-sm mx-4 rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
+            <h3 className="text-base font-bold text-gray-800 mb-2">Exit Test?</h3>
+            <p className="text-sm text-gray-600 mb-5">Your progress for this module will be lost.</p>
             <div className="flex gap-3">
-              <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-2 border border-black text-black text-sm bg-white hover:bg-[#f0f2f5] cursor-pointer">Cancel</button>
-              <button onClick={() => router.push("/my-tests")} className="flex-1 py-2 border border-black text-white text-sm bg-black hover:bg-[#333] cursor-pointer">Exit</button>
+              <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-2 border border-gray-200 text-gray-600 text-sm bg-white hover:bg-gray-50 cursor-pointer rounded-full">Cancel</button>
+              <button onClick={() => router.push("/my-tests")} className="flex-1 py-2 text-white text-sm bg-[#0033aa] hover:bg-[#002288] cursor-pointer rounded-full">Exit</button>
             </div>
           </div>
         </div>
@@ -295,10 +295,10 @@ function TestContent() {
 
       {state.section === "break" && state.breakTimer !== undefined && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-          <div className="bg-white border border-black p-6 max-w-sm mx-4 text-center" style={{ fontFamily: "Arial, sans-serif" }}>
-            <h3 className="text-base font-bold text-black mb-1">Break</h3>
-            <p className="text-sm text-black mb-5">Timer is paused.</p>
-            <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="w-full py-2 border border-black bg-black text-white text-sm hover:bg-[#333] cursor-pointer">Resume Test</button>
+          <div className="bg-white border border-gray-200 p-6 max-w-sm mx-4 text-center rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
+            <h3 className="text-base font-bold text-gray-800 mb-1">Break</h3>
+            <p className="text-sm text-gray-600 mb-5">Timer is paused.</p>
+            <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="w-full py-2 bg-[#0033aa] text-white text-sm hover:bg-[#002288] cursor-pointer rounded-full">Resume Test</button>
           </div>
         </div>
       )}

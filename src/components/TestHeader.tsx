@@ -90,7 +90,7 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
       </div>
       <div className="border-b border-dashed border-black">
         <div className="bg-[#edf2fa] px-4 py-1.5">
-          <span className="text-[11px] font-bold text-white bg-[#1a4972] px-3 py-1 rounded-sm">This is a practice test</span>
+          <span className="text-[11px] font-bold text-white bg-[#1a4972] px-3 py-1 rounded-full">This is a practice test</span>
         </div>
       </div>
     </div>
