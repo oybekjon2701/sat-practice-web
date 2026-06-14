@@ -101,7 +101,6 @@ function TestContent() {
   const [showRef, setShowRef] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
-  const [crossOutMode, setCrossOutMode] = useState(false);
   const [highlightPanel, setHighlightPanel] = useState(false);
 
   const currentMod = state.modules[0];
@@ -157,8 +156,8 @@ function TestContent() {
         onOpenHighlightPanel={() => setHighlightPanel(!highlightPanel)}
       />
 
-      <div className="h-11 bg-[#1a4972] flex items-center justify-center shrink-0">
-        <span className="text-xs font-bold text-white tracking-wider uppercase">This is a practice test</span>
+      <div className="flex items-center justify-center shrink-0 bg-[#edf2fa] border-b border-gray-200">
+        <span className="text-[10px] font-bold text-white bg-[#1a4972] px-4 py-1.5 rounded-full uppercase tracking-wider my-2">This is a practice test</span>
       </div>
 
       <AnnotationProvider>
@@ -183,34 +182,22 @@ function TestContent() {
           )}
 
           <div className={`overflow-hidden flex flex-col bg-[#fafafa] ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
-            <div className="bg-gray-900 flex items-stretch min-h-[32px]">
-              <div className="inline-flex items-center px-3">
-                <span className="text-sm font-bold text-white">{currentQ.questionNumber}</span>
+            <div className="flex items-center gap-3 px-4 py-2 bg-white border-b-2 border-dashed border-gray-300">
+              <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-900 text-white text-sm font-bold">
+                {currentQ.questionNumber}
               </div>
               <button
                 onClick={() => currentQ && dispatch({ type: "TOGGLE_REVIEW", questionId: currentQ.id })}
-                className={`inline-flex items-center px-3 text-xs border-l border-white/20 cursor-pointer gap-1 ${
-                  state.flaggedForReview.includes(currentQ.id) ? "bg-red-600 text-white" : "bg-transparent text-white hover:bg-white/10"
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer transition-colors ${
+                  state.flaggedForReview.includes(currentQ.id) ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
-                {state.flaggedForReview.includes(currentQ.id) ? "Marked" : "Mark for Review"}
+                {state.flaggedForReview.includes(currentQ.id) ? "Marked for Review" : "Mark for Review"}
               </button>
-              <div className="ml-auto inline-flex items-stretch">
-                <span className="w-px bg-white/20" />
-                <button
-                  onClick={() => setCrossOutMode(!crossOutMode)}
-                  className={`text-xs px-3 cursor-pointer flex items-center gap-1 ${
-                    crossOutMode ? "bg-white text-gray-900" : "bg-transparent text-white hover:bg-white/10"
-                  }`}
-                >
-                  ABC <span className="line-through text-[10px]">ABC</span>
-                </button>
-              </div>
             </div>
-            <div className="border-b border-gray-200" />
 
             <div className="flex-1 overflow-y-auto px-6 py-6">
               {currentQ.imageUrl && (
@@ -239,11 +226,7 @@ function TestContent() {
                           answer: c.label,
                         })
                       }
-                      onCrossOut={() => {
-                        if (crossOutMode) {
-                          dispatch({ type: "CROSS_OUT", questionId: currentQ.id, label: c.label });
-                        }
-                      }}
+                    onCrossOut={() => dispatch({ type: "CROSS_OUT", questionId: currentQ.id, label: c.label })}
                     />
                   ))}
                 </div>
@@ -278,7 +261,7 @@ function TestContent() {
         )}
       </AnnotationProvider>
 
-      <NavigationPanel crossOutMode={crossOutMode} onToggleCrossOut={() => setCrossOutMode(!crossOutMode)} />
+      <NavigationPanel />
 
       {showMore && <div className="fixed inset-0 z-40" onClick={() => setShowMore(false)} />}
       <MoreMenu

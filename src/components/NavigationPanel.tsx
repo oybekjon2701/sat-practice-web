@@ -7,7 +7,7 @@ import { Question } from "@/types";
 function ConfirmDialog({ message, onConfirm, onCancel }: { message: string; onConfirm: () => void; onCancel: () => void }) {
   return (
     <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center">
-      <div className="bg-white border border-gray-200 w-full max-w-sm mx-4 p-6 text-center rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="bg-white border border-gray-200 w-full max-w-sm mx-4 p-6 text-center rounded-2xl shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
         <p className="text-gray-800 font-semibold mb-4 text-sm">{message}</p>
         <div className="flex gap-3 justify-center">
           <button onClick={onCancel} className="px-5 py-2 text-sm border border-gray-200 hover:bg-gray-50 cursor-pointer text-gray-600 bg-white rounded-full">Cancel</button>
@@ -40,7 +40,7 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
           onCancel={() => setShowConfirm(false)}
         />
       )}
-      <div className="bg-white border border-gray-200 w-full max-w-lg mx-4 p-5 rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="bg-white border border-gray-200 w-full max-w-lg mx-4 p-5 rounded-2xl shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-bold text-gray-800 text-base">Check Your Work</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -91,19 +91,13 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
   );
 }
 
-interface Props {
-  crossOutMode?: boolean;
-  onToggleCrossOut?: () => void;
-}
-
-export default function NavigationPanel({ crossOutMode, onToggleCrossOut }: Props) {
+export default function NavigationPanel() {
   const { state, dispatch } = useTest();
   const [showGrid, setShowGrid] = useState(false);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const currentMod = state.modules[0];
   const questions = currentMod?.questions ?? [];
   const totalQ = questions.length;
-  const isFirst = state.currentQuestionIndex === 0;
   const isLast = state.currentQuestionIndex >= totalQ - 1;
 
   return (
@@ -115,9 +109,9 @@ export default function NavigationPanel({ crossOutMode, onToggleCrossOut }: Prop
           onCancel={() => setShowSubmitConfirm(false)}
         />
       )}
-      <div className="h-14 bg-white border-t border-gray-200 flex items-center px-5 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="h-14 bg-[#edf2fa] border-t border-gray-200 flex items-center px-5 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="flex items-center gap-2 w-40">
-          <span className="text-xs text-gray-400 font-medium">{state.userName || "Student"}</span>
+          <span className="text-xs text-gray-500 font-medium">{state.userName || "Student"}</span>
         </div>
 
         <button

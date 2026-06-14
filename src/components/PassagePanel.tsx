@@ -265,9 +265,9 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             className="absolute z-50 flex items-center gap-1 bg-white border border-black px-1.5 py-1"
             style={{ left: popup.x, top: popup.y, fontFamily: "Arial, sans-serif" }}
           >
-            <button onClick={() => handleAddHighlight("yellow")} className="w-2.5 h-2.5 rounded-full bg-yellow-300 border border-gray-400 cursor-pointer hover:ring-1 hover:ring-gray-500" title="Yellow highlight" />
-            <button onClick={() => handleAddHighlight("pink")} className="w-2.5 h-2.5 rounded-full bg-pink-300 border border-gray-400 cursor-pointer hover:ring-1 hover:ring-gray-500" title="Pink highlight" />
-            <button onClick={() => handleAddHighlight("blue")} className="w-2.5 h-2.5 rounded-full bg-blue-300 border border-gray-400 cursor-pointer hover:ring-1 hover:ring-gray-500" title="Blue highlight" />
+            <button onClick={() => handleAddHighlight("yellow")} className="w-4 h-4 rounded-full bg-yellow-300 border border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" title="Yellow highlight" />
+            <button onClick={() => handleAddHighlight("pink")} className="w-4 h-4 rounded-full bg-pink-300 border border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" title="Pink highlight" />
+            <button onClick={() => handleAddHighlight("blue")} className="w-4 h-4 rounded-full bg-blue-300 border border-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-400" title="Blue highlight" />
             <div className="w-px h-4 bg-gray-300 mx-0.5" />
             <div className="relative">
               <button onClick={() => setShowUnderlineDropdown(!showUnderlineDropdown)} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Underline">U</button>
@@ -302,9 +302,9 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             className="fixed z-50 bg-white border border-black px-2 py-1.5 flex items-center gap-1"
             style={{ left: contextPopup.x, top: contextPopup.y, fontFamily: "Arial, sans-serif" }}
           >
-            <button onClick={() => contextAddHighlight("yellow")} className="w-2.5 h-2.5 rounded-full bg-yellow-300 border border-gray-400 cursor-pointer hover:ring-1 hover:ring-gray-500" />
-            <button onClick={() => contextAddHighlight("pink")} className="w-2.5 h-2.5 rounded-full bg-pink-300 border border-gray-400 cursor-pointer hover:ring-1 hover:ring-gray-500" />
-            <button onClick={() => contextAddHighlight("blue")} className="w-2.5 h-2.5 rounded-full bg-blue-300 border border-gray-400 cursor-pointer hover:ring-1 hover:ring-gray-500" />
+            <button onClick={() => contextAddHighlight("yellow")} className="w-4 h-4 rounded-full bg-yellow-300 border border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" />
+            <button onClick={() => contextAddHighlight("pink")} className="w-4 h-4 rounded-full bg-pink-300 border border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" />
+            <button onClick={() => contextAddHighlight("blue")} className="w-4 h-4 rounded-full bg-blue-300 border border-blue-500 cursor-pointer hover:ring-2 hover:ring-gray-400" />
             <div className="w-px h-4 bg-gray-300 mx-0.5" />
             <button onClick={contextAddUnderline} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">U</button>
             <button onClick={() => setContextPopup(null)} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">
