@@ -262,9 +262,9 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             className="absolute z-50 flex items-center gap-1 bg-white border border-black px-1.5 py-1"
             style={{ left: popup.x, top: popup.y, fontFamily: "Arial, sans-serif" }}
           >
-            <button onClick={() => handleAddHighlight("yellow")} className="w-4 h-4 rounded-full bg-yellow-300 border border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" title="Yellow highlight" />
-            <button onClick={() => handleAddHighlight("pink")} className="w-4 h-4 rounded-full bg-pink-300 border border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" title="Pink highlight" />
-            <button onClick={() => handleAddHighlight("blue")} className="w-4 h-4 rounded-full bg-blue-300 border border-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-400" title="Blue highlight" />
+            <button onClick={() => handleAddHighlight("yellow")} className="w-6 h-6 rounded-full bg-yellow-300 border-2 border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" title="Yellow highlight" />
+            <button onClick={() => handleAddHighlight("pink")} className="w-6 h-6 rounded-full bg-pink-300 border-2 border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" title="Pink highlight" />
+            <button onClick={() => handleAddHighlight("blue")} className="w-6 h-6 rounded-full bg-blue-300 border-2 border-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-400" title="Blue highlight" />
             <div className="w-px h-4 bg-gray-300 mx-0.5" />
             <div className="relative">
               <button onClick={() => setShowUnderlineDropdown(!showUnderlineDropdown)} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Underline">U</button>
@@ -299,9 +299,9 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             className="fixed z-50 bg-white border border-black px-2 py-1.5 flex items-center gap-1"
             style={{ left: contextPopup.x, top: contextPopup.y, fontFamily: "Arial, sans-serif" }}
           >
-            <button onClick={() => contextAddHighlight("yellow")} className="w-4 h-4 rounded-full bg-yellow-300 border border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" />
-            <button onClick={() => contextAddHighlight("pink")} className="w-4 h-4 rounded-full bg-pink-300 border border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" />
-            <button onClick={() => contextAddHighlight("blue")} className="w-4 h-4 rounded-full bg-blue-300 border border-blue-500 cursor-pointer hover:ring-2 hover:ring-gray-400" />
+            <button onClick={() => contextAddHighlight("yellow")} className="w-6 h-6 rounded-full bg-yellow-300 border-2 border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" />
+            <button onClick={() => contextAddHighlight("pink")} className="w-6 h-6 rounded-full bg-pink-300 border-2 border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" />
+            <button onClick={() => contextAddHighlight("blue")} className="w-6 h-6 rounded-full bg-blue-300 border-2 border-blue-500 cursor-pointer hover:ring-2 hover:ring-gray-400" />
             <div className="w-px h-4 bg-gray-300 mx-0.5" />
             <button onClick={contextAddUnderline} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">U</button>
             <button onClick={() => setContextPopup(null)} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">
@@ -328,36 +328,7 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
         )}
       </div>
 
-      {(highlights.length > 0 || underlines.length > 0 || notes.length > 0) && (
-        <div className="border-t border-black px-3 py-1.5 max-h-16 overflow-y-auto">
-          <div className="flex flex-wrap gap-1">
-            {highlights.map(h => (
-              <span key={h.id} className={`inline-flex items-center gap-0.5 px-1 text-[10px] ${colorMap[h.color]} text-black`}>
-                {h.text.slice(0, 20)}{h.text.length > 20 ? "..." : ""}
-                <button onClick={() => removeHighlight(h.id)} className="cursor-pointer hover:opacity-70">
-                  <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 5l10 10M15 5L5 15" /></svg>
-                </button>
-              </span>
-            ))}
-            {underlines.map(u => (
-              <span key={u.id} className={`inline-flex items-center gap-0.5 px-1 text-[10px] text-black ${underlineStyles[u.style]} decoration-blue-500`}>
-                {u.text.slice(0, 20)}{u.text.length > 20 ? "..." : ""}
-                <button onClick={() => removeUnderline(u.id)} className="cursor-pointer hover:opacity-70">
-                  <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 5l10 10M15 5L5 15" /></svg>
-                </button>
-              </span>
-            ))}
-            {notes.map(n => (
-              <span key={n.id} className="inline-flex items-center gap-0.5 px-1 text-[10px] text-green-700 border-b border-dashed border-green-500">
-                {n.text.slice(0, 15)}{n.text.length > 15 ? "..." : ""}
-                <button onClick={() => removeNote(n.id)} className="cursor-pointer hover:opacity-70">
-                  <svg className="w-2.5 h-2.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M5 5l10 10M15 5L5 15" /></svg>
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
