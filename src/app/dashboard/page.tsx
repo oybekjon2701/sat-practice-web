@@ -15,8 +15,8 @@ const SAT_DATES = [
   { label: "June 5, 2027", value: "2027-06-05" },
 ];
 
-function getRemaining(target: Date) {
-  const diff = target.getTime() - Date.now();
+function getRemaining(target: number) {
+  const diff = target - Date.now();
   if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
   return {
     days: Math.floor(diff / 86400000),
@@ -34,27 +34,46 @@ export default function Dashboard() {
   const [selected, setSelected] = useState("");
 
   useEffect(() => {
-    const stored = localStorage.getItem("satExamDate");
+    const stored = localStorage.getItem("satExamData");
     if (stored) {
-      setSavedDate(stored);
-      setRemaining(getRemaining(new Date(stored)));
+      try {
+        const data = JSON.parse(stored);
+        if (data.ts) {
+          setSavedDate(stored);
+          setRemaining(getRemaining(data.ts));
+        }
+      } catch { /* migrate old format */ }
     }
   }, []);
 
   useEffect(() => {
     if (!savedDate) return;
+    const data = JSON.parse(savedDate);
     const interval = setInterval(() => {
-      setRemaining(getRemaining(new Date(savedDate)));
+      setRemaining(getRemaining(data.ts));
     }, 1000);
     return () => clearInterval(interval);
   }, [savedDate]);
 
   function handleSave() {
     if (!selected) return;
-    const dateStr = `${selected}T08:00:00`;
-    localStorage.setItem("satExamDate", dateStr);
-    setSavedDate(dateStr);
-    setRemaining(getRemaining(new Date(dateStr)));
+    const label = SAT_DATES.find((d) => d.value === selected)?.label || selected;
+    const target = new Date(`${selected}T08:00:00+05:00`).getTime();
+    const data = JSON.stringify({ ts: target, date: selected, label });
+    localStorage.setItem("satExamData", data);
+    setSavedDate(data);
+    setRemaining(getRemaining(target));
+  }
+
+  function handleClear() {
+    localStorage.removeItem("satExamData");
+    setSavedDate(null);
+    setRemaining(null);
+  }
+
+  let examLabel = "";
+  if (savedDate) {
+    try { examLabel = JSON.parse(savedDate).label; } catch {}
   }
 
   function handleClear() {
@@ -142,7 +161,7 @@ export default function Dashboard() {
                   </>
                 ) : (
                   <>
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-red-400" />
                         <h3 className="text-sm font-semibold text-white">SAT Countdown</h3>
@@ -151,22 +170,23 @@ export default function Dashboard() {
                         Change
                       </button>
                     </div>
-                    <p className="text-[11px] text-slate-400 mb-3">
-                      {SAT_DATES.find((d) => savedDate.startsWith(d.value))?.label || "Your exam"} &middot; 8:00 AM
-                    </p>
-                    <div className="grid grid-cols-4 gap-2">
+                    <p className="text-[11px] text-slate-400 mb-3">{examLabel} &middot; 8:00 AM GMT+5</p>
+                    <div className="flex items-baseline justify-center gap-3 mb-1">
                       {[
                         { label: "Days", value: remaining.days },
                         { label: "Hours", value: remaining.hours },
                         { label: "Minutes", value: remaining.minutes },
                         { label: "Seconds", value: remaining.seconds },
                       ].map((u) => (
-                        <div key={u.label} className="text-center bg-red-500/20 rounded-lg py-2.5">
-                          <div className="text-xl font-bold text-red-400 tabular-nums">{String(u.value).padStart(2, "0")}</div>
-                          <div className="text-[10px] text-red-300/80 mt-0.5">{u.label}</div>
+                        <div key={u.label} className="text-center">
+                          <span className="text-3xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_6px_rgba(220,38,38,0.4)]">
+                            {String(u.value).padStart(2, "0")}
+                          </span>
+                          <div className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-wider">{u.label}</div>
                         </div>
                       ))}
                     </div>
+                    <p className="text-center text-sm font-semibold text-red-300 mt-2">until your SAT exam</p>
                     {remaining.expired && <p className="text-xs text-yellow-400 mt-2 text-center">Your exam date has passed. Set a new one.</p>}
                   </>
                 )}
