@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useState, useEffect, useRef } from "react";
+import { useUser, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, Lock, ShieldCheck, Calendar } from "lucide-react";
+import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, Lock, ShieldCheck, Calendar, LogOut } from "lucide-react";
 
 const SAT_DATES = [
   { label: "August 22, 2026", value: "2026-08-22" },
@@ -29,9 +29,22 @@ function getRemaining(target: number) {
 
 export default function Dashboard() {
   const { user, isSignedIn } = useUser();
+  const { signOut } = useClerk();
   const [savedDate, setSavedDate] = useState<string | null>(null);
   const [remaining, setRemaining] = useState<ReturnType<typeof getRemaining> | null>(null);
   const [selected, setSelected] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem("satExamData");
@@ -91,9 +104,18 @@ export default function Dashboard() {
           <Link href="/pricing" className="text-sm font-medium text-slate-600 hover:text-slate-800">Pricing</Link>
         </nav>
         {isSignedIn ? (
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-slate-600">{user?.firstName || "Student"}</span>
-            <Link href="/my-tests" className="bg-[#0d9488] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#0f766e]">Dashboard</Link>
+          <div className="flex items-center gap-3 relative" ref={dropdownRef}>
+            <button onClick={() => setShowDropdown(!showDropdown)} className="text-sm text-slate-600 hover:text-slate-800 font-medium cursor-pointer">
+              {user?.firstName || "Student"}
+            </button>
+            {showDropdown && (
+              <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-[140px] z-50">
+                <Link href="/my-tests" onClick={() => setShowDropdown(false)} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Dashboard</Link>
+                <button onClick={() => { setShowDropdown(false); signOut(); }} className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                  <LogOut className="w-3.5 h-3.5" /> Sign out
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <Link href="/sign-in" className="bg-[#0d9488] text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-[#0f766e]">Sign In</Link>
@@ -158,36 +180,36 @@ export default function Dashboard() {
                     <button onClick={handleClear} className="text-[11px] text-slate-400 hover:text-white transition-colors mb-4 inline-block">
                       Change date
                     </button>
-                    <div className="flex items-center justify-center gap-0 select-none">
+                    <div className="flex items-center justify-center gap-1 select-none">
                       <div className="text-center">
-                        <span className="text-3xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_6px_rgba(220,38,38,0.4)]">
+                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.days).padStart(2, "0")}
                         </span>
-                        <div className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-wider">Days</div>
+                        <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Days</div>
                       </div>
-                      <span className="text-2xl font-black text-[#dc2626] mx-1 mt-[-1rem] opacity-60">:</span>
+                      <span className="text-4xl md:text-5xl font-black text-[#dc2626] mx-0.5 mt-[-1.5rem] opacity-60">:</span>
                       <div className="text-center">
-                        <span className="text-3xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_6px_rgba(220,38,38,0.4)]">
+                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.hours).padStart(2, "0")}
                         </span>
-                        <div className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-wider">Hours</div>
+                        <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Hours</div>
                       </div>
-                      <span className="text-2xl font-black text-[#dc2626] mx-1 mt-[-1rem] opacity-60">:</span>
+                      <span className="text-4xl md:text-5xl font-black text-[#dc2626] mx-0.5 mt-[-1.5rem] opacity-60">:</span>
                       <div className="text-center">
-                        <span className="text-3xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_6px_rgba(220,38,38,0.4)]">
+                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.minutes).padStart(2, "0")}
                         </span>
-                        <div className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-wider">Minutes</div>
+                        <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Minutes</div>
                       </div>
-                      <span className="text-2xl font-black text-[#dc2626] mx-1 mt-[-1rem] opacity-60">:</span>
+                      <span className="text-4xl md:text-5xl font-black text-[#dc2626] mx-0.5 mt-[-1.5rem] opacity-60">:</span>
                       <div className="text-center">
-                        <span className="text-3xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_6px_rgba(220,38,38,0.4)]">
+                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.seconds).padStart(2, "0")}
                         </span>
-                        <div className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-wider">Seconds</div>
+                        <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Seconds</div>
                       </div>
                     </div>
-                    <p className="text-sm font-semibold text-red-300 mt-4">until your exam</p>
+                    <p className="text-base font-bold text-red-300 mt-5">until your exam</p>
                     {remaining.expired && <p className="text-xs text-yellow-400 mt-3">Your exam date has passed. Set a new one.</p>}
                   </div>
                 )}
