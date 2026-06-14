@@ -4,7 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { mockTests } from "@/data/mockTests";
+import { testIndex } from "@/data/testIndex";
 import { FREE_TEST_IDS } from "@/lib/constants";
 
 export default function MyTestsPage() {
@@ -17,14 +17,6 @@ export default function MyTestsPage() {
       router.push("/sign-in");
     }
   }, [isLoaded, isSignedIn, router]);
-
-  useEffect(() => {
-    if (isSignedIn) {
-      fetch("/api/test-results")
-        .then((r) => r.json())
-        .catch(() => []);
-    }
-  }, [isSignedIn]);
 
   useEffect(() => {
     if (isSignedIn) {
@@ -59,7 +51,7 @@ export default function MyTestsPage() {
         </p>
 
         <div className="space-y-4">
-          {mockTests.map((test, index) => {
+          {testIndex.map((test) => {
             const isFree = FREE_TEST_IDS.includes(test.id);
             const unlocked = isFree || hasPremium;
             return (
@@ -67,8 +59,7 @@ export default function MyTestsPage() {
                 <div>
                   <h3 className="font-semibold text-gray-800">{test.name}</h3>
                   <p className="text-sm text-gray-500 mt-1">
-                    {test.readingModules.length > 0 ? `${test.readingModules[0].questions.length} Reading & Writing questions` : ""}
-                    {test.mathModules.length > 0 ? ` · ${test.mathModules[0].questions.length} Math questions` : ""}
+                    {test.readingCount} Reading & Writing questions · {test.mathCount} Math questions
                   </p>
                   {!unlocked && (
                     <span className="text-xs text-amber-600 font-medium">Premium only</span>

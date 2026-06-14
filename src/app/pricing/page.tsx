@@ -1,20 +1,10 @@
+"use client";
+
 import Link from "next/link";
-import { currentUser } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/db";
+import { useUser } from "@clerk/nextjs";
 
-async function isPremium(userId: string): Promise<boolean> {
-  const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (!user) return false;
-  if (user.plan === "premium") {
-    if (user.premiumUntil && user.premiumUntil < new Date()) return false;
-    return true;
-  }
-  return false;
-}
-
-export default async function PricingPage() {
-  const user = await currentUser();
-  const premium = user ? await isPremium(user.id) : false;
+export default function PricingPage() {
+  const { isSignedIn, isLoaded } = useUser();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -29,9 +19,7 @@ export default async function PricingPage() {
 
       <main className="max-w-3xl mx-auto px-6 py-16">
         <h1 className="text-3xl font-bold text-gray-800 text-center mb-2">Choose Your Plan</h1>
-        <p className="text-gray-500 text-center text-sm mb-8">
-          {premium ? "You currently have Premium access." : "Start free, upgrade anytime."}
-        </p>
+        <p className="text-gray-500 text-center text-sm mb-8">Start free, upgrade anytime.</p>
 
         <div className="grid md:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl border border-gray-200 p-8">
@@ -42,8 +30,15 @@ export default async function PricingPage() {
               <li className="flex items-center gap-2">✓ Instant scoring & review</li>
               <li className="flex items-center gap-2">✓ Basic performance tracking</li>
             </ul>
-            <Link href={user ? "/my-tests" : "/sign-up"} className="block w-full text-center py-3 border border-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-50">
-              {user ? "Browse Tests" : "Get Started Free"}
+            <Link
+              href={!isLoaded ? "#" : isSignedIn ? "/my-tests" : "/sign-up"}
+              className={`block w-full text-center py-3 rounded-lg font-semibold ${
+                !isLoaded
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  : "border border-gray-200 text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              {!isLoaded ? "Loading..." : isSignedIn ? "Browse Tests" : "Get Started Free"}
             </Link>
           </div>
 
@@ -59,15 +54,9 @@ export default async function PricingPage() {
               <li className="flex items-center gap-2">✓ Full score breakdown</li>
               <li className="flex items-center gap-2">✓ Priority support</li>
             </ul>
-            {premium ? (
-              <Link href="/my-tests" className="block w-full text-center py-3 bg-[#1a73e8] text-white rounded-lg font-semibold hover:bg-blue-700">
-                Access All Tests
-              </Link>
-            ) : (
-              <div className="w-full text-center py-3 bg-gray-100 text-gray-400 rounded-lg font-semibold cursor-not-allowed">
-                Coming Soon
-              </div>
-            )}
+            <div className="w-full text-center py-3 bg-gray-100 text-gray-400 rounded-lg font-semibold cursor-not-allowed">
+              Coming Soon
+            </div>
           </div>
         </div>
       </main>

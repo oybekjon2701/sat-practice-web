@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { isFreeTest } from "@/lib/constants";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const user = await currentUser();
   if (!user) return null;

@@ -1,19 +1,25 @@
-import Link from "next/link";
-import { currentUser } from "@clerk/nextjs/server";
+"use client";
 
-export default async function HomePage() {
-  const user = await currentUser();
+import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
+
+export default function HomePage() {
+  const { isSignedIn, isLoaded } = useUser();
 
   return (
     <div className="min-h-screen bg-white">
       <header className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-        <svg viewBox="0 0 240 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
-          <text x="235" y="34" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="24" fill="#FF6B00" textAnchor="end">satzone.</text>
-          <text x="235" y="52" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="11" fill="#FF6B00" textAnchor="end" letterSpacing="1.5">SAT CENTER</text>
-        </svg>
+        <Link href="/">
+          <svg viewBox="0 0 240 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
+            <text x="235" y="34" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="24" fill="#FF6B00" textAnchor="end">satzone.</text>
+            <text x="235" y="52" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="11" fill="#FF6B00" textAnchor="end" letterSpacing="1.5">SAT CENTER</text>
+          </svg>
+        </Link>
         <nav className="flex items-center gap-4">
           <Link href="/pricing" className="text-sm text-gray-600 hover:text-gray-800">Pricing</Link>
-          {user ? (
+          {!isLoaded ? (
+            <div className="w-20 h-8 bg-gray-100 rounded-lg animate-pulse" />
+          ) : isSignedIn ? (
             <>
               <Link href="/dashboard" className="text-sm text-gray-600 hover:text-gray-800">Dashboard</Link>
               <Link href="/my-tests" className="text-sm bg-[#1a73e8] text-white px-4 py-2 rounded-lg hover:bg-blue-700">Practice</Link>
@@ -34,7 +40,14 @@ export default async function HomePage() {
             Practice with real Bluebook-style tests. Adaptive modules, instant scoring, and detailed answer review.
           </p>
           <div className="flex gap-4 justify-center">
-            <Link href={user ? "/my-tests" : "/sign-up"} className="bg-[#1a73e8] text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700">
+            <Link
+              href={!isLoaded ? "#" : isSignedIn ? "/my-tests" : "/sign-up"}
+              className={`px-8 py-3 rounded-lg font-semibold ${
+                !isLoaded
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-[#1a73e8] text-white hover:bg-blue-700"
+              }`}
+            >
               Start Free Practice
             </Link>
             <Link href="/pricing" className="border border-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50">

@@ -1,0 +1,17 @@
+export const testIndex = [
+  { id: "mock-1", name: "Practice Test 1", readingCount: 54, mathCount: 44 },
+  { id: "mock-2", name: "Practice Test 2", readingCount: 54, mathCount: 44 },
+  { id: "mock-3", name: "Practice Test 3", readingCount: 54, mathCount: 44 },
+  { id: "mock-4", name: "Practice Test 4", readingCount: 54, mathCount: 44 },
+  { id: "mock-5", name: "Practice Test 5", readingCount: 54, mathCount: 44 },
+  { id: "mock-6", name: "Practice Test 6", readingCount: 54, mathCount: 44 },
+  { id: "mock-7", name: "Practice Test 7", readingCount: 54, mathCount: 44 },
+  { id: "mock-8", name: "Practice Test 8", readingCount: 54, mathCount: 44 },
+  { id: "mock-9", name: "Practice Test 9", readingCount: 54, mathCount: 44 },
+  { id: "mock-10", name: "Practice Test 10", readingCount: 54, mathCount: 44 },
+  { id: "mock-11", name: "Practice Test 11", readingCount: 54, mathCount: 44 },
+  { id: "mock-12", name: "Practice Test 12", readingCount: 54, mathCount: 44 },
+  { id: "mock-13", name: "Practice Test 13", readingCount: 54, mathCount: 44 },
+  { id: "mock-14", name: "Practice Test 14", readingCount: 54, mathCount: 44 },
+  { id: "mock-15", name: "Practice Test 15", readingCount: 54, mathCount: 44 },
+];
