@@ -1,138 +1,178 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ShieldCheck, Sparkles, ArrowRight, BookOpen } from "lucide-react";
-import CountdownTimer from "@/components/CountdownTimer";
-import DashboardGrid from "@/components/DashboardGrid";
+import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, Lock, ShieldCheck } from "lucide-react";
 
-interface TestResult {
-  id: string;
-  testName: string;
-  totalScore: number;
-  readingScore: number;
-  mathScore: number;
-  readingCorrect: number;
-  readingTotal: number;
-  mathCorrect: number;
-  mathTotal: number;
-  completedAt: string;
-}
-
-export default function MainDashboard() {
-  const { user, isLoaded, isSignedIn } = useUser();
-  const router = useRouter();
-  const [results, setResults] = useState<TestResult[]>([]);
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) router.push("/sign-in");
-  }, [isLoaded, isSignedIn, router]);
-
-  useEffect(() => {
-    if (isSignedIn) {
-      fetch("/api/test-results")
-        .then((r) => r.json())
-        .then((data) => setResults(Array.isArray(data) ? data : []))
-        .catch(() => setResults([]));
-    }
-  }, [isSignedIn]);
-
-  if (!isLoaded || !isSignedIn || !user) return null;
-
-  const name = user.firstName || user.emailAddresses?.[0]?.emailAddress || "Student";
+export default function Dashboard() {
+  const { user, isSignedIn } = useUser();
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
-      <header className="flex items-center justify-between px-8 py-5 bg-white border-b border-slate-200">
-        <Link href="/">
-          <svg viewBox="0 0 240 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
-            <text x="235" y="34" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="24" fill="#1e293b" textAnchor="end">satzone.</text>
-            <text x="235" y="52" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="11" fill="#0d9488" textAnchor="end" letterSpacing="1.5">SAT CENTER</text>
-          </svg>
+      <header className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200">
+        <Link href="/dashboard">
+          <div className="flex items-baseline gap-1">
+            <span className="text-xl font-bold text-slate-800">satzone.</span>
+            <span className="text-[10px] font-bold text-[#0d9488] tracking-[2px]">SAT CENTER</span>
+          </div>
         </Link>
-        <nav className="flex items-center gap-6">
-          <Link href="/my-tests" className="text-sm font-medium text-slate-600 hover:text-slate-800 transition-colors">Practice</Link>
-          <Link href="/pricing" className="text-sm font-medium text-slate-600 hover:text-slate-800 transition-colors">Pricing</Link>
+        <nav className="hidden sm:flex items-center gap-6">
+          <Link href="/my-tests" className="text-sm font-medium text-slate-600 hover:text-slate-800">Practice Tests</Link>
+          <Link href="#courses" className="text-sm font-medium text-slate-600 hover:text-slate-800">Courses</Link>
+          <Link href="/pricing" className="text-sm font-medium text-slate-600 hover:text-slate-800">Pricing</Link>
         </nav>
+        {isSignedIn ? (
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-slate-600">{user?.firstName || "Student"}</span>
+            <Link href="/my-tests" className="bg-[#0d9488] text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-[#0f766e]">Dashboard</Link>
+          </div>
+        ) : (
+          <Link href="/sign-in" className="bg-[#0d9488] text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-[#0f766e]">Sign In</Link>
+        )}
       </header>
 
-      <main className="max-w-6xl mx-auto px-8 py-10">
-        <div className="flex items-start justify-between mb-10">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-800">Welcome back, {name}</h1>
-            <p className="text-slate-500 text-sm mt-1">Pick up where you left off or start something new.</p>
+      <main>
+        <section className="bg-gradient-to-br from-[#1e293b] to-[#334155] text-white">
+          <div className="max-w-5xl mx-auto px-6 md:px-10 py-16 md:py-20">
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="w-5 h-5 text-yellow-400" />
+              <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Official SAT Practice</span>
+            </div>
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">Ace the SAT.<br />Your way.</h1>
+            <p className="text-slate-300 text-base md:text-lg mb-8 max-w-xl">
+              Full-length adaptive tests, targeted practice, and video lessons — all in one place.
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
+                className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#0f766e] transition-colors shadow-sm"
+              >
+                Start Full-Length Practice Test
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/15 border border-emerald-400/30 rounded-lg">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span className="text-xs font-medium text-emerald-300">100% Realistic &middot; Adaptive Scoring</span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-lg">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span className="text-xs font-semibold text-emerald-700">100% Authentic Material</span>
-          </div>
-        </div>
+        </section>
 
-        <div className="bg-gradient-to-br from-[#1e293b] to-[#334155] rounded-xl shadow-md p-8 mb-8 text-white">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles className="w-5 h-5 text-yellow-400" />
-            <span className="text-xs font-semibold text-slate-300 uppercase tracking-wider">Full-Length Mock Test</span>
+        <section className="max-w-5xl mx-auto px-6 md:px-10 -mt-8">
+          <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6 md:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="text-lg md:text-xl font-bold text-slate-800">Full-Length Practice Tests</h2>
+                <p className="text-sm text-slate-500 mt-1">Realistic Bluebook-style tests with adaptive modules, instant scoring, and detailed review.</p>
+              </div>
+              <span className="shrink-0 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">FREE</span>
+            </div>
+            <div className="mt-5 flex flex-wrap items-center gap-4 md:gap-8 text-sm text-slate-600">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-[#0d9488]">RW</div>
+                <span>Reading &amp; Writing</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-[#0d9488]">M</div>
+                <span>Math</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-[#0d9488]">2</div>
+                <span>Adaptive Modules</span>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center gap-3">
+              <Link
+                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
+                className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#0f766e] transition-colors text-sm"
+              >
+                {isSignedIn ? "Take a Test" : "Start Free Practice"}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link href="/pricing" className="text-sm font-medium text-[#0d9488] hover:underline">
+                {isSignedIn ? "Upgrade for more" : "2 free tests included"}
+              </Link>
+            </div>
           </div>
-          <h2 className="text-2xl font-bold mb-2">Ready for a full-length practice test?</h2>
-          <p className="text-slate-300 text-sm mb-6 max-w-lg">
-            Simulate the real SAT experience with adaptive modules and timed sections.
-          </p>
-          <div className="flex items-center gap-4">
+        </section>
+
+        <section id="courses" className="max-w-5xl mx-auto px-6 md:px-10 mt-10 mb-16">
+          <h2 className="text-xl font-bold text-slate-800 mb-6">Courses</h2>
+          <div className="grid md:grid-cols-3 gap-5">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
+                <BookOpen className="w-5 h-5" />
+              </div>
+              <h3 className="font-semibold text-slate-800 mb-1.5">Themed Practice Questions</h3>
+              <p className="text-sm text-slate-500 mb-4">Algebra, grammar, reading comprehension — sorted by topic with step-by-step explanations.</p>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">10 free / theme</span>
+                <Lock className="w-3.5 h-3.5 text-slate-300" />
+              </div>
+              <Link
+                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
+                className="text-sm font-medium text-[#0d9488] hover:underline inline-flex items-center gap-1"
+              >
+                Browse topics <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
+                <Video className="w-5 h-5" />
+              </div>
+              <h3 className="font-semibold text-slate-800 mb-1.5">Video Lessons</h3>
+              <p className="text-sm text-slate-500 mb-4">Expert strategy guides for Reading, Writing, and Math with tips and worked examples.</p>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">3 free lessons</span>
+                <Lock className="w-3.5 h-3.5 text-slate-300" />
+              </div>
+              <Link
+                href={isSignedIn ? "#" : "/sign-in?redirect_url=#"}
+                className="text-sm font-medium text-[#0d9488] hover:underline inline-flex items-center gap-1"
+              >
+                Watch lessons <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
+                <BookMarked className="w-5 h-5" />
+              </div>
+              <h3 className="font-semibold text-slate-800 mb-1.5">Vocabulary Cards</h3>
+              <p className="text-sm text-slate-500 mb-4">Curated SAT vocabulary with spaced repetition, example sentences, and quizzes.</p>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">Sample free</span>
+                <Lock className="w-3.5 h-3.5 text-slate-300" />
+              </div>
+              <Link
+                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
+                className="text-sm font-medium text-[#0d9488] hover:underline inline-flex items-center gap-1"
+              >
+                Start learning <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-gradient-to-br from-[#0d9488] to-[#0f766e] text-white">
+          <div className="max-w-5xl mx-auto px-6 md:px-10 py-12 text-center">
+            <h2 className="text-2xl font-bold mb-3">Unlock everything with Premium</h2>
+            <p className="text-teal-100 text-sm mb-6 max-w-md mx-auto">Unlimited full-length tests, all themed questions, every video lesson, and full vocabulary decks.</p>
             <Link
-              href="/my-tests"
-              className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#0f766e] transition-colors text-sm shadow-sm"
+              href="/pricing"
+              className="inline-flex items-center gap-2 bg-white text-[#0d9488] font-semibold px-6 py-3 rounded-lg hover:bg-slate-100 transition-colors text-sm"
             >
-              Start Full-Length Practice Test
+              See plans
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/15 border border-emerald-400/30 rounded-lg">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-xs font-medium text-emerald-300">100% Authentic Material</span>
-            </div>
           </div>
-        </div>
-
-        <div className="grid md:grid-cols-5 gap-6 mb-10">
-          <div className="md:col-span-3">
-            <CountdownTimer />
-          </div>
-          <div className="md:col-span-2 bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center">
-                <BookOpen className="w-3.5 h-3.5 text-[#0d9488]" />
-              </div>
-              <h3 className="font-semibold text-slate-800 text-sm">Recent Activity</h3>
-            </div>
-            {results.length === 0 ? (
-              <p className="text-xs text-slate-400 py-3 text-center">No tests yet</p>
-            ) : (
-              <div className="space-y-0.5">
-                {results.slice(0, 4).map((r) => (
-                  <div key={r.id} className="flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-slate-50 transition-colors">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <div className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 shrink-0">
-                        {r.totalScore >= 1200 ? "✓" : "!"}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-medium text-slate-700 truncate">{r.testName}</p>
-                        <p className="text-[10px] text-slate-400">{new Date(r.completedAt).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <span className={`text-xs font-bold shrink-0 ${r.totalScore >= 1200 ? "text-emerald-600" : "text-slate-400"}`}>
-                      {r.totalScore}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <h2 className="text-lg font-semibold text-slate-800 mb-5">Study Resources</h2>
-        <DashboardGrid />
+        </section>
       </main>
+
+      <footer className="bg-white border-t border-slate-200 py-8 text-center text-sm text-slate-400">
+        &copy; 2026 satzone. All rights reserved.
+      </footer>
     </div>
   );
 }
