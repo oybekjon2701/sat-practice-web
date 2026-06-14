@@ -94,9 +94,11 @@ export default function MainDashboard() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-10">
+        <div className="mb-8 max-w-lg mx-auto">
           <CountdownTimer />
-          <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8">
+        </div>
+
+        <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8 mb-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-[#0d9488]" />
@@ -129,7 +131,6 @@ export default function MainDashboard() {
               </div>
             )}
           </div>
-        </div>
 
         <h2 className="text-lg font-semibold text-slate-800 mb-5">Study Resources</h2>
         <DashboardGrid />

@@ -3,6 +3,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { Calendar, Clock } from "lucide-react";
 
+const SAT_DATES = [
+  { label: "August 22, 2026", value: "2026-08-22" },
+  { label: "October 3, 2026", value: "2026-10-03" },
+  { label: "November 7, 2026", value: "2026-11-07" },
+  { label: "December 5, 2026", value: "2026-12-05" },
+];
+
 function getRemaining(target: Date) {
   const diff = target.getTime() - Date.now();
   if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
@@ -23,24 +30,24 @@ export default function CountdownTimer() {
     const stored = localStorage.getItem("satExamDate");
     if (stored) {
       setTargetDate(stored);
-      setRemaining(getRemaining(new Date(stored)));
+      setRemaining(getRemaining(new Date(`${stored}T08:00:00`)));
     }
   }, []);
 
   useEffect(() => {
     if (!targetDate) return;
     const interval = setInterval(() => {
-      setRemaining(getRemaining(new Date(targetDate)));
+      setRemaining(getRemaining(new Date(`${targetDate}T08:00:00`)));
     }, 1000);
     return () => clearInterval(interval);
   }, [targetDate]);
 
-  const handleSetDate = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetDate = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const date = e.target.value;
     if (date) {
       localStorage.setItem("satExamDate", date);
       setTargetDate(date);
-      setRemaining(getRemaining(new Date(date)));
+      setRemaining(getRemaining(new Date(`${date}T08:00:00`)));
     }
   }, []);
 
@@ -52,21 +59,26 @@ export default function CountdownTimer() {
 
   if (!targetDate || !remaining) {
     return (
-      <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center">
-            <Calendar className="w-5 h-5 text-[#0d9488]" />
+      <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8 text-center">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+            <Calendar className="w-5 h-5 text-red-600" />
           </div>
           <div>
             <h3 className="font-semibold text-slate-800">SAT Exam Countdown</h3>
-            <p className="text-sm text-slate-500">Set your exam date to track progress</p>
+            <p className="text-sm text-slate-500">Select your exam date</p>
           </div>
         </div>
-        <input
-          type="date"
+        <select
           onChange={handleSetDate}
-          className="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0d9488]/20 focus:border-[#0d9488] cursor-pointer bg-white"
-        />
+          value=""
+          className="w-full max-w-xs mx-auto px-4 py-3 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 cursor-pointer bg-white"
+        >
+          <option value="" disabled>Choose an SAT test date</option>
+          {SAT_DATES.map((d) => (
+            <option key={d.value} value={d.value}>{d.label}</option>
+          ))}
+        </select>
       </div>
     );
   }
@@ -79,34 +91,34 @@ export default function CountdownTimer() {
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center">
-            <Clock className="w-5 h-5 text-[#0d9488]" />
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-800">Countdown to SAT</h3>
-            <p className="text-sm text-slate-400">Your exam is approaching</p>
-          </div>
+    <div className="bg-white rounded-xl shadow-md border border-slate-200 p-8 text-center">
+      <div className="flex items-center justify-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+          <Clock className="w-5 h-5 text-red-600" />
         </div>
-        <button
-          onClick={handleClear}
-          className="text-xs text-slate-400 hover:text-slate-600 bg-slate-50 px-3 py-1.5 rounded-md transition-colors cursor-pointer"
-        >
-          Change date
-        </button>
+        <div>
+          <h3 className="font-semibold text-slate-800">Countdown to SAT</h3>
+          <p className="text-sm text-slate-400">
+            {SAT_DATES.find((d) => d.value === targetDate)?.label} &middot; 8:00 AM
+          </p>
+        </div>
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="flex justify-center gap-3 mb-4">
         {units.map((unit) => (
-          <div key={unit.label} className="text-center bg-slate-50 rounded-lg py-4">
-            <div className="text-3xl font-bold text-slate-800 tabular-nums tracking-tight">
+          <div key={unit.label} className="text-center bg-red-50 rounded-lg py-3 px-4 min-w-[72px]">
+            <div className="text-3xl font-bold text-red-600 tabular-nums tracking-tight">
               {String(unit.value).padStart(2, "0")}
             </div>
-            <div className="text-xs text-slate-400 mt-1 font-medium">{unit.label}</div>
+            <div className="text-xs text-red-500 mt-1 font-medium">{unit.label}</div>
           </div>
         ))}
       </div>
+      <button
+        onClick={handleClear}
+        className="text-xs text-slate-400 hover:text-slate-600 bg-slate-50 px-3 py-1.5 rounded-md transition-colors cursor-pointer"
+      >
+        Change date
+      </button>
     </div>
   );
 }
