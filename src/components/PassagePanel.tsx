@@ -307,7 +307,7 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             <img src={imageUrl} alt={imageAlt || "Figure"} className="max-w-[300px] max-h-[200px] h-auto rounded-lg border border-sat-border" />
           </div>
         )}
-        <div className="text-sm leading-relaxed text-gray-700 space-y-4 relative whitespace-pre-line">
+        <div className="text-base leading-relaxed text-gray-800 space-y-4 relative whitespace-pre-line font-serif">
           {paragraphs.map((parts, i) => {
             const fullText = parts.map(p => p.text).join("");
             if (isTableBlock(fullText)) {

@@ -2,7 +2,7 @@
 
 import { useTest, TestProvider } from "@/lib/TestContext";
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { FREE_TEST_IDS } from "@/lib/constants";
@@ -98,9 +98,6 @@ function TestContent() {
   const [showRef, setShowRef] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
-  const [leftWidth, setLeftWidth] = useState(50);
-  const [dragging, setDragging] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const currentMod = state.modules[0];
   const currentQ = currentMod?.questions[state.currentQuestionIndex];
@@ -118,27 +115,6 @@ function TestContent() {
     }
   }, [state.timeRemaining, state.section, dispatch]);
 
-  const handleMouseDown = useCallback(() => {
-    setDragging(true);
-  }, []);
-
-  useEffect(() => {
-    if (!dragging) return;
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const pct = ((e.clientX - rect.left) / rect.width) * 100;
-      setLeftWidth(Math.min(75, Math.max(25, pct)));
-    };
-    const handleMouseUp = () => setDragging(false);
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [dragging]);
-
   if (!currentQ) return null;
 
   const answered = state.answers[currentQ.id] ?? "";
@@ -152,25 +128,16 @@ function TestContent() {
         onOpenMore={() => setShowMore(!showMore)}
       />
 
-      <div ref={containerRef} className="flex-1 flex overflow-hidden relative">
+      <div className="flex-1 flex overflow-hidden">
         {currentQ.passage && (
-          <>
-            <div className="overflow-hidden flex flex-col border-r border-gray-200" style={{ width: `${leftWidth}%` }}>
-              <PassagePanel
-                passage={currentQ.passage}
-                imageUrl={currentQ.passageImageUrl}
-                imageAlt={currentQ.passageImageAlt}
-                underlinedPart={currentQ.underlinedPart}
-              />
-            </div>
-
-            <div
-              className={`w-1.5 bg-gray-200 hover:bg-[#1a73e8] cursor-col-resize shrink-0 relative transition-colors ${dragging ? "bg-[#1a73e8]" : ""}`}
-              onMouseDown={handleMouseDown}
-            >
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-6 bg-gray-400 rounded-full" />
-            </div>
-          </>
+          <div className="w-1/2 overflow-hidden flex flex-col border-r border-slate-300 shrink-0">
+            <PassagePanel
+              passage={currentQ.passage}
+              imageUrl={currentQ.passageImageUrl}
+              imageAlt={currentQ.passageImageAlt}
+              underlinedPart={currentQ.underlinedPart}
+            />
+          </div>
         )}
 
         <div className={`flex-1 flex flex-col overflow-hidden ${currentQ.passage ? "" : "max-w-2xl mx-auto"}`}>

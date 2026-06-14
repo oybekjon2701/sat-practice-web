@@ -129,39 +129,25 @@ export default function NavigationPanel() {
           onCancel={() => setShowSubmitConfirm(false)}
         />
       )}
-      <div className="h-12 bg-white border-t border-gray-200 flex items-center px-4 justify-between shrink-0">
-        <div className="text-sm text-gray-500 font-medium">
-          {state.userName}
+      <div className="h-14 bg-white border-t border-slate-200 flex items-center px-4 justify-between shrink-0">
+        <div className="w-[120px]">
+          <button
+            onClick={() => dispatch({ type: "PREV_QUESTION" })}
+            disabled={isFirst}
+            className="px-4 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-slate-700"
+          >
+            Back
+          </button>
         </div>
 
         <button
           onClick={() => setShowGrid(true)}
-          className="text-sm text-gray-600 hover:text-[#1a73e8] font-medium cursor-pointer"
+          className="text-sm font-medium text-slate-600 bg-slate-50 border border-slate-200 hover:bg-slate-100 hover:text-slate-800 transition-colors px-4 py-1.5 rounded-full cursor-pointer"
         >
           Question {currentQ?.questionNumber ?? 1} of {totalQ}
         </button>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => currentQ && dispatch({ type: "TOGGLE_REVIEW", questionId: currentQ.id })}
-            className={`text-xs flex items-center gap-1 px-3 py-1.5 rounded-md transition-colors cursor-pointer ${
-              isFlagged
-                ? "text-red-600 bg-red-50"
-                : "text-gray-500 hover:bg-gray-100"
-            }`}
-          >
-            <svg className="w-3.5 h-3.5" fill={isFlagged ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-            </svg>
-            {isFlagged ? "Marked" : "Mark for Review"}
-          </button>
-          <button
-            onClick={() => dispatch({ type: "PREV_QUESTION" })}
-            disabled={isFirst}
-            className="px-4 py-1.5 text-sm border border-gray-200 rounded-md hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-gray-700"
-          >
-            Back
-          </button>
+        <div className="w-[120px] flex justify-end">
           <button
             onClick={() => {
               if (isLast) {
@@ -174,7 +160,7 @@ export default function NavigationPanel() {
                 dispatch({ type: "NEXT_QUESTION" });
               }
             }}
-            className="px-5 py-1.5 text-sm bg-[#1a73e8] text-white rounded-md hover:bg-blue-700 transition-colors cursor-pointer font-medium"
+            className="px-5 py-2 text-sm bg-[#1a73e8] text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer font-semibold"
           >
             {isLast ? "Review & Submit" : "Next"}
           </button>
