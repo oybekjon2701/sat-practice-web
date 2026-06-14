@@ -110,7 +110,6 @@ export default function Dashboard() {
             </button>
             {showDropdown && (
               <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-[140px] z-50">
-                <Link href="/my-tests" onClick={() => setShowDropdown(false)} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Dashboard</Link>
                 <button onClick={() => { setShowDropdown(false); signOut(); }} className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
                   <LogOut className="w-3.5 h-3.5" /> Sign out
                 </button>
