@@ -22,40 +22,41 @@ function Directions({ onStart }: { onStart: () => void }) {
   const isReading = state.currentSection === "reading";
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="max-w-lg mx-4 p-8">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+      <div className="bg-white border border-black w-full max-w-lg mx-4" style={{ fontFamily: "Arial, sans-serif" }}>
+        <div className="p-6">
+          <h1 className="text-lg font-bold text-black mb-1">
             {isReading ? "Reading and Writing" : "Math"} — Module 1
           </h1>
-          <p className="text-gray-500 text-sm">
-            {isReading ? `${state.modules[0].questions.length} questions` : `${state.modules[0].questions.length} questions`}
+          <p className="text-sm text-black mb-4">
+            {state.modules[0].questions.length} questions
           </p>
-        </div>
 
-        <div className="bg-gray-50 rounded-lg p-4 mb-6 text-sm text-gray-600 space-y-2">
-          {isReading ? (
-            <>
-              <p>• Each passage or paired set is followed by one or more questions.</p>
-              <p>• Read each passage carefully and select the best answer for each question.</p>
-              <p>• You may flag questions for review and return to them later.</p>
-            </>
-          ) : (
-            <>
-              <p>• You may use a calculator for all math questions.</p>
-              <p>• Some questions require you to enter your answer in a grid-in box.</p>
-              <p>• A reference sheet of formulas is available during the test.</p>
-            </>
-          )}
-          <p>• You will have {isReading ? "32" : "35"} minutes to complete this module.</p>
-        </div>
+          <div className="text-sm text-black space-y-1.5 mb-6 border border-black p-3 bg-[#f0f2f5]">
+            {isReading ? (
+              <>
+                <p>• Each passage or paired set is followed by one or more questions.</p>
+                <p>• Read each passage carefully and select the best answer for each question.</p>
+                <p>• You may flag questions for review and return to them later.</p>
+              </>
+            ) : (
+              <>
+                <p>• You may use a calculator for all math questions.</p>
+                <p>• Some questions require you to enter your answer in a grid-in box.</p>
+                <p>• A reference sheet of formulas is available during the test.</p>
+              </>
+            )}
+            <p>• You will have {isReading ? "32" : "35"} minutes to complete this module.</p>
+          </div>
 
-        <button
-          onClick={onStart}
-          className="w-full py-3 bg-[#1a73e8] text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
-        >
-          Continue
-        </button>
+          <button
+            onClick={onStart}
+            className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-black hover:bg-[#d4a600] cursor-pointer"
+            style={{ fontFamily: "Arial, sans-serif" }}
+          >
+            Continue
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -71,18 +72,18 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
   }, [timeLeft]);
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="max-w-md mx-4 p-8 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Break</h1>
-        <p className="text-gray-500 text-sm mb-6">
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+      <div className="bg-white border border-black w-full max-w-sm mx-4 p-6 text-center" style={{ fontFamily: "Arial, sans-serif" }}>
+        <h1 className="text-lg font-bold text-black mb-2">Break</h1>
+        <p className="text-sm text-black mb-5">
           Take a short break. The next section will begin automatically.
         </p>
-        <div className="text-4xl font-mono font-bold text-[#1a73e8] mb-6">
+        <div className="text-3xl font-bold text-black mb-5 tabular-nums">
           {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
         </div>
         <button
           onClick={onEndBreak}
-          className="w-full py-3 bg-[#1a73e8] text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+          className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-black hover:bg-[#d4a600] cursor-pointer"
         >
           {timeLeft > 0 ? "Skip Break" : "Start Math Section"}
         </button>

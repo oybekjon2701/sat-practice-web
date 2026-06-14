@@ -7,8 +7,8 @@ interface Props {
 
 export default function GridIn({ value, onChange }: Props) {
   return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2">
+    <div>
+      <div className="flex items-center gap-3">
         <input
           type="text"
           inputMode="decimal"
@@ -18,9 +18,10 @@ export default function GridIn({ value, onChange }: Props) {
             onChange(v);
           }}
           placeholder="Enter answer"
-          className="w-32 text-center text-lg font-mono border-2 border-gray-300 rounded-lg px-3 py-2 outline-none focus:border-[#1a73e8] focus:ring-2 focus:ring-[#1a73e8]/20"
+          className="w-32 text-center text-base border border-black px-3 py-2 text-black"
+          style={{ fontFamily: "Arial, sans-serif" }}
         />
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-black" style={{ fontFamily: "Arial, sans-serif" }}>
           fraction (3/5), decimal (0.75), or integer
         </span>
       </div>
