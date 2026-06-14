@@ -157,15 +157,15 @@ function TestContent() {
         onOpenHighlightPanel={() => setHighlightPanel(!highlightPanel)}
       />
 
-      <div className="h-11 bg-[#1a4972] flex items-center px-5 shrink-0">
+      <div className="h-11 bg-[#1a4972] flex items-center justify-center shrink-0">
         <span className="text-xs font-bold text-white tracking-wider uppercase">This is a practice test</span>
       </div>
 
       <AnnotationProvider>
-        <div ref={splitRef} className="flex-1 flex overflow-hidden" style={{ cursor: dragging ? "col-resize" : undefined }}>
+        <div ref={splitRef} className="flex-1 flex overflow-hidden relative" style={{ cursor: dragging ? "col-resize" : undefined }}>
           {currentQ.passage && (
             <>
-              <div className="overflow-hidden flex flex-col border-r border-black shrink-0" style={{ width: `${splitPos}%` }}>
+              <div className="overflow-hidden flex flex-col border-r border-gray-200 shrink-0" style={{ width: `${splitPos}%` }}>
                 <PassagePanel
                   passage={currentQ.passage}
                   imageUrl={currentQ.passageImageUrl}
@@ -174,7 +174,7 @@ function TestContent() {
                 />
               </div>
               <div
-                className="w-1.5 bg-[#f0f2f5] border-l border-r border-black shrink-0 cursor-col-resize hover:bg-gray-300 flex items-center justify-center"
+                className="w-1.5 bg-gray-100 border-l border-r border-gray-200 shrink-0 cursor-col-resize hover:bg-gray-300 flex items-center justify-center"
                 onMouseDown={handleDividerMouseDown}
               >
                 <div className="w-0.5 h-6 bg-gray-400" />
@@ -183,31 +183,34 @@ function TestContent() {
           )}
 
           <div className={`overflow-hidden flex flex-col bg-[#fafafa] ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
-            <div className="bg-black flex items-stretch min-h-[28px]">
-              <div className="inline-flex items-center px-2.5">
-                <span className="text-[11px] font-bold text-white">{currentQ.questionNumber}</span>
+            <div className="bg-gray-900 flex items-stretch min-h-[32px]">
+              <div className="inline-flex items-center px-3">
+                <span className="text-sm font-bold text-white">{currentQ.questionNumber}</span>
               </div>
               <button
                 onClick={() => currentQ && dispatch({ type: "TOGGLE_REVIEW", questionId: currentQ.id })}
-                className={`inline-flex items-center px-2.5 text-[10px] border-l border-white/30 cursor-pointer ${
+                className={`inline-flex items-center px-3 text-xs border-l border-white/20 cursor-pointer gap-1 ${
                   state.flaggedForReview.includes(currentQ.id) ? "bg-red-600 text-white" : "bg-transparent text-white hover:bg-white/10"
                 }`}
               >
-                {state.flaggedForReview.includes(currentQ.id) ? "✓ Marked for Review" : "Mark for Review"}
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
+                {state.flaggedForReview.includes(currentQ.id) ? "Marked" : "Mark for Review"}
               </button>
               <div className="ml-auto inline-flex items-stretch">
-                <span className="w-px bg-white/30" />
+                <span className="w-px bg-white/20" />
                 <button
                   onClick={() => setCrossOutMode(!crossOutMode)}
-                  className={`text-[10px] px-2.5 cursor-pointer flex items-center gap-1 ${
-                    crossOutMode ? "bg-white text-black" : "bg-transparent text-white hover:bg-white/10"
+                  className={`text-xs px-3 cursor-pointer flex items-center gap-1 ${
+                    crossOutMode ? "bg-white text-gray-900" : "bg-transparent text-white hover:bg-white/10"
                   }`}
                 >
-                  ABC <span className="line-through text-[8px]">ABC</span>
+                  ABC <span className="line-through text-[10px]">ABC</span>
                 </button>
               </div>
             </div>
-            <div className="border-b border-dashed border-black" />
+            <div className="border-b border-gray-200" />
 
             <div className="flex-1 overflow-y-auto px-6 py-6">
               {currentQ.imageUrl && (
@@ -216,7 +219,7 @@ function TestContent() {
                 </div>
               )}
 
-              <div className="text-sm leading-relaxed text-black mb-5 whitespace-pre-line" style={{ fontFamily: "Arial, sans-serif", lineHeight: "1.5" }}>
+              <div className="text-base leading-relaxed text-gray-800 mb-5 whitespace-pre-line" style={{ fontFamily: "Arial, sans-serif", lineHeight: "1.6" }}>
                 {renderMath(currentQ.stem)}
               </div>
 
@@ -261,15 +264,23 @@ function TestContent() {
                 </div>
               )}
             </div>
-            <div className="border-t border-dashed border-black" />
+            <div className="border-t border-gray-200" />
           </div>
-
-          {highlightPanel && <HighlightsPanel onClose={() => setHighlightPanel(false)} />}
         </div>
+
+        {highlightPanel && (
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setHighlightPanel(false)} />
+            <div className="absolute top-0 right-0 h-full z-50">
+              <HighlightsPanel onClose={() => setHighlightPanel(false)} />
+            </div>
+          </>
+        )}
       </AnnotationProvider>
 
       <NavigationPanel crossOutMode={crossOutMode} onToggleCrossOut={() => setCrossOutMode(!crossOutMode)} />
 
+      {showMore && <div className="fixed inset-0 z-40" onClick={() => setShowMore(false)} />}
       <MoreMenu
         show={showMore}
         onClose={() => setShowMore(false)}
@@ -317,21 +328,21 @@ function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onE
 }) {
   if (!show) return null;
   return (
-    <div className="fixed right-4 top-[104px] bg-white border border-black z-50 min-w-[180px]" style={{ fontFamily: "Arial, sans-serif" }}>
+    <div className="fixed right-4 top-[104px] bg-white border border-gray-200 z-50 min-w-[180px] rounded-lg shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
       {isMath && (
         <>
-          <button onClick={() => { onCalc(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Calculator</button>
-          <button onClick={() => { onRef(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Reference Sheet</button>
+          <button onClick={() => { onCalc(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Calculator</button>
+          <button onClick={() => { onRef(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Reference Sheet</button>
         </>
       )}
-      <button onClick={() => { onReview(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Review</button>
-      <button onClick={() => { onBreak(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Unscheduled Break</button>
-      <div className="border-b border-black" />
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Help</button>
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Keyboard Shortcuts</button>
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Assistive Technology</button>
-      <button onClick={() => { onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black border-b border-black hover:bg-[#edf2fa] cursor-pointer">Line Reader</button>
-      <button onClick={() => { onExit(); onClose(); }} className="block w-full text-left px-3 py-2 text-xs text-black hover:bg-[#edf2fa] cursor-pointer">Save &amp; Exit</button>
+      <button onClick={() => { onReview(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Review</button>
+      <button onClick={() => { onBreak(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Unscheduled Break</button>
+      <div className="border-b border-gray-100" />
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Help</button>
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Keyboard Shortcuts</button>
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Assistive Technology</button>
+      <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Line Reader</button>
+      <button onClick={() => { onExit(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-gray-50 cursor-pointer">Save &amp; Exit</button>
     </div>
   );
 }
