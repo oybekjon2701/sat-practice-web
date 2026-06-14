@@ -224,20 +224,18 @@ function TestContent() {
               </div>
               <button
                 onClick={() => currentQ && dispatch({ type: "TOGGLE_REVIEW", questionId: currentQ.id })}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer transition-colors ${
+                className={`inline-flex items-center justify-center gap-1.5 w-[130px] h-[30px] text-xs font-medium rounded-md cursor-pointer transition-colors shrink-0 ${
                   state.flaggedForReview.includes(currentQ.id) ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
-                {state.flaggedForReview.includes(currentQ.id) ? "Marked" : "Mark for Review"}
+                <span>{state.flaggedForReview.includes(currentQ.id) ? "Marked" : "Mark for Review"}</span>
               </button>
               <button
                 onClick={() => setCrossOutMode(!crossOutMode)}
-                className={`inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-md cursor-pointer transition-colors ${
-                  crossOutMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
+                className="inline-flex items-center justify-center gap-0.5 w-[64px] h-[30px] text-xs font-bold bg-[#0033aa] text-white rounded-md cursor-pointer transition-colors shrink-0"
               >
                 <span className={crossOutMode ? "" : "line-through"}>A</span>
                 <span className={crossOutMode ? "" : "line-through"}>B</span>
