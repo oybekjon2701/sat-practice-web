@@ -157,7 +157,7 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
 
   function handleAddHighlight(color: "yellow" | "pink" | "blue") {
     if (!popup) return;
-    if (highlights.some(h => h.text.toLowerCase() === popup.text.toLowerCase())) return;
+    highlights.filter(h => h.text.toLowerCase() === popup.text.toLowerCase()).forEach(h => removeHighlight(h.id));
     addHighlight({ id: `h-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: popup.text, color });
   }
 
@@ -189,7 +189,7 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
 
   function contextAddHighlight(color: "yellow" | "pink" | "blue") {
     if (!contextPopup) return;
-    if (highlights.some(h => h.text.toLowerCase() === contextPopup.text.toLowerCase())) return;
+    highlights.filter(h => h.text.toLowerCase() === contextPopup.text.toLowerCase()).forEach(h => removeHighlight(h.id));
     addHighlight({ id: `h-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, text: contextPopup.text, color });
     setContextPopup(null);
   }
