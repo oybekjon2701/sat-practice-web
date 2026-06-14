@@ -109,7 +109,7 @@ export default function NavigationPanel() {
           onCancel={() => setShowSubmitConfirm(false)}
         />
       )}
-      <div className="h-14 bg-[#edf2fa] border-t border-gray-200 flex items-center px-5 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="h-16 bg-[#edf2fa] flex items-center px-6 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif", borderTop: "3px dashed #cbd5e1" }}>
         <div className="flex items-center gap-2 w-40">
           <span className="text-xs text-gray-500 font-medium">{state.userName || "Student"}</span>
         </div>

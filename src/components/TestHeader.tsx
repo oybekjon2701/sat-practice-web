@@ -33,11 +33,11 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
   }, []);
 
   return (
-    <div className="shrink-0 bg-[#edf2fa] border-b border-gray-200" style={{ fontFamily: "Arial, sans-serif" }}>
-      <div className="h-14 flex items-center px-5">
-        <div className="flex items-center gap-6 w-[300px]">
+    <div className="shrink-0 bg-[#edf2fa]" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="h-16 flex items-center px-6" style={{ borderBottom: "3px dashed #cbd5e1" }}>
+        <div className="flex items-center gap-8 w-[320px]">
           <div>
-            <h1 className="text-sm font-bold text-gray-800">Section 1, Module 1: {sectionLabel}</h1>
+            <h1 className="text-base font-bold text-gray-800">Section 1, Module 1: {sectionLabel}</h1>
             <div className="relative" ref={dirRef}>
               <button onClick={() => setShowDirections(!showDirections)} className="text-xs text-[#0033aa] underline cursor-pointer flex items-center gap-0.5">
                 Directions <span className="text-sm leading-none">▾</span>
@@ -53,34 +53,24 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
         </div>
 
         <div className="flex-1 flex flex-col items-center gap-0.5">
-          <span className={`text-2xl font-bold tabular-nums tracking-wider ${timerWarning ? "text-red-600" : "text-gray-800"}`}>
+          <span className={`text-3xl font-bold tabular-nums tracking-wider ${timerWarning ? "text-red-600" : "text-gray-800"}`}>
             {state.timerHidden ? "--:--" : timeStr}
           </span>
-          <button onClick={() => dispatch({ type: "TOGGLE_TIMER" })} className="text-[10px] text-gray-500 border border-gray-300 rounded-full px-2.5 py-0.5 cursor-pointer hover:bg-gray-100 transition-colors leading-tight">
+          <button onClick={() => dispatch({ type: "TOGGLE_TIMER" })} className="text-[11px] text-gray-500 border border-gray-300 rounded-full px-3 py-0.5 cursor-pointer hover:bg-gray-100 transition-colors leading-tight">
             {state.timerHidden ? "Show" : "Hide"}
           </button>
         </div>
 
-        <div className="flex items-center gap-5 w-[300px] justify-end">
+        <div className="flex items-center gap-5 w-[320px] justify-end">
           <button
             onClick={() => { setHighlightActive(!highlightActive); onOpenHighlightPanel(); }}
-            className={`text-xs cursor-pointer ${highlightActive ? "text-[#0033aa] underline font-bold" : "text-[#0033aa] underline"}`}
+            className={`text-sm cursor-pointer ${highlightActive ? "text-[#0033aa] underline font-bold" : "text-[#0033aa] underline"}`}
           >
             Highlights &amp; Notes
           </button>
-          <div className="flex items-center gap-1.5 text-xs text-gray-500">
-            <svg className="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
-              <rect x="1" y="6" width="15" height="9" rx="1" />
-              <rect x="16" y="9" width="2" height="3" rx="0.5" />
-              <rect x="3" y="8" width="3" height="5" fill="currentColor" opacity="0.8" />
-              <rect x="7" y="8" width="3" height="5" fill="currentColor" opacity="0.8" />
-              <rect x="11" y="8" width="3" height="5" fill="currentColor" opacity="0.6" />
-            </svg>
-            <span>85%</span>
-          </div>
           <div className="relative">
-            <button onClick={onOpenMore} className="cursor-pointer">
-              <svg className="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+            <button onClick={onOpenMore} className="cursor-pointer p-1.5 hover:bg-gray-200 rounded-full transition-colors">
+              <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                 <circle cx="10" cy="4" r="2" /><circle cx="10" cy="10" r="2" /><circle cx="10" cy="16" r="2" />
               </svg>
             </button>

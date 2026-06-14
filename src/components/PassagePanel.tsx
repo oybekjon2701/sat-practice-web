@@ -215,9 +215,6 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
         onMouseUp={handleMouseUp}
         onContextMenu={handleContextMenu}
       >
-        <div className="mb-4">
-          <span className="text-[10px] font-bold text-white bg-[#1a4972] px-3 py-1 rounded-full uppercase tracking-wider">This is a practice test</span>
-        </div>
         {imageUrl && (
           <div className="mb-4">
             <img src={imageUrl} alt={imageAlt || "Figure"} className="max-w-[300px] max-h-[200px] h-auto border border-gray-300" />
