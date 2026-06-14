@@ -15,12 +15,22 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
   const sectionLabel = state.currentSection === "reading" ? "Reading and Writing" : "Math";
   const [showDirections, setShowDirections] = useState(false);
   const [highlightActive, setHighlightActive] = useState(false);
+  const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
   const dirRef = useRef<HTMLDivElement>(null);
 
   const min = Math.floor(state.timeRemaining / 60);
   const sec = state.timeRemaining % 60;
   const timeStr = `${min}:${sec.toString().padStart(2, "0")}`;
   const timerWarning = min < 5;
+
+  useEffect(() => {
+    if ("getBattery" in navigator) {
+      (navigator as any).getBattery().then((battery: any) => {
+        setBatteryLevel(Math.round(battery.level * 100));
+        battery.addEventListener("levelchange", () => setBatteryLevel(Math.round(battery.level * 100)));
+      });
+    }
+  }, []);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -63,7 +73,7 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
 
         <div className="w-[320px] flex items-center justify-end gap-5">
           <div className="flex items-center gap-1">
-            <span className="text-[11px] text-gray-600 font-medium">85%</span>
+            <span className="text-[11px] text-gray-600 font-medium">{batteryLevel !== null ? `${batteryLevel}%` : ""}</span>
             <svg className="w-4 h-4 text-gray-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
               <rect x="1" y="6" width="15" height="9" rx="1" />
               <rect x="16" y="9" width="2" height="3" rx="0.5" />
