@@ -42,7 +42,7 @@ export default function Dashboard() {
           setSavedDate(stored);
           setRemaining(getRemaining(data.ts));
         }
-      } catch { /* migrate old format */ }
+      } catch (_e) { /* migrate old format */ }
     }
   }, []);
 
@@ -73,13 +73,7 @@ export default function Dashboard() {
 
   let examLabel = "";
   if (savedDate) {
-    try { examLabel = JSON.parse(savedDate).label; } catch {}
-  }
-
-  function handleClear() {
-    localStorage.removeItem("satExamDate");
-    setSavedDate(null);
-    setRemaining(null);
+    try { examLabel = JSON.parse(savedDate).label; } catch (_e) {}
   }
 
   return (
