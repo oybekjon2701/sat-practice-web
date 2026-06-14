@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useUser, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, Lock, ShieldCheck, Calendar, LogOut } from "lucide-react";
+import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, ShieldCheck, Calendar, LogOut } from "lucide-react";
 
 const SAT_DATES = [
   { label: "August 22, 2026", value: "2026-08-22" },
@@ -248,9 +248,7 @@ export default function Dashboard() {
                 {isSignedIn ? "Take a Test" : "Start Free Practice"}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-              <Link href="/pricing" className="text-sm font-medium text-[#0d9488] hover:underline">
-                {isSignedIn ? "Upgrade for more" : "2 free tests included"}
-              </Link>
+              <span className="text-xs text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-medium">Free for 2 months</span>
             </div>
           </div>
         </section>
@@ -258,71 +256,45 @@ export default function Dashboard() {
         <section id="courses" className="max-w-5xl mx-auto px-6 md:px-10 mt-10 mb-16">
           <h2 className="text-xl font-bold text-slate-800 mb-6">Courses</h2>
           <div className="grid md:grid-cols-3 gap-5">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+            <Link href="/themed-questions" className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow block">
               <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
                 <BookOpen className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-slate-800 mb-1.5">Themed Practice Questions</h3>
               <p className="text-sm text-slate-500 mb-4">Algebra, grammar, reading comprehension — sorted by topic with step-by-step explanations.</p>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">10 free / theme</span>
-                <Lock className="w-3.5 h-3.5 text-slate-300" />
-              </div>
-              <Link
-                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
-                className="text-sm font-medium text-[#0d9488] hover:underline inline-flex items-center gap-1"
-              >
-                Browse topics <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
+              <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">Free for 2 months</span>
+            </Link>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+            <Link href="/video-lessons" className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow block">
               <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
                 <Video className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-slate-800 mb-1.5">Video Lessons</h3>
               <p className="text-sm text-slate-500 mb-4">Expert strategy guides for Reading, Writing, and Math with tips and worked examples.</p>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">3 free lessons</span>
-                <Lock className="w-3.5 h-3.5 text-slate-300" />
-              </div>
-              <Link
-                href={isSignedIn ? "#" : "/sign-in?redirect_url=#"}
-                className="text-sm font-medium text-[#0d9488] hover:underline inline-flex items-center gap-1"
-              >
-                Watch lessons <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
+              <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">Free for 2 months</span>
+            </Link>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
+            <Link href="/vocabulary" className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow block">
               <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
                 <BookMarked className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-slate-800 mb-1.5">Vocabulary Cards</h3>
               <p className="text-sm text-slate-500 mb-4">Curated SAT vocabulary with spaced repetition, example sentences, and quizzes.</p>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">Sample free</span>
-                <Lock className="w-3.5 h-3.5 text-slate-300" />
-              </div>
-              <Link
-                href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
-                className="text-sm font-medium text-[#0d9488] hover:underline inline-flex items-center gap-1"
-              >
-                Start learning <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
+              <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">Free for 2 months</span>
+            </Link>
           </div>
         </section>
 
         <section className="bg-gradient-to-br from-[#0d9488] to-[#0f766e] text-white">
           <div className="max-w-5xl mx-auto px-6 md:px-10 py-12 text-center">
-            <h2 className="text-2xl font-bold mb-3">Unlock everything with Premium</h2>
-            <p className="text-teal-100 text-sm mb-6 max-w-md mx-auto">Unlimited full-length tests, all themed questions, every video lesson, and full vocabulary decks.</p>
+            <h2 className="text-2xl font-bold mb-3">Everything free for 2 months</h2>
+            <p className="text-teal-100 text-sm mb-2 max-w-md mx-auto">All full-length tests, themed questions, video lessons, and vocabulary — completely unlocked.</p>
+            <p className="text-teal-200 text-xs mb-6">No payment. No limits. Just focused SAT prep.</p>
             <Link
-              href="/pricing"
+              href="/my-tests"
               className="inline-flex items-center gap-2 bg-white text-[#0d9488] font-semibold px-6 py-3 rounded-lg hover:bg-slate-100 transition-colors text-sm"
             >
-              See plans
+              Start a full test
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

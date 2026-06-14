@@ -2,64 +2,87 @@
 
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import { Sparkles, ShieldCheck } from "lucide-react";
 
 export default function PricingPage() {
   const { isSignedIn, isLoaded } = useUser();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100">
-        <Link href="/">
-          <svg viewBox="0 0 240 60" className="h-8 w-auto" xmlns="http://www.w3.org/2000/svg">
-            <text x="235" y="34" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="24" fill="#FF6B00" textAnchor="end">satzone.</text>
-            <text x="235" y="52" fontFamily="Arial, Helvetica, sans-serif" fontWeight="700" fontSize="11" fill="#FF6B00" textAnchor="end" letterSpacing="1.5">SAT CENTER</text>
-          </svg>
+    <div className="min-h-screen bg-[#f8fafc]">
+      <header className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200">
+        <Link href="/dashboard">
+          <div className="flex items-baseline gap-1">
+            <span className="text-xl font-bold text-slate-800">satzone.</span>
+            <span className="text-[10px] font-bold text-[#0d9488] tracking-[2px]">SAT CENTER</span>
+          </div>
         </Link>
+        <nav className="flex items-center gap-6">
+          <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-slate-800">Dashboard</Link>
+          <Link href="/my-tests" className="text-sm font-medium text-slate-600 hover:text-slate-800">Practice Tests</Link>
+        </nav>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-16">
-        <h1 className="text-3xl font-bold text-gray-800 text-center mb-2">Choose Your Plan</h1>
-        <p className="text-gray-500 text-center text-sm mb-8">Start free, upgrade anytime.</p>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl border border-gray-200 p-8">
-            <h2 className="text-xl font-bold text-gray-800 mb-2">Free</h2>
-            <p className="text-3xl font-bold text-gray-800 mb-4">$0</p>
-            <ul className="space-y-3 mb-8 text-sm text-gray-600">
-              <li className="flex items-center gap-2">✓ 2 full-length mock tests</li>
-              <li className="flex items-center gap-2">✓ Instant scoring & review</li>
-              <li className="flex items-center gap-2">✓ Basic performance tracking</li>
-            </ul>
-            <Link
-              href={!isLoaded ? "#" : isSignedIn ? "/my-tests" : "/sign-up"}
-              className={`block w-full text-center py-3 rounded-lg font-semibold ${
-                !isLoaded
-                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  : "border border-gray-200 text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              {!isLoaded ? "Loading..." : isSignedIn ? "Browse Tests" : "Get Started Free"}
-            </Link>
+      <section className="bg-gradient-to-br from-[#0d9488] to-[#0f766e] text-white">
+        <div className="max-w-5xl mx-auto px-6 md:px-10 py-16 text-center">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <Sparkles className="w-5 h-5 text-yellow-300" />
+            <span className="text-xs font-semibold text-teal-100 uppercase tracking-wider">Limited Time Offer</span>
           </div>
-
-          <div className="bg-white rounded-2xl border-2 border-[#1a73e8] p-8 relative">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#1a73e8] text-white text-xs px-3 py-1 rounded-full font-medium">Popular</span>
-            <h2 className="text-xl font-bold text-gray-800 mb-2">Premium</h2>
-            <p className="text-3xl font-bold text-gray-800 mb-4">Coming Soon</p>
-            <p className="text-xs text-gray-400 mb-4">Unlock all tests — payment integration coming</p>
-            <ul className="space-y-3 mb-8 text-sm text-gray-600">
-              <li className="flex items-center gap-2">✓ Unlimited full-length tests</li>
-              <li className="flex items-center gap-2">✓ All adaptive modules</li>
-              <li className="flex items-center gap-2">✓ Detailed answer review</li>
-              <li className="flex items-center gap-2">✓ Full score breakdown</li>
-              <li className="flex items-center gap-2">✓ Priority support</li>
-            </ul>
-            <div className="w-full text-center py-3 bg-gray-100 text-gray-400 rounded-lg font-semibold cursor-not-allowed">
-              Coming Soon
-            </div>
+          <h1 className="text-3xl md:text-5xl font-bold mb-3">Free for 2 Months</h1>
+          <p className="text-teal-100 text-base md:text-lg max-w-lg mx-auto mb-6">
+            We&apos;re launching in Uzbekistan and everything is completely free for the first two months. No payment needed.
+          </p>
+          <div className="flex items-center justify-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-lg w-fit mx-auto">
+            <ShieldCheck className="w-4 h-4 text-teal-200" />
+            <span className="text-sm font-medium text-teal-100">No credit card required</span>
           </div>
         </div>
+      </section>
+
+      <main className="max-w-3xl mx-auto px-6 -mt-8 pb-16">
+        <div className="bg-white rounded-2xl border-2 border-[#0d9488] p-8 shadow-lg relative">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#0d9488] text-white text-xs px-4 py-1 rounded-full font-bold uppercase tracking-wider">Current Plan</span>
+          <h2 className="text-xl font-bold text-slate-800 mb-1 text-center">Full Access — Free Trial</h2>
+          <p className="text-slate-500 text-sm text-center mb-6">Everything unlocked until August 15, 2026</p>
+
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {[
+              "15 full-length adaptive tests",
+              "Themed practice questions",
+              "Video lesson library",
+              "Full vocabulary decks",
+              "Instant scoring & review",
+              "Detailed answer explanations",
+              "Performance tracking",
+              "All future updates",
+            ].map((feature) => (
+              <div key={feature} className="flex items-center gap-2 text-sm text-slate-700">
+                <svg className="w-4 h-4 text-[#0d9488] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                {feature}
+              </div>
+            ))}
+          </div>
+
+          <Link
+            href={!isLoaded ? "#" : isSignedIn ? "/my-tests" : "/sign-up"}
+            className={`block w-full text-center py-3.5 rounded-xl font-bold text-base ${
+              !isLoaded
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "bg-[#0d9488] text-white hover:bg-[#0f766e] transition-colors"
+            }`}
+          >
+            {!isLoaded ? "Loading..." : isSignedIn ? "Start a Practice Test" : "Create Free Account"}
+          </Link>
+
+          <p className="text-xs text-slate-400 text-center mt-3">After 2 months we&apos;ll announce pricing. Early users get a special rate.</p>
+        </div>
       </main>
+
+      <footer className="bg-white border-t border-slate-200 py-8 text-center text-sm text-slate-400">
+        &copy; 2026 satzone. All rights reserved. &middot; Uzbekistan
+      </footer>
     </div>
   );
 }
