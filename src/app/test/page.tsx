@@ -254,9 +254,8 @@ function TestContent() {
                           {[
                             ["3.5", "3.5", "3.50"],
                             ["7/2", "31/2", "3 1/2"],
-                            ["2/3", "2/3", ".6666", ".6667", "0.666", "0.667"],
-                            ["-1/3", "-1/3", "-.3333", "-0.333"],
-                            ["-.33", "-0.33"],
+                            ["2/3", "2/3  .6666  .6667  0.666  0.667", "0.66  .66  0.67  .67"],
+                            ["-1/3", "-1/3  -.3333  -0.333", "-.33  -0.33"],
                           ].map((row, i) => (
                             <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                               {row.map((cell, j) => (
@@ -394,7 +393,14 @@ function TestContent() {
       />
 
       {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
-      {showRef && <ReferenceSheet onClose={() => setShowRef(false)} />}
+      {showRef && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setShowRef(false)} />
+          <div className="fixed top-0 right-0 h-full z-50">
+            <ReferenceSheet onClose={() => setShowRef(false)} />
+          </div>
+        </>
+      )}
 
       {showExitConfirm && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
