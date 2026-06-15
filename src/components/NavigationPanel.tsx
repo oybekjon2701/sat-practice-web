@@ -25,10 +25,10 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
   function handleSubmit() {
     if (state.currentSection === "math" && state.currentModule > 1) {
       dispatch({ type: "SHOW_REVIEW" });
+      onClose();
     } else {
       setShowConfirm(true);
     }
-    onClose();
   }
 
   return (
