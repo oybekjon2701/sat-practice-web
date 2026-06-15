@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
-
-type Tab = "graphing" | "scientific";
+import { useRef, useEffect, useCallback, useState } from "react";
 
 export default function Calculator({ onClose }: { onClose: () => void }) {
-  const [tab, setTab] = useState<Tab>("graphing");
-  const [pos, setPos] = useState({ x: 100, y: 80 });
+  const [pos, setPos] = useState({ x: 30, y: 60 });
   const [dragging, setDragging] = useState(false);
   const dragRef = useRef({ startX: 0, startY: 0, startPosX: 0, startPosY: 0 });
   const panelRef = useRef<HTMLDivElement>(null);
@@ -55,7 +52,7 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-50 bg-black/40">
       <div
         ref={panelRef}
-        className="absolute bg-white rounded-xl shadow-2xl w-[720px] max-h-[90vh] overflow-hidden flex flex-col"
+        className="absolute bg-white rounded-xl shadow-2xl w-[1000px] max-h-[90vh] overflow-hidden flex flex-col"
         style={{ left: pos.x, top: pos.y }}
       >
         <div
@@ -68,33 +65,24 @@ export default function Calculator({ onClose }: { onClose: () => void }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
             </svg>
             <span className="text-xs font-medium text-sat-gray ml-1">Calculator</span>
+            <span className="text-[10px] text-gray-400 ml-2">Graphing</span>
+            <span className="text-[10px] text-gray-400 ml-2">Scientific</span>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setTab("graphing")}
-              className={`px-3 py-1 text-xs rounded-md transition-colors cursor-pointer ${
-                tab === "graphing" ? "bg-sat-accent text-white" : "text-sat-gray hover:bg-sat-light"
-              }`}
-            >
-              Graphing
-            </button>
-            <button
-              onClick={() => setTab("scientific")}
-              className={`px-3 py-1 text-xs rounded-md transition-colors cursor-pointer ${
-                tab === "scientific" ? "bg-sat-accent text-white" : "text-sat-gray hover:bg-sat-light"
-              }`}
-            >
-              Scientific
-            </button>
-            <button onClick={onClose} className="text-sat-gray hover:text-gray-800 cursor-pointer ml-1">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+          <button onClick={onClose} className="text-sat-gray hover:text-gray-800 cursor-pointer">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
-        {tab === "graphing" ? <GraphingTab /> : <ScientificTab />}
+        <div className="flex flex-row flex-1 min-h-0">
+          <div className="flex-1 border-r border-gray-200">
+            <GraphingTab />
+          </div>
+          <div className="flex-1">
+            <ScientificTab />
+          </div>
+        </div>
       </div>
     </div>
   );

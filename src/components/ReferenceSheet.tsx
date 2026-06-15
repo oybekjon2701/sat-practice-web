@@ -134,11 +134,15 @@ const triangleData = [
     diagram: (
       <svg viewBox="0 0 140 100" className="w-28 h-20">
         <polygon points="10,85 130,85 10,10" fill="none" stroke="#2563eb" strokeWidth="1.5" />
-        <text x="12" y="78" fontSize="13" fill="#dc2626" fontFamily="serif" fontStyle="italic">x</text>
-        <text x="78" y="78" fontSize="13" fill="#059669" fontFamily="serif" fontStyle="italic">2x</text>
-        <text x="12" y="42" fontSize="13" fill="#7c3aed" fontFamily="serif" fontStyle="italic">x\u221a3</text>
+        <text x="20" y="50" fontSize="13" fill="#dc2626" fontFamily="serif" fontStyle="italic" transform="rotate(-90,20,50)">x</text>
+        <text x="65" y="78" fontSize="13" fill="#059669" fontFamily="serif" fontStyle="italic">
+          <tspan fontStyle="italic">x</tspan>
+          <tspan fontFamily="Arial,sans-serif" fontStyle="normal">{'\u221a'}</tspan>
+          <tspan fontStyle="italic">3</tspan>
+        </text>
+        <text x="58" y="44" fontSize="13" fill="#7c3aed" fontFamily="serif" fontStyle="italic" transform="rotate(-52,58,44)">2x</text>
         <text x="8" y="20" fontSize="11" fill="#6b7280">30\u00b0</text>
-        <text x="100" y="80" fontSize="11" fill="#6b7280">60\u00b0</text>
+        <text x="108" y="82" fontSize="11" fill="#6b7280">60\u00b0</text>
         <polygon points="10,77 16,85 4,85" fill="#6b7280" />
       </svg>
     ),
@@ -149,10 +153,15 @@ const triangleData = [
     diagram: (
       <svg viewBox="0 0 140 100" className="w-28 h-20">
         <polygon points="10,85 85,85 10,10" fill="none" stroke="#2563eb" strokeWidth="1.5" />
-        <text x="14" y="78" fontSize="13" fill="#dc2626" fontFamily="serif" fontStyle="italic">s</text>
-        <text x="50" y="78" fontSize="13" fill="#059669" fontFamily="serif" fontStyle="italic">s\u221a2</text>
-        <text x="12" y="46" fontSize="13" fill="#7c3aed" fontFamily="serif" fontStyle="italic">s</text>
+        <text x="22" y="50" fontSize="13" fill="#dc2626" fontFamily="serif" fontStyle="italic" transform="rotate(-90,22,50)">s</text>
+        <text x="48" y="78" fontSize="13" fill="#059669" fontFamily="serif" fontStyle="italic">s</text>
+        <text x="44" y="44" fontSize="13" fill="#7c3aed" fontFamily="serif" fontStyle="italic" transform="rotate(-45,44,44)">
+          <tspan fontStyle="italic">s</tspan>
+          <tspan fontFamily="Arial,sans-serif" fontStyle="normal">{'\u221a'}</tspan>
+          <tspan fontStyle="italic">2</tspan>
+        </text>
         <text x="8" y="22" fontSize="11" fill="#6b7280">45\u00b0</text>
+        <text x="70" y="82" fontSize="11" fill="#6b7280">45\u00b0</text>
         <polygon points="10,77 16,85 4,85" fill="#6b7280" />
       </svg>
     ),
@@ -163,9 +172,9 @@ const triangleData = [
     diagram: (
       <svg viewBox="0 0 100 65" className="w-20 h-13">
         <polygon points="12,52 85,52 12,6" fill="none" stroke="#2563eb" strokeWidth="1.5" />
-        <text x="14" y="46" fontSize="12" fill="#dc2626" fontFamily="serif" fontStyle="italic">a</text>
-        <text x="54" y="46" fontSize="12" fill="#059669" fontFamily="serif" fontStyle="italic">c</text>
-        <text x="18" y="30" fontSize="12" fill="#7c3aed" fontFamily="serif" fontStyle="italic">b</text>
+        <text x="18" y="46" fontSize="12" fill="#dc2626" fontFamily="serif" fontStyle="italic" transform="rotate(-90,18,46)">a</text>
+        <text x="55" y="40" fontSize="12" fill="#059669" fontFamily="serif" fontStyle="italic" transform="rotate(-39,55,40)">c</text>
+        <text x="48" y="58" fontSize="12" fill="#7c3aed" fontFamily="serif" fontStyle="italic">b</text>
         <polygon points="12,44 18,52 6,52" fill="#6b7280" />
       </svg>
     ),
