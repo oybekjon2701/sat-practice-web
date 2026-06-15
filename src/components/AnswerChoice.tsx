@@ -45,7 +45,7 @@ export default function AnswerChoice({ label, text, selected, crossedOut, showCr
           title={crossedOut ? "Remove cross-out" : "Cross out this option"}
           className={`shrink-0 w-9 h-9 mt-1.5 flex items-center justify-center text-base font-bold border-2 transition-all cursor-pointer rounded-full ${
             crossedOut
-              ? "bg-gray-200 text-gray-500 border-gray-300 line-through"
+              ? "bg-transparent text-gray-400 border-gray-300 line-through"
               : "bg-white text-gray-400 border-gray-300 hover:border-gray-500 hover:text-gray-600"
           }`}
         >

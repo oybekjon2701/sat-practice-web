@@ -233,6 +233,14 @@ function TestContent() {
                 </svg>
                 <span>{state.flaggedForReview.includes(currentQ.id) ? "Marked" : "Mark for Review"}</span>
               </button>
+              <button
+                onClick={() => setCrossOutMode(!crossOutMode)}
+                className="ml-auto inline-flex items-center justify-center gap-0.5 px-3 h-[26px] text-xs font-bold bg-primary text-white rounded-md cursor-pointer transition-colors shrink-0"
+              >
+                <span className={crossOutMode ? "" : "line-through"}>A</span>
+                <span className={crossOutMode ? "" : "line-through"}>B</span>
+                <span className={crossOutMode ? "" : "line-through"}>C</span>
+              </button>
             </div>
 
             <div className="flex-1 overflow-y-auto px-8 py-6">
@@ -248,16 +256,6 @@ function TestContent() {
 
               {currentQ.type === "mcq" && currentQ.choices && (
                 <div className="space-y-3 max-w-xl">
-                  <div className="flex justify-end">
-                    <button
-                      onClick={() => setCrossOutMode(!crossOutMode)}
-                      className="inline-flex items-center justify-center gap-0.5 px-3 h-[26px] text-xs font-bold bg-primary text-white rounded-md cursor-pointer transition-colors shrink-0"
-                    >
-                      <span className={crossOutMode ? "" : "line-through"}>A</span>
-                      <span className={crossOutMode ? "" : "line-through"}>B</span>
-                      <span className={crossOutMode ? "" : "line-through"}>C</span>
-                    </button>
-                  </div>
                   {currentQ.choices.map((c) => (
                     <AnswerChoice
                       key={c.label}
