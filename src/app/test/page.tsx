@@ -109,6 +109,7 @@ function TestContent() {
   const [crossOutMode, setCrossOutMode] = useState(false);
   const [highlightPanel, setHighlightPanel] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [lineReaderActive, setLineReaderActive] = useState(false);
 
   useEffect(() => {
     function handleChange() { setIsFullscreen(!!document.fullscreenElement); }
@@ -206,6 +207,7 @@ function TestContent() {
                   imageUrl={currentQ.passageImageUrl}
                   imageAlt={currentQ.passageImageAlt}
                   underlinedPart={currentQ.underlinedPart}
+                  lineReaderActive={lineReaderActive}
                 />
               </div>
               <div
@@ -320,6 +322,8 @@ function TestContent() {
         onExit={() => { setShowMore(false); setShowExitConfirm(true); }}
         onToggleFullscreen={toggleFullscreen}
         isFullscreen={isFullscreen}
+        lineReaderActive={lineReaderActive}
+        onLineReader={() => setLineReaderActive(!lineReaderActive)}
       />
 
       {showCalc && <Calculator onClose={() => setShowCalc(false)} />}
@@ -351,13 +355,16 @@ function TestContent() {
   );
 }
 
-function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onExit, onToggleFullscreen, isFullscreen }: {
+function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onExit, onToggleFullscreen, isFullscreen, lineReaderActive, onLineReader }: {
   show: boolean; onClose: () => void; isMath: boolean;
   onCalc: () => void; onRef: () => void;
   onReview: () => void; onBreak: () => void; onExit: () => void;
   onToggleFullscreen: () => void; isFullscreen: boolean;
+  lineReaderActive: boolean; onLineReader: () => void;
 }) {
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showAssistiveTech, setShowAssistiveTech] = useState(false);
 
   if (!show) return null;
   return (
@@ -374,6 +381,34 @@ function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onE
               <div className="flex justify-between"><span>Cross-Out Mode</span><span className="text-gray-500 font-mono">Ctrl+Shift+X</span></div>
             </div>
             <button onClick={() => setShowShortcuts(false)} className="w-full mt-4 py-2 bg-primary text-white text-sm font-medium cursor-pointer rounded-full hover:bg-primary-hover">Close</button>
+          </div>
+        </div>
+      )}
+      {showHelp && (
+        <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center">
+          <div className="bg-white border border-gray-200 w-full max-w-sm mx-4 p-5 rounded-2xl shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
+            <h3 className="font-bold text-gray-800 text-base mb-3">Help</h3>
+            <div className="space-y-3 text-sm text-gray-700">
+              <p><strong>Navigation:</strong> Use the question grid at the bottom to jump between questions. Flag questions to review later.</p>
+              <p><strong>Tools:</strong> Highlight text in the passage, add notes, or cross out answer options. Use the calculator and reference sheet for math sections.</p>
+              <p><strong>Timer:</strong> Keep an eye on the timer. You can hide it using the button below the timer display.</p>
+              <p><strong>Keyboard Shortcuts:</strong> Press <kbd className="px-1 py-0.5 bg-gray-100 border border-gray-300 text-xs rounded">F11</kbd> or <kbd className="px-1 py-0.5 bg-gray-100 border border-gray-300 text-xs rounded">f</kbd> for fullscreen, <kbd className="px-1 py-0.5 bg-gray-100 border border-gray-300 text-xs rounded">Enter</kbd> for next question.</p>
+            </div>
+            <button onClick={() => setShowHelp(false)} className="w-full mt-4 py-2 bg-primary text-white text-sm font-medium cursor-pointer rounded-full hover:bg-primary-hover">Close</button>
+          </div>
+        </div>
+      )}
+      {showAssistiveTech && (
+        <div className="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center">
+          <div className="bg-white border border-gray-200 w-full max-w-sm mx-4 p-5 rounded-2xl shadow-lg" style={{ fontFamily: "Arial, sans-serif" }}>
+            <h3 className="font-bold text-gray-800 text-base mb-3">Assistive Technology</h3>
+            <div className="space-y-3 text-sm text-gray-700">
+              <p><strong>Line Reader:</strong> Use the Line Reader tool to highlight one line of text at a time as you read through passages. Toggle it from the More menu.</p>
+              <p><strong>Keyboard Navigation:</strong> Use Tab to move between interactive elements. Press Enter or Space to activate buttons and selections.</p>
+              <p><strong>Screen Reader:</strong> This application supports standard screen readers. Content is marked up with semantic HTML for compatibility.</p>
+              <p><strong>Fullscreen:</strong> Use fullscreen mode to minimize distractions. Toggle with the More menu or press <kbd className="px-1 py-0.5 bg-gray-100 border border-gray-300 text-xs rounded">F11</kbd>.</p>
+            </div>
+            <button onClick={() => setShowAssistiveTech(false)} className="w-full mt-4 py-2 bg-primary text-white text-sm font-medium cursor-pointer rounded-full hover:bg-primary-hover">Close</button>
           </div>
         </div>
       )}
@@ -396,10 +431,17 @@ function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onE
         <button onClick={() => { onReview(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Review</button>
         <button onClick={() => { onBreak(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Unscheduled Break</button>
         <div className="border-b border-gray-100" />
-        <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Help</button>
+        <button onClick={() => { setShowHelp(true); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Help</button>
         <button onClick={() => { setShowShortcuts(true); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Keyboard Shortcuts</button>
-        <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Assistive Technology</button>
-        <button onClick={() => { onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Line Reader</button>
+        <button onClick={() => { setShowAssistiveTech(true); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Assistive Technology</button>
+        <button onClick={() => { onLineReader(); onClose(); }} className={`block w-full text-left px-4 py-2.5 text-sm border-b border-gray-100 hover:bg-gray-50 cursor-pointer flex items-center gap-2 ${lineReaderActive ? "text-primary font-bold" : "text-gray-700"}`}>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <line x1="3" y1="12" x2="21" y2="12" strokeWidth={3} />
+            <line x1="3" y1="8" x2="21" y2="8" strokeWidth={0.5} />
+            <line x1="3" y1="16" x2="21" y2="16" strokeWidth={0.5} />
+          </svg>
+          {lineReaderActive ? "Line Reader On" : "Line Reader"}
+        </button>
         <button onClick={() => { onExit(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-gray-50 cursor-pointer">Save &amp; Exit</button>
       </div>
     </>

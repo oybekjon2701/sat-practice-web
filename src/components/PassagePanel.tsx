@@ -10,6 +10,7 @@ interface Props {
   imageUrl?: string;
   imageAlt?: string;
   underlinedPart?: string;
+  lineReaderActive?: boolean;
 }
 
 interface TextPart {
@@ -104,12 +105,13 @@ function renderTableBlock(text: string) {
   );
 }
 
-export default function PassagePanel({ passage, title, imageUrl, imageAlt, underlinedPart }: Props) {
+export default function PassagePanel({ passage, title, imageUrl, imageAlt, underlinedPart, lineReaderActive }: Props) {
   const { highlights, underlines, notes, addHighlight, removeHighlight, addUnderline, removeUnderline, addNote, removeNote, openNoteId, setOpenNoteId } = useAnnotations();
   const [popup, setPopup] = useState<{ x: number; y: number; text: string } | null>(null);
   const [contextPopup, setContextPopup] = useState<{ x: number; y: number; text: string } | null>(null);
   const [editingNote, setEditingNote] = useState<{ text: string; content: string } | null>(null);
   const [showUnderlineDropdown, setShowUnderlineDropdown] = useState(false);
+  const [lineReaderY, setLineReaderY] = useState<number | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -139,6 +141,19 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
     const containerRect = container.getBoundingClientRect();
     return { x: rect.left - containerRect.left, y: rect.bottom - containerRect.top + 4 };
   }
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!lineReaderActive) return;
+    const container = contentRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    setLineReaderY(e.clientY - rect.top);
+  }, [lineReaderActive]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (!lineReaderActive) return;
+    setLineReaderY(null);
+  }, [lineReaderActive]);
 
   const handleMouseUp = useCallback(() => {
     const selInfo = getSelectionInfo();
@@ -213,6 +228,8 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
         className="flex-1 overflow-y-auto px-6 py-4 relative"
         onMouseUp={handleMouseUp}
         onContextMenu={handleContextMenu}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
       >
         {imageUrl && (
           <div className="mb-4">
@@ -254,6 +271,12 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             );
           })}
         </div>
+
+        {lineReaderActive && lineReaderY !== null && (
+          <div className="absolute left-0 right-0 pointer-events-none z-30" style={{ top: lineReaderY }}>
+            <div className="h-[1.7em] bg-blue-200/30 border-t border-b border-blue-400/50" />
+          </div>
+        )}
 
         {popup && (
           <div
