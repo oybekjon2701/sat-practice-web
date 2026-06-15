@@ -82,9 +82,9 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
     <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
       <div className="flex items-start justify-between w-full max-w-4xl mx-auto px-10 gap-16" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="flex flex-col items-center gap-6 pt-8">
-          <div className="bg-white rounded-2xl shadow-lg px-10 py-8 text-center">
-            <p className="text-sm text-gray-600 mb-2">Remaining Break Time</p>
-            <p className="text-5xl font-bold text-gray-900 tabular-nums tracking-wider">
+          <div className="bg-black rounded-2xl shadow-lg px-10 py-8 text-center">
+            <p className="text-sm text-gray-400 mb-2">Remaining Break Time</p>
+            <p className="text-5xl font-bold text-white tabular-nums tracking-wider">
               {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
             </p>
           </div>
@@ -207,6 +207,7 @@ function TestContent() {
   return (
     <div className="h-screen flex flex-col bg-white">
       <TestHeader
+        isMath={isMath}
         onOpenCalc={() => setShowCalc(true)}
         onOpenRef={() => setShowRef(true)}
         onOpenMore={() => setShowMore(!showMore)}
@@ -219,16 +220,55 @@ function TestContent() {
 
       <AnnotationProvider>
         <div ref={splitRef} className="flex-1 flex overflow-hidden relative" style={{ cursor: dragging ? "col-resize" : undefined }}>
-          {currentQ.passage && (
+          {(currentQ.passage || currentQ.type === "gridin") && (
             <>
               <div className="overflow-hidden flex flex-col border-r border-gray-200 shrink-0" style={{ width: `${splitPos}%` }}>
-                <PassagePanel
-                  passage={currentQ.passage}
-                  imageUrl={currentQ.passageImageUrl}
-                  imageAlt={currentQ.passageImageAlt}
-                  underlinedPart={currentQ.underlinedPart}
-                  lineReaderActive={lineReaderActive}
-                />
+                {currentQ.passage ? (
+                  <PassagePanel
+                    passage={currentQ.passage}
+                    imageUrl={currentQ.passageImageUrl}
+                    imageAlt={currentQ.passageImageAlt}
+                    underlinedPart={currentQ.underlinedPart}
+                    lineReaderActive={lineReaderActive}
+                  />
+                ) : (
+                  <div className="flex-1 overflow-y-auto px-6 py-6 bg-white" style={{ fontFamily: "Arial, sans-serif" }}>
+                    <h2 className="text-lg font-bold text-gray-900 mb-4">Student-Produced Response Directions</h2>
+                    <div className="text-sm text-gray-800 space-y-3 leading-relaxed">
+                      <p>If you find more than one correct answer, enter only one.</p>
+                      <p>You can enter up to 5 characters for a positive answer and up to 6 characters for a negative answer (including the negative sign).</p>
+                      <p>If your answer is a fraction that doesn&rsquo;t fit in the provided space, enter the decimal equivalent.</p>
+                      <p>If your answer is a decimal that doesn&rsquo;t fit in the provided space, enter it by truncating or rounding at the fourth digit.</p>
+                      <p>If your answer is a mixed number (such as 3<sup>1</sup>/<sub>2</sub>), enter it as an improper fraction (7/2) or its decimal equivalent (3.5).</p>
+                      <p>Do not enter symbols such as a percent sign, comma, or dollar sign.</p>
+                      <h3 className="font-bold text-gray-900 mt-4 mb-2">Examples</h3>
+                      <table className="w-full text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-gray-100">
+                            <th className="border border-gray-300 px-2 py-1 text-left">Answer</th>
+                            <th className="border border-gray-300 px-2 py-1 text-left">Acceptable ways to enter answer</th>
+                            <th className="border border-gray-300 px-2 py-1 text-left">Unacceptable: will NOT receive credit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[
+                            ["3.5", "3.5", "3.50"],
+                            ["7/2", "31/2", "3 1/2"],
+                            ["2/3", "2/3", ".6666", ".6667", "0.666", "0.667"],
+                            ["-1/3", "-1/3", "-.3333", "-0.333"],
+                            ["-.33", "-0.33"],
+                          ].map((row, i) => (
+                            <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                              {row.map((cell, j) => (
+                                <td key={j} className="border border-gray-300 px-2 py-1">{cell}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </div>
               <div
                 className="w-1.5 bg-gray-100 border-l border-r border-gray-200 shrink-0 cursor-col-resize hover:bg-gray-300 flex items-center justify-center"
@@ -239,14 +279,15 @@ function TestContent() {
             </>
           )}
 
-          <div className={`overflow-hidden flex flex-col bg-panel-bg ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
-            <div className="flex items-center gap-3 px-8 py-2 bg-white" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
-              <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-900 text-white text-sm font-bold">
+          <div className={`overflow-hidden flex flex-col ${currentQ.passage || currentQ.type === "gridin" ? "" : "flex-1 max-w-2xl mx-auto"} ${isMath ? "bg-white" : "bg-panel-bg"}`} style={(currentQ.passage || currentQ.type === "gridin") ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
+            <div className={`flex items-center ${isMath ? "pl-0 pr-8" : "px-8"} py-2 ${isMath ? "bg-gray-100" : "bg-white"}`} style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
+              <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-900 text-white text-sm font-bold shrink-0">
                 {currentQ.questionNumber}
               </div>
+              {isMath && <div className="flex-1 h-8 bg-gray-200 ml-0" />}
               <button
                 onClick={() => currentQ && dispatch({ type: "TOGGLE_REVIEW", questionId: currentQ.id })}
-                className={`inline-flex items-center justify-center gap-1.5 w-[130px] h-[30px] text-xs font-medium rounded-md cursor-pointer transition-colors shrink-0 ${
+                className={`ml-3 inline-flex items-center justify-center gap-1.5 w-[130px] h-[30px] text-xs font-medium rounded-md cursor-pointer transition-colors shrink-0 ${
                   state.flaggedForReview.includes(currentQ.id) ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
@@ -255,14 +296,16 @@ function TestContent() {
                 </svg>
                 <span>{state.flaggedForReview.includes(currentQ.id) ? "Marked" : "Mark for Review"}</span>
               </button>
-              <button
-                onClick={() => setCrossOutMode(!crossOutMode)}
-                className="ml-auto inline-flex items-center justify-center gap-0.5 px-3 h-[26px] text-xs font-bold bg-primary text-white rounded-md cursor-pointer transition-colors shrink-0"
-              >
-                <span className={crossOutMode ? "" : "line-through"}>A</span>
-                <span className={crossOutMode ? "" : "line-through"}>B</span>
-                <span className={crossOutMode ? "" : "line-through"}>C</span>
-              </button>
+              {currentQ.type === "mcq" && (
+                <button
+                  onClick={() => setCrossOutMode(!crossOutMode)}
+                  className="ml-auto inline-flex items-center justify-center gap-0.5 px-3 h-[26px] text-xs font-bold bg-primary text-white rounded-md cursor-pointer transition-colors shrink-0"
+                >
+                  <span className={crossOutMode ? "" : "line-through"}>A</span>
+                  <span className={crossOutMode ? "" : "line-through"}>B</span>
+                  <span className={crossOutMode ? "" : "line-through"}>C</span>
+                </button>
+              )}
             </div>
 
             <div className="flex-1 overflow-y-auto px-8 py-6">
@@ -311,6 +354,10 @@ function TestContent() {
                       })
                     }
                   />
+                  <div className="mt-4 text-sm text-gray-600" style={{ fontFamily: "Arial, sans-serif" }}>
+                    <span className="font-medium">Answer preview: </span>
+                    <span className="text-gray-900 font-mono">{answered || "\u2014"}</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -364,9 +411,9 @@ function TestContent() {
 
       {state.section === "break" && state.breakTimer !== undefined && (
         <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-          <div className="bg-white rounded-2xl shadow-lg px-10 py-8 text-center" style={{ fontFamily: "Arial, sans-serif" }}>
-            <p className="text-sm text-gray-600 mb-2">Remaining Break Time</p>
-            <p className="text-4xl font-bold text-gray-900 mb-6 tabular-nums tracking-wider">
+          <div className="bg-black rounded-2xl shadow-lg px-10 py-8 text-center border border-gray-700">
+            <p className="text-sm text-gray-400 mb-2">Remaining Break Time</p>
+            <p className="text-4xl font-bold text-white mb-6 tabular-nums tracking-wider">
               {Math.floor(state.breakTimer / 60)}:{String(state.breakTimer % 60).padStart(2, "0")}
             </p>
             <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="px-10 py-3 bg-continue text-black font-bold text-sm rounded-full hover:bg-continue-hover cursor-pointer">Resume Testing</button>
