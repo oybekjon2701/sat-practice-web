@@ -106,7 +106,7 @@ export default function Dashboard() {
         {isSignedIn ? (
           <div className="flex items-center gap-3 relative" ref={dropdownRef}>
             <button onClick={() => setShowDropdown(!showDropdown)} className="text-sm text-slate-600 hover:text-slate-800 font-medium cursor-pointer">
-              {user?.firstName || "Student"}
+              {user?.firstName || user?.fullName || user?.emailAddresses?.[0]?.emailAddress || ""}
             </button>
             {showDropdown && (
               <div className="absolute top-full right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-lg py-1 min-w-[140px] z-50">

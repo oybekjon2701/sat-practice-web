@@ -500,7 +500,7 @@ export function TestProvider({ children, mockId, restore }: TestProviderProps) {
     const test = mockTests.find((t) => t.id === mockId);
     if (!test) return;
     const s = getInitialState(mockId);
-    dispatch({ type: "SET_USER", userName: user?.fullName || user?.emailAddresses?.[0]?.emailAddress || "Student" });
+    dispatch({ type: "SET_USER", userName: user?.fullName || user?.emailAddresses?.[0]?.emailAddress || "" });
     dispatch({ type: "SET_STATE", state: { ...s, section: "directions" } });
   };
 
