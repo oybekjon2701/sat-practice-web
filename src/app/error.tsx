@@ -19,7 +19,7 @@ export default function ErrorPage({
         </p>
         <button
           onClick={reset}
-          className="bg-[#1a73e8] text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors cursor-pointer"
+          className="bg-blue-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors cursor-pointer"
         >
           Try Again
         </button>

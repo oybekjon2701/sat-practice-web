@@ -20,12 +20,12 @@ export default function MyTestsPage() {
   if (!isLoaded || !isSignedIn || !user) return null;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-sat-bg">
       <header className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200">
         <Link href="/dashboard">
           <div className="flex items-baseline gap-1">
             <span className="text-xl font-bold text-slate-800">satzone.</span>
-            <span className="text-[10px] font-bold text-[#0d9488] tracking-[2px]">SAT CENTER</span>
+            <span className="text-[10px] font-bold text-sat-teal tracking-[2px]">SAT CENTER</span>
           </div>
         </Link>
         <nav className="flex items-center gap-6">
@@ -59,7 +59,7 @@ export default function MyTestsPage() {
               className="bg-white rounded-xl border border-slate-200 p-5 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-teal-50 text-[#0d9488] flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-teal-50 text-sat-teal flex items-center justify-center shrink-0">
                   <BookOpen className="w-5 h-5" />
                 </div>
                 <div>
@@ -82,7 +82,7 @@ export default function MyTestsPage() {
               </div>
               <Link
                 href={`/test?mockId=${test.id}`}
-                className="shrink-0 inline-flex items-center gap-1.5 bg-[#0d9488] text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#0f766e] transition-colors text-sm"
+                className="shrink-0 inline-flex items-center gap-1.5 bg-sat-teal text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-sat-teal-hover transition-colors text-sm"
               >
                 Start Test
                 <ArrowRight className="w-3.5 h-3.5" />

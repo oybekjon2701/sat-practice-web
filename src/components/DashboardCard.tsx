@@ -11,7 +11,7 @@ interface DashboardCardProps {
 export default function DashboardCard({ icon, title, description, href }: DashboardCardProps) {
   const content = (
     <div className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer h-full">
-      <div className="w-10 h-10 rounded-xl bg-[#FF6B00]/10 flex items-center justify-center mb-4 text-[#FF6B00] group-hover:bg-[#FF6B00]/15 transition-colors">
+      <div className="w-10 h-10 rounded-xl bg-sat-orange/10 flex items-center justify-center mb-4 text-sat-orange group-hover:bg-sat-orange/15 transition-colors">
         {icon}
       </div>
       <h3 className="font-semibold text-gray-800 mb-1">{title}</h3>

@@ -21,13 +21,13 @@ export default function LoginPage() {
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Sign in to continue</h1>
         <Link
           href="/sign-in"
-          className="inline-block bg-[#1a73e8] text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700"
+          className="inline-block bg-blue-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700"
         >
           Sign In
         </Link>
         <p className="mt-4 text-sm text-gray-500">
           Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="text-[#1a73e8] hover:underline">Sign up</Link>
+          <Link href="/sign-up" className="text-blue-primary hover:underline">Sign up</Link>
         </p>
       </div>
     </div>

@@ -24,12 +24,14 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
   const timerWarning = min < 5;
 
   useEffect(() => {
-    if ("getBattery" in navigator) {
-      (navigator as any).getBattery().then((battery: any) => {
-        setBatteryLevel(Math.round(battery.level * 100));
-        battery.addEventListener("levelchange", () => setBatteryLevel(Math.round(battery.level * 100)));
-      });
-    }
+    try {
+      if ("getBattery" in navigator) {
+        (navigator as any).getBattery().then((battery: any) => {
+          setBatteryLevel(Math.round(battery.level * 100));
+          battery.addEventListener("levelchange", () => setBatteryLevel(Math.round(battery.level * 100)));
+        }).catch(() => {});
+      }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -43,13 +45,13 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
   }, []);
 
   return (
-    <div className="shrink-0 bg-[#edf2fa]" style={{ fontFamily: "Arial, sans-serif" }}>
-      <div className="h-16 flex items-center px-6" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
+    <div className="shrink-0 bg-header-bg" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="h-20 flex items-center px-6" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
         <div className="flex items-center gap-8 w-[320px]">
           <div>
             <h1 className="text-base font-bold text-gray-800">Section 1, Module 1: {sectionLabel}</h1>
             <div className="relative" ref={dirRef}>
-              <button onClick={() => setShowDirections(!showDirections)} className="text-xs text-[#0033aa] underline cursor-pointer flex items-center gap-0.5">
+              <button onClick={() => setShowDirections(!showDirections)} className="text-xs text-primary underline cursor-pointer flex items-center gap-0.5">
                 Directions <span className="text-sm leading-none">▾</span>
               </button>
               {showDirections && (
@@ -73,8 +75,8 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
 
         <div className="w-[320px] flex items-center justify-end gap-5">
           <div className="flex items-center gap-1">
-            <span className="text-[11px] text-gray-600 font-medium">{batteryLevel !== null ? `${batteryLevel}%` : ""}</span>
-            <svg className="w-4 h-4 text-gray-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
+            <span className={`text-[11px] font-medium ${batteryLevel !== null && batteryLevel < 20 ? "text-red-500" : "text-gray-600"}`}>{batteryLevel !== null ? `${batteryLevel}%` : ""}</span>
+            <svg className={`w-4 h-4 ${batteryLevel !== null && batteryLevel < 20 ? "text-red-400" : "text-gray-500"}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
               <rect x="1" y="6" width="15" height="9" rx="1" />
               <rect x="16" y="9" width="2" height="3" rx="0.5" />
               <rect x="3" y="8" width="4" height="5" fill="currentColor" opacity="0.8" rx="0.5" />
@@ -92,7 +94,7 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
                 <line x1="6" y1="12" x2="11" y2="12" />
               </svg>
             </button>
-            <span className={`text-[10px] ${highlightActive ? "text-[#0033aa] font-bold" : "text-gray-500"}`}>Highlighting &amp; Notes</span>
+            <span className={`text-[10px] ${highlightActive ? "text-primary font-bold" : "text-gray-500"}`}>Highlighting &amp; Notes</span>
           </div>
           <div className="flex flex-col items-center gap-0.5">
             <button onClick={onOpenMore} className="cursor-pointer p-1 hover:bg-gray-200 rounded transition-colors">

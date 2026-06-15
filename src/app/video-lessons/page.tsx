@@ -30,12 +30,12 @@ export default function VideoLessonsPage() {
   if (!isLoaded || !isSignedIn) return null;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-sat-bg">
       <header className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200">
         <Link href="/dashboard">
           <div className="flex items-baseline gap-1">
             <span className="text-xl font-bold text-slate-800">satzone.</span>
-            <span className="text-[10px] font-bold text-[#0d9488] tracking-[2px]">SAT CENTER</span>
+            <span className="text-[10px] font-bold text-sat-teal tracking-[2px]">SAT CENTER</span>
           </div>
         </Link>
         <nav className="flex items-center gap-6">
@@ -70,7 +70,7 @@ export default function VideoLessonsPage() {
             <div key={lesson.title} className="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow group cursor-pointer">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 group-hover:bg-teal-100 transition-colors">
-                  <Play className="w-5 h-5 text-[#0d9488] ml-0.5" />
+                  <Play className="w-5 h-5 text-sat-teal ml-0.5" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
@@ -98,7 +98,7 @@ export default function VideoLessonsPage() {
           </div>
           <Link
             href="/my-tests"
-            className="shrink-0 bg-white text-[#0d9488] font-semibold px-6 py-2.5 rounded-lg hover:bg-slate-100 transition-colors text-sm"
+            className="shrink-0 bg-white text-sat-teal font-semibold px-6 py-2.5 rounded-lg hover:bg-slate-100 transition-colors text-sm"
           >
             Take a practice test
           </Link>

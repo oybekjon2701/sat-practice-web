@@ -8,12 +8,12 @@ export default function PricingPage() {
   const { isSignedIn, isLoaded } = useUser();
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-sat-bg">
       <header className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200">
         <Link href="/dashboard">
           <div className="flex items-baseline gap-1">
             <span className="text-xl font-bold text-slate-800">satzone.</span>
-            <span className="text-[10px] font-bold text-[#0d9488] tracking-[2px]">SAT CENTER</span>
+            <span className="text-[10px] font-bold text-sat-teal tracking-[2px]">SAT CENTER</span>
           </div>
         </Link>
         <nav className="flex items-center gap-6">
@@ -40,8 +40,8 @@ export default function PricingPage() {
       </section>
 
       <main className="max-w-3xl mx-auto px-6 -mt-8 pb-16">
-        <div className="bg-white rounded-2xl border-2 border-[#0d9488] p-8 shadow-lg relative">
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#0d9488] text-white text-xs px-4 py-1 rounded-full font-bold uppercase tracking-wider">Current Plan</span>
+        <div className="bg-white rounded-2xl border-2 border-sat-teal p-8 shadow-lg relative">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-sat-teal text-white text-xs px-4 py-1 rounded-full font-bold uppercase tracking-wider">Current Plan</span>
           <h2 className="text-xl font-bold text-slate-800 mb-1 text-center">Full Access — Free Trial</h2>
           <p className="text-slate-500 text-sm text-center mb-6">Everything unlocked until August 15, 2026</p>
 
@@ -57,7 +57,7 @@ export default function PricingPage() {
               "All future updates",
             ].map((feature) => (
               <div key={feature} className="flex items-center gap-2 text-sm text-slate-700">
-                <svg className="w-4 h-4 text-[#0d9488] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <svg className="w-4 h-4 text-sat-teal shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 {feature}
@@ -70,7 +70,7 @@ export default function PricingPage() {
             className={`block w-full text-center py-3.5 rounded-xl font-bold text-base ${
               !isLoaded
                 ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-[#0d9488] text-white hover:bg-[#0f766e] transition-colors"
+                : "bg-sat-teal text-white hover:bg-sat-teal-hover transition-colors"
             }`}
           >
             {!isLoaded ? "Loading..." : isSignedIn ? "Start a Practice Test" : "Create Free Account"}

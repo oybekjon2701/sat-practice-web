@@ -72,9 +72,9 @@ export function useAnnotations() {
 }
 
 export const colorMap: Record<HighlightColor, string> = {
-  yellow: "bg-yellow-200",
-  pink: "bg-pink-200",
-  blue: "bg-blue-200",
+  yellow: "bg-hl-yellow",
+  pink: "bg-hl-pink",
+  blue: "bg-hl-blue",
 };
 
 export const underlineStyles: Record<string, string> = {

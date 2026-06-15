@@ -13,7 +13,7 @@ export default function PracticeCard({ icon, title, description, href, progress 
   const content = (
     <div className="group bg-white rounded-lg shadow-sm border border-slate-200 p-4 hover:shadow-md transition-all cursor-pointer flex flex-col min-w-0">
       <div className="flex items-center gap-3 mb-2">
-        <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center shrink-0 text-[#0d9488] group-hover:bg-teal-100 transition-colors">
+        <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center shrink-0 text-sat-teal group-hover:bg-teal-100 transition-colors">
           {icon}
         </div>
         <h3 className="font-semibold text-slate-800 text-sm truncate">{title}</h3>
@@ -23,11 +23,11 @@ export default function PracticeCard({ icon, title, description, href, progress 
         <div className="mt-auto pt-3">
           <div className="flex items-center justify-between text-[11px] mb-1">
             <span className="text-slate-400 font-medium">Progress</span>
-            <span className="text-[#0d9488] font-semibold">{progress}%</span>
+            <span className="text-sat-teal font-semibold">{progress}%</span>
           </div>
           <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#0d9488] rounded-full transition-all duration-500"
+              className="h-full bg-sat-teal rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>

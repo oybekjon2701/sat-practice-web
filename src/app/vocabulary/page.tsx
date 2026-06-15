@@ -35,12 +35,12 @@ export default function VocabularyPage() {
   if (!isLoaded || !isSignedIn) return null;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-sat-bg">
       <header className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200">
         <Link href="/dashboard">
           <div className="flex items-baseline gap-1">
             <span className="text-xl font-bold text-slate-800">satzone.</span>
-            <span className="text-[10px] font-bold text-[#0d9488] tracking-[2px]">SAT CENTER</span>
+            <span className="text-[10px] font-bold text-sat-teal tracking-[2px]">SAT CENTER</span>
           </div>
         </Link>
         <nav className="flex items-center gap-6">
@@ -78,7 +78,7 @@ export default function VocabularyPage() {
                 <span className="text-xs text-slate-400 font-medium">{set.words} words</span>
               </div>
               <p className="text-sm text-slate-500 mb-3">{set.desc}</p>
-              <span className="inline-flex items-center gap-1 text-sm font-medium text-[#0d9488] hover:underline">
+              <span className="inline-flex items-center gap-1 text-sm font-medium text-sat-teal hover:underline">
                 Start learning <ChevronRight className="w-3 h-3" />
               </span>
             </div>
@@ -118,7 +118,7 @@ export default function VocabularyPage() {
           </div>
           <Link
             href="/my-tests"
-            className="shrink-0 bg-white text-[#0d9488] font-semibold px-6 py-2.5 rounded-lg hover:bg-slate-100 transition-colors text-sm"
+            className="shrink-0 bg-white text-sat-teal font-semibold px-6 py-2.5 rounded-lg hover:bg-slate-100 transition-colors text-sm"
           >
             Take a practice test
           </Link>

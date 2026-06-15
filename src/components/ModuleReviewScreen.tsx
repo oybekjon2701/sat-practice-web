@@ -8,7 +8,7 @@ function ConfirmModal({ onConfirm, onCancel }: { onConfirm: () => void; onCancel
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm mx-4 p-6 text-center">
         <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-6 h-6 text-[#1a73e8]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-6 h-6 text-blue-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
           </svg>
         </div>
@@ -20,7 +20,7 @@ function ConfirmModal({ onConfirm, onCancel }: { onConfirm: () => void; onCancel
           <button onClick={onCancel} className="flex-1 py-2.5 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer font-medium text-sm">
             Cancel
           </button>
-          <button onClick={onConfirm} className="flex-1 py-2.5 bg-[#1a73e8] text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer font-medium text-sm">
+          <button onClick={onConfirm} className="flex-1 py-2.5 bg-blue-primary text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer font-medium text-sm">
             Submit
           </button>
         </div>
@@ -98,7 +98,7 @@ export default function ModuleReviewScreen() {
               >
                 <div className={`w-full h-full flex items-center justify-center rounded-lg ${
                   answered
-                    ? "bg-[#1a73e8] text-white"
+                    ? "bg-blue-primary text-white"
                     : "bg-white text-gray-600 border-2 border-gray-300"
                 } ${timeExpired ? "opacity-60" : ""}`}>
                   {q.questionNumber}
@@ -115,7 +115,7 @@ export default function ModuleReviewScreen() {
 
         <div className="flex items-center justify-center gap-4 text-xs text-gray-500 mb-6">
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-[#1a73e8]" />
+            <span className="w-3 h-3 rounded bg-blue-primary" />
             Answered
           </div>
           <div className="flex items-center gap-1.5">
@@ -139,7 +139,7 @@ export default function ModuleReviewScreen() {
           </button>
           <button
             onClick={() => setShowConfirm(true)}
-            className="flex-1 py-3 bg-[#1a73e8] text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+            className="flex-1 py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
           >
             Submit Module
           </button>

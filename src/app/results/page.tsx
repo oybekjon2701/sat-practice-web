@@ -86,7 +86,7 @@ function ResultsContent() {
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-6">
           <div className="text-center mb-8">
-            <div className="text-6xl font-bold text-[#1a73e8] mb-1">{totalScore}</div>
+            <div className="text-6xl font-bold text-blue-primary mb-1">{totalScore}</div>
             <div className="text-gray-500 text-sm">Total Score</div>
             <div className="text-xs text-gray-400 mt-1">400–1600 scale</div>
           </div>
@@ -104,14 +104,14 @@ function ResultsContent() {
                   <span className="text-sm font-medium text-gray-800">Reading & Writing</span>
                   <span className="text-xs text-gray-500 ml-2">{readingCorrect}/{readingTotal} correct</span>
                 </div>
-                <span className="text-lg font-bold text-[#1a73e8]">{readingScore}</span>
+                <span className="text-lg font-bold text-blue-primary">{readingScore}</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div>
                   <span className="text-sm font-medium text-gray-800">Math</span>
                   <span className="text-xs text-gray-500 ml-2">{mathCorrect}/{mathTotal} correct</span>
                 </div>
-                <span className="text-lg font-bold text-[#1e8e3e]">{mathScore}</span>
+                <span className="text-lg font-bold text-sat-green">{mathScore}</span>
               </div>
             </div>
           </div>
@@ -145,7 +145,7 @@ function ResultsContent() {
             className="w-full flex items-center justify-between text-left cursor-pointer"
           >
             <h3 className="font-semibold text-gray-800">Answer Review</h3>
-            <span className="text-sm text-[#1a73e8]">{showBreakdown ? "Hide" : "Show"}</span>
+            <span className="text-sm text-blue-primary">{showBreakdown ? "Hide" : "Show"}</span>
           </button>
           {showBreakdown && (
             <div className="mt-4 space-y-2 max-h-[500px] overflow-y-auto">
@@ -188,7 +188,7 @@ function ResultsContent() {
                       </div>
                       <button
                         onClick={() => toggleExpand(q.id)}
-                        className="text-[#1a73e8] hover:text-blue-700 text-xs font-medium shrink-0 cursor-pointer"
+                        className="text-blue-primary hover:text-blue-700 text-xs font-medium shrink-0 cursor-pointer"
                       >
                         {expanded ? "Collapse" : "Expand"}
                       </button>
@@ -206,10 +206,10 @@ function ResultsContent() {
             You have completed {state.mockName}. Review your answers and try another practice test to improve your score.
           </p>
           <div className="flex gap-3">
-            <Link href="/" className="inline-block py-2.5 px-6 bg-[#1a73e8] text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-sm">
+            <Link href="/" className="inline-block py-2.5 px-6 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors text-sm">
               Back to Home
             </Link>
-            <Link href="/test?mockId=mock-1" className="inline-block py-2.5 px-6 bg-white text-[#1a73e8] font-semibold rounded-lg border border-[#1a73e8] hover:bg-blue-50 transition-colors text-sm">
+            <Link href="/test?mockId=mock-1" className="inline-block py-2.5 px-6 bg-white text-blue-primary font-semibold rounded-lg border border-blue-primary hover:bg-blue-50 transition-colors text-sm">
               Try Another Test
             </Link>
           </div>

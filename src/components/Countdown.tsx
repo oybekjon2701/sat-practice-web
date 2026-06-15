@@ -54,14 +54,14 @@ export default function Countdown() {
     return (
       <div className="bg-white rounded-2xl border border-gray-200 p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Calendar className="w-5 h-5 text-[#FF6B00]" />
+          <Calendar className="w-5 h-5 text-sat-orange" />
           <h3 className="font-semibold text-gray-800">SAT Exam Countdown</h3>
         </div>
         <p className="text-sm text-gray-500 mb-4">Set your SAT exam date to see a live countdown.</p>
         <input
           type="date"
           onChange={handleSetDate}
-          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] cursor-pointer"
+          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-sat-orange/20 focus:border-sat-orange cursor-pointer"
         />
       </div>
     );
@@ -78,7 +78,7 @@ export default function Countdown() {
     <div className="bg-white rounded-2xl border border-gray-200 p-6">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Clock className="w-5 h-5 text-[#FF6B00]" />
+          <Clock className="w-5 h-5 text-sat-orange" />
           <h3 className="font-semibold text-gray-800">Countdown to SAT</h3>
         </div>
         <button

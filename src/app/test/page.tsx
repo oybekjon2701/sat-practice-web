@@ -39,7 +39,7 @@ function Directions({ onStart }: { onStart: () => void }) {
             {state.modules[0].questions.length} questions
           </p>
 
-          <div className="text-sm text-black space-y-1.5 mb-6 border border-black p-3 bg-[#f0f2f5]">
+          <div className="text-sm text-black space-y-1.5 mb-6 border border-black p-3 bg-notice-bg">
             {isReading ? (
               <>
                 <p>• Each passage or paired set is followed by one or more questions.</p>
@@ -58,7 +58,7 @@ function Directions({ onStart }: { onStart: () => void }) {
 
           <button
             onClick={handleStart}
-            className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-gray-300 hover:bg-[#d4a600] cursor-pointer rounded-full"
+            className="w-full py-3 bg-continue text-black font-bold text-sm border border-gray-300 hover:bg-continue-hover cursor-pointer rounded-full"
             style={{ fontFamily: "Arial, sans-serif" }}
           >
             Continue
@@ -90,7 +90,7 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
         </div>
         <button
           onClick={onEndBreak}
-          className="w-full py-3 bg-[#e8b800] text-black font-bold text-sm border border-gray-300 hover:bg-[#d4a600] cursor-pointer rounded-full"
+          className="w-full py-3 bg-continue text-black font-bold text-sm border border-gray-300 hover:bg-continue-hover cursor-pointer rounded-full"
         >
           {timeLeft > 0 ? "Skip Break" : "Start Math Section"}
         </button>
@@ -193,7 +193,7 @@ function TestContent() {
       />
 
       <div className="flex items-center justify-center shrink-0 bg-white">
-        <span className="text-[11px] font-bold text-white bg-[#1a4972] px-6 uppercase tracking-wider rounded" style={{ width: "calc(100% - 48px)", maxWidth: "900px", textAlign: "center", lineHeight: "28px" }}>This is a practice test</span>
+        <span className="text-[11px] font-bold text-white bg-banner-bg px-6 uppercase tracking-wider rounded" style={{ width: "calc(100% - 48px)", maxWidth: "900px", textAlign: "center", lineHeight: "28px" }}>This is a practice test</span>
       </div>
 
       <AnnotationProvider>
@@ -217,7 +217,7 @@ function TestContent() {
             </>
           )}
 
-          <div className={`overflow-hidden flex flex-col bg-[#fafafa] ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
+          <div className={`overflow-hidden flex flex-col bg-panel-bg ${currentQ.passage ? "" : "flex-1 max-w-2xl mx-auto"}`} style={currentQ.passage ? { flex: `1 1 ${100 - splitPos}%` } : {}}>
             <div className="flex items-center gap-3 px-8 py-2 bg-white" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
               <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-900 text-white text-sm font-bold">
                 {currentQ.questionNumber}
@@ -232,14 +232,6 @@ function TestContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
                 <span>{state.flaggedForReview.includes(currentQ.id) ? "Marked" : "Mark for Review"}</span>
-              </button>
-              <button
-                onClick={() => setCrossOutMode(!crossOutMode)}
-                className="inline-flex items-center justify-center gap-0.5 w-[64px] h-[30px] text-xs font-bold bg-[#0033aa] text-white rounded-md cursor-pointer transition-colors shrink-0"
-              >
-                <span className={crossOutMode ? "" : "line-through"}>A</span>
-                <span className={crossOutMode ? "" : "line-through"}>B</span>
-                <span className={crossOutMode ? "" : "line-through"}>C</span>
               </button>
             </div>
 
@@ -256,6 +248,16 @@ function TestContent() {
 
               {currentQ.type === "mcq" && currentQ.choices && (
                 <div className="space-y-3 max-w-xl">
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => setCrossOutMode(!crossOutMode)}
+                      className="inline-flex items-center justify-center gap-0.5 px-3 h-[26px] text-xs font-bold bg-primary text-white rounded-md cursor-pointer transition-colors shrink-0"
+                    >
+                      <span className={crossOutMode ? "" : "line-through"}>A</span>
+                      <span className={crossOutMode ? "" : "line-through"}>B</span>
+                      <span className={crossOutMode ? "" : "line-through"}>C</span>
+                    </button>
+                  </div>
                   {currentQ.choices.map((c) => (
                     <AnswerChoice
                       key={c.label}
@@ -332,7 +334,7 @@ function TestContent() {
             <p className="text-sm text-gray-600 mb-5">Your progress for this module will be lost.</p>
             <div className="flex gap-3">
               <button onClick={() => setShowExitConfirm(false)} className="flex-1 py-2 border border-gray-200 text-gray-600 text-sm bg-white hover:bg-gray-50 cursor-pointer rounded-full">Cancel</button>
-              <button onClick={() => router.push("/my-tests")} className="flex-1 py-2 text-white text-sm bg-[#0033aa] hover:bg-[#002288] cursor-pointer rounded-full">Exit</button>
+              <button onClick={() => router.push("/my-tests")} className="flex-1 py-2 text-white text-sm bg-primary hover:bg-primary-hover cursor-pointer rounded-full">Exit</button>
             </div>
           </div>
         </div>
@@ -343,7 +345,7 @@ function TestContent() {
           <div className="bg-white border border-gray-200 p-6 max-w-sm mx-4 text-center rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
             <h3 className="text-base font-bold text-gray-800 mb-1">Break</h3>
             <p className="text-sm text-gray-600 mb-5">Timer is paused.</p>
-            <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="w-full py-2 bg-[#0033aa] text-white text-sm hover:bg-[#002288] cursor-pointer rounded-full">Resume Test</button>
+            <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="w-full py-2 bg-primary text-white text-sm hover:bg-primary-hover cursor-pointer rounded-full">Resume Test</button>
           </div>
         </div>
       )}
@@ -373,7 +375,7 @@ function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onE
               <div className="flex justify-between"><span>Mark for Review</span><span className="text-gray-500 font-mono">Ctrl+M</span></div>
               <div className="flex justify-between"><span>Cross-Out Mode</span><span className="text-gray-500 font-mono">Ctrl+Shift+X</span></div>
             </div>
-            <button onClick={() => setShowShortcuts(false)} className="w-full mt-4 py-2 bg-[#0033aa] text-white text-sm font-medium cursor-pointer rounded-full hover:bg-[#002288]">Close</button>
+            <button onClick={() => setShowShortcuts(false)} className="w-full mt-4 py-2 bg-primary text-white text-sm font-medium cursor-pointer rounded-full hover:bg-primary-hover">Close</button>
           </div>
         </div>
       )}

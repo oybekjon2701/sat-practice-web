@@ -22,7 +22,7 @@ export default function HighlightsPanel({ onClose }: Props) {
 
   return (
     <div className="w-80 border-l border-gray-200 bg-white flex flex-col shrink-0" style={{ fontFamily: "Arial, sans-serif" }}>
-      <div className="flex items-center justify-between px-3 py-2 border-b border-black bg-[#f0f2f5]">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-black bg-notice-bg">
         <span className="text-xs font-bold text-black">Annotations ({count})</span>
         <button onClick={onClose} className="text-black cursor-pointer hover:opacity-70">
           <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -37,7 +37,7 @@ export default function HighlightsPanel({ onClose }: Props) {
             key={f}
             onClick={() => setFilter(f)}
             className={`text-[10px] px-1.5 py-0.5 cursor-pointer ${
-              filter === f ? "bg-black text-white" : "text-black hover:bg-[#f0f2f5]"
+              filter === f ? "bg-black text-white" : "text-black hover:bg-notice-bg"
             }`}
           >
             {f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1)}

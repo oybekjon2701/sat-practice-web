@@ -3,12 +3,39 @@
 @theme {
   --color-sat-dark: #1e293b;
   --color-sat-teal: #0d9488;
+  --color-sat-teal-hover: #0f766e;
   --color-sat-bg: #f8fafc;
   --color-sat-light: #f8f9fa;
   --color-sat-border: #e2e8f0;
   --color-sat-green: #1e8e3e;
   --color-sat-yellow: #f9ab00;
   --color-sat-red: #d93025;
+  --color-sat-orange: #FF6B00;
+
+  --color-primary: #0033aa;
+  --color-primary-hover: #002288;
+  --color-header-bg: #edf2fa;
+  --color-selected-bg: #e8f0fe;
+  --color-banner-bg: #1a4972;
+  --color-continue: #e8b800;
+  --color-continue-hover: #d4a600;
+  --color-panel-bg: #fafafa;
+  --color-notice-bg: #f0f2f5;
+  --color-hover-dark: #333;
+
+  --color-blue-primary: #1a73e8;
+  --color-blue-primary-hover: #1765c1;
+  --color-red-deep: #dc2626;
+
+  --color-hl-yellow: #fde047;
+  --color-hl-pink: #f9a8d4;
+  --color-hl-blue: #93c5fd;
+  --color-hl-yellow-border: #eab308;
+  --color-hl-pink-border: #ec4899;
+  --color-hl-blue-border: #3b82f6;
+  --color-hl-yellow-ring: #facc15;
+  --color-hl-pink-ring: #f472b6;
+  --color-hl-blue-ring: #60a5fa;
 }
 
 * {

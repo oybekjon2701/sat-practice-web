@@ -90,12 +90,12 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8fafc]">
+    <div className="min-h-screen bg-sat-bg">
       <header className="flex items-center justify-between px-6 md:px-10 py-4 bg-white border-b border-slate-200">
         <Link href="/dashboard">
           <div className="flex items-baseline gap-1">
             <span className="text-xl font-bold text-slate-800">satzone.</span>
-            <span className="text-[10px] font-bold text-[#0d9488] tracking-[2px]">SAT CENTER</span>
+            <span className="text-[10px] font-bold text-sat-teal tracking-[2px]">SAT CENTER</span>
           </div>
         </Link>
         <nav className="hidden sm:flex items-center gap-6">
@@ -117,7 +117,7 @@ export default function Dashboard() {
             )}
           </div>
         ) : (
-          <Link href="/sign-in" className="bg-[#0d9488] text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-[#0f766e]">Sign In</Link>
+          <Link href="/sign-in" className="bg-sat-teal text-white text-sm font-semibold px-5 py-2 rounded-lg hover:bg-sat-teal-hover">Sign In</Link>
         )}
       </header>
 
@@ -137,7 +137,7 @@ export default function Dashboard() {
                 <div className="flex flex-wrap items-center gap-4">
                   <Link
                     href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
-                    className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#0f766e] transition-colors shadow-sm"
+                    className="inline-flex items-center gap-2 bg-sat-teal text-white font-semibold px-6 py-3 rounded-lg hover:bg-sat-teal-hover transition-colors shadow-sm"
                   >
                     Start Full-Length Practice Test
                     <ArrowRight className="w-4 h-4" />
@@ -181,28 +181,28 @@ export default function Dashboard() {
                     </button>
                     <div className="flex items-center justify-center gap-1 select-none">
                       <div className="text-center">
-                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
+                        <span className="text-5xl md:text-6xl font-black text-red-deep tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.days).padStart(2, "0")}
                         </span>
                         <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Days</div>
                       </div>
-                      <span className="text-4xl md:text-5xl font-black text-[#dc2626] mx-0.5 mt-[-1.5rem] opacity-60">:</span>
+                      <span className="text-4xl md:text-5xl font-black text-red-deep mx-0.5 mt-[-1.5rem] opacity-60">:</span>
                       <div className="text-center">
-                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
+                        <span className="text-5xl md:text-6xl font-black text-red-deep tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.hours).padStart(2, "0")}
                         </span>
                         <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Hours</div>
                       </div>
-                      <span className="text-4xl md:text-5xl font-black text-[#dc2626] mx-0.5 mt-[-1.5rem] opacity-60">:</span>
+                      <span className="text-4xl md:text-5xl font-black text-red-deep mx-0.5 mt-[-1.5rem] opacity-60">:</span>
                       <div className="text-center">
-                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
+                        <span className="text-5xl md:text-6xl font-black text-red-deep tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.minutes).padStart(2, "0")}
                         </span>
                         <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Minutes</div>
                       </div>
-                      <span className="text-4xl md:text-5xl font-black text-[#dc2626] mx-0.5 mt-[-1.5rem] opacity-60">:</span>
+                      <span className="text-4xl md:text-5xl font-black text-red-deep mx-0.5 mt-[-1.5rem] opacity-60">:</span>
                       <div className="text-center">
-                        <span className="text-5xl md:text-6xl font-black text-[#dc2626] tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
+                        <span className="text-5xl md:text-6xl font-black text-red-deep tabular-nums drop-shadow-[0_0_10px_rgba(220,38,38,0.5)] leading-none">
                           {String(remaining.seconds).padStart(2, "0")}
                         </span>
                         <div className="text-[11px] text-slate-400 mt-1 uppercase tracking-wider">Seconds</div>
@@ -228,22 +228,22 @@ export default function Dashboard() {
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-4 md:gap-8 text-sm text-slate-600">
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-[#0d9488]">RW</div>
+                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-sat-teal">RW</div>
                 <span>Reading &amp; Writing</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-[#0d9488]">M</div>
+                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-sat-teal">M</div>
                 <span>Math</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-[#0d9488]">2</div>
+                <div className="w-5 h-5 rounded bg-teal-50 flex items-center justify-center text-[10px] font-bold text-sat-teal">2</div>
                 <span>Adaptive Modules</span>
               </div>
             </div>
             <div className="mt-6 flex items-center gap-3">
               <Link
                 href={isSignedIn ? "/my-tests" : "/sign-in?redirect_url=/my-tests"}
-                className="inline-flex items-center gap-2 bg-[#0d9488] text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-[#0f766e] transition-colors text-sm"
+                className="inline-flex items-center gap-2 bg-sat-teal text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-sat-teal-hover transition-colors text-sm"
               >
                 {isSignedIn ? "Take a Test" : "Start Free Practice"}
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -257,7 +257,7 @@ export default function Dashboard() {
           <h2 className="text-xl font-bold text-slate-800 mb-6">Courses</h2>
           <div className="grid md:grid-cols-3 gap-5">
             <Link href="/themed-questions" className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow block">
-              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-sat-teal mb-4">
                 <BookOpen className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-slate-800 mb-1.5">Themed Practice Questions</h3>
@@ -266,7 +266,7 @@ export default function Dashboard() {
             </Link>
 
             <Link href="/video-lessons" className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow block">
-              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-sat-teal mb-4">
                 <Video className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-slate-800 mb-1.5">Video Lessons</h3>
@@ -275,7 +275,7 @@ export default function Dashboard() {
             </Link>
 
             <Link href="/vocabulary" className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow block">
-              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-[#0d9488] mb-4">
+              <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center text-sat-teal mb-4">
                 <BookMarked className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-slate-800 mb-1.5">Vocabulary Cards</h3>
@@ -292,7 +292,7 @@ export default function Dashboard() {
             <p className="text-teal-200 text-xs mb-6">No payment. No limits. Just focused SAT prep.</p>
             <Link
               href="/my-tests"
-              className="inline-flex items-center gap-2 bg-white text-[#0d9488] font-semibold px-6 py-3 rounded-lg hover:bg-slate-100 transition-colors text-sm"
+              className="inline-flex items-center gap-2 bg-white text-sat-teal font-semibold px-6 py-3 rounded-lg hover:bg-slate-100 transition-colors text-sm"
             >
               Start a full test
               <ArrowRight className="w-4 h-4" />

@@ -261,21 +261,21 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             className="absolute z-50 flex items-center gap-1 bg-white border border-black px-1.5 py-1"
             style={{ left: popup.x, top: popup.y, fontFamily: "Arial, sans-serif" }}
           >
-            <button onClick={() => handleAddHighlight("yellow")} className="w-6 h-6 rounded-full bg-yellow-300 border-2 border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" title="Yellow highlight" />
-            <button onClick={() => handleAddHighlight("pink")} className="w-6 h-6 rounded-full bg-pink-300 border-2 border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" title="Pink highlight" />
-            <button onClick={() => handleAddHighlight("blue")} className="w-6 h-6 rounded-full bg-blue-300 border-2 border-blue-500 cursor-pointer hover:ring-2 hover:ring-blue-400" title="Blue highlight" />
+            <button onClick={() => handleAddHighlight("yellow")} className="w-6 h-6 rounded-full bg-hl-yellow border-2 border-hl-yellow-border cursor-pointer hover:ring-2 hover:ring-hl-yellow-ring" title="Yellow highlight" />
+            <button onClick={() => handleAddHighlight("pink")} className="w-6 h-6 rounded-full bg-hl-pink border-2 border-hl-pink-border cursor-pointer hover:ring-2 hover:ring-hl-pink-ring" title="Pink highlight" />
+            <button onClick={() => handleAddHighlight("blue")} className="w-6 h-6 rounded-full bg-hl-blue border-2 border-hl-blue-border cursor-pointer hover:ring-2 hover:ring-hl-blue-ring" title="Blue highlight" />
             <div className="w-px h-4 bg-gray-300 mx-0.5" />
             <div className="relative">
-              <button onClick={() => setShowUnderlineDropdown(!showUnderlineDropdown)} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Underline">U</button>
+              <button onClick={() => setShowUnderlineDropdown(!showUnderlineDropdown)} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-notice-bg" title="Underline">U</button>
               {showUnderlineDropdown && (
                 <div className="absolute left-0 top-full mt-0.5 bg-white border border-black z-50 min-w-[80px]">
-                  <button onClick={() => handleAddUnderline("single")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-[#f0f2f5] cursor-pointer underline decoration-1">Single</button>
-                  <button onClick={() => handleAddUnderline("dashed")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-[#f0f2f5] cursor-pointer underline decoration-dashed decoration-1">Dashed</button>
-                  <button onClick={() => handleAddUnderline("dotted")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-[#f0f2f5] cursor-pointer underline decoration-dotted decoration-1">Dotted</button>
+                  <button onClick={() => handleAddUnderline("single")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-notice-bg cursor-pointer underline decoration-1">Single</button>
+                  <button onClick={() => handleAddUnderline("dashed")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-notice-bg cursor-pointer underline decoration-dashed decoration-1">Dashed</button>
+                  <button onClick={() => handleAddUnderline("dotted")} className="block w-full text-left px-2 py-1 text-[10px] text-black hover:bg-notice-bg cursor-pointer underline decoration-dotted decoration-1">Dotted</button>
                 </div>
               )}
             </div>
-            <button onClick={handleAddNoteFromPopup} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Add note">
+            <button onClick={handleAddNoteFromPopup} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-notice-bg" title="Add note">
               <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
                 <rect x="3" y="2" width="14" height="16" rx="1" />
                 <line x1="6" y1="6" x2="14" y2="6" />
@@ -284,7 +284,7 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
               </svg>
             </button>
             <div className="w-px h-4 bg-gray-300 mx-0.5" />
-            <button onClick={() => { handleRemoveForText(popup.text); }} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]" title="Remove">
+            <button onClick={() => { handleRemoveForText(popup.text); }} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-notice-bg" title="Remove">
               <svg className="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
                 <circle cx="10" cy="10" r="7" />
                 <path strokeLinecap="round" d="M7 7l6 6M13 7l-6 6" />
@@ -298,12 +298,12 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
             className="fixed z-50 bg-white border border-black px-2 py-1.5 flex items-center gap-1"
             style={{ left: contextPopup.x, top: contextPopup.y, fontFamily: "Arial, sans-serif" }}
           >
-            <button onClick={() => contextAddHighlight("yellow")} className="w-6 h-6 rounded-full bg-yellow-300 border-2 border-yellow-500 cursor-pointer hover:ring-2 hover:ring-yellow-400" />
-            <button onClick={() => contextAddHighlight("pink")} className="w-6 h-6 rounded-full bg-pink-300 border-2 border-pink-500 cursor-pointer hover:ring-2 hover:ring-pink-400" />
-            <button onClick={() => contextAddHighlight("blue")} className="w-6 h-6 rounded-full bg-blue-300 border-2 border-blue-500 cursor-pointer hover:ring-2 hover:ring-gray-400" />
+            <button onClick={() => contextAddHighlight("yellow")} className="w-6 h-6 rounded-full bg-hl-yellow border-2 border-hl-yellow-border cursor-pointer hover:ring-2 hover:ring-hl-yellow-ring" />
+            <button onClick={() => contextAddHighlight("pink")} className="w-6 h-6 rounded-full bg-hl-pink border-2 border-hl-pink-border cursor-pointer hover:ring-2 hover:ring-hl-pink-ring" />
+            <button onClick={() => contextAddHighlight("blue")} className="w-6 h-6 rounded-full bg-hl-blue border-2 border-hl-blue-border cursor-pointer hover:ring-2 hover:ring-gray-400" />
             <div className="w-px h-4 bg-gray-300 mx-0.5" />
-            <button onClick={contextAddUnderline} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">U</button>
-            <button onClick={() => setContextPopup(null)} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-[#f0f2f5]">
+            <button onClick={contextAddUnderline} className="text-[11px] font-bold text-black border border-black px-1 py-0.5 cursor-pointer hover:bg-notice-bg">U</button>
+            <button onClick={() => setContextPopup(null)} className="text-[11px] text-black px-1 py-0.5 cursor-pointer hover:bg-notice-bg">
               <svg className="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
                 <circle cx="10" cy="10" r="7" />
                 <path strokeLinecap="round" d="M7 7l6 6M13 7l-6 6" />
@@ -319,8 +319,8 @@ export default function PassagePanel({ passage, title, imageUrl, imageAlt, under
               <p className="text-[11px] text-black mb-2 italic">&ldquo;{editingNote.text}&rdquo;</p>
               <textarea autoFocus value={editingNote.content} onChange={(e) => setEditingNote({ ...editingNote, content: e.target.value })} className="w-full border border-black text-xs p-1.5 mb-2 text-black resize-none" rows={3} />
               <div className="flex gap-2">
-                <button onClick={() => setEditingNote(null)} className="flex-1 py-1 text-xs border border-black text-black bg-white hover:bg-[#f0f2f5] cursor-pointer">Cancel</button>
-                <button onClick={handleSaveNote} className="flex-1 py-1 text-xs bg-black text-white hover:bg-[#333] cursor-pointer border border-black">Save</button>
+                <button onClick={() => setEditingNote(null)} className="flex-1 py-1 text-xs border border-black text-black bg-white hover:bg-notice-bg cursor-pointer">Cancel</button>
+                <button onClick={handleSaveNote} className="flex-1 py-1 text-xs bg-black text-white hover:bg-hover-dark cursor-pointer border border-black">Save</button>
               </div>
             </div>
           </div>
