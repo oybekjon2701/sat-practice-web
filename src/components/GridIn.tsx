@@ -21,9 +21,7 @@ export default function GridIn({ value, onChange }: Props) {
           className="w-32 text-center text-base border border-black px-3 py-2 text-black"
           style={{ fontFamily: "Arial, sans-serif" }}
         />
-        <span className="text-xs text-black" style={{ fontFamily: "Arial, sans-serif" }}>
-          fraction (3/5), decimal (0.75), or integer
-        </span>
+        
       </div>
     </div>
   );
