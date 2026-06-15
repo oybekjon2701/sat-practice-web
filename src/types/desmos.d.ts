@@ -23,7 +23,16 @@ declare module "desmos" {
     language?: string;
   }
 
-  interface GraphingCalculatorInstance {
+  interface ScientificCalculatorOptions {
+    keypad?: boolean;
+    settingsMenu?: boolean;
+    border?: boolean;
+    expressions?: boolean;
+    invertedColors?: boolean;
+    projectorMode?: boolean;
+  }
+
+  interface CalculatorInstance {
     setExpression(expression: Record<string, unknown>): void;
     setExpressions(expressions: Record<string, unknown>[]): void;
     getState(): Record<string, unknown>;
@@ -32,10 +41,12 @@ declare module "desmos" {
     screenshot(opts?: { width?: number; height?: number }): string;
   }
 
-  type GraphingCalculator = (elt: HTMLElement, options?: GraphingCalculatorOptions) => GraphingCalculatorInstance;
+  type GraphingCalculator = (elt: HTMLElement, options?: GraphingCalculatorOptions) => CalculatorInstance;
+  type ScientificCalculator = (elt: HTMLElement, options?: ScientificCalculatorOptions) => CalculatorInstance;
 
   const Desmos: {
     GraphingCalculator: GraphingCalculator;
+    ScientificCalculator: ScientificCalculator;
   };
 
   export default Desmos;

@@ -254,12 +254,12 @@ function TestContent() {
                           {[
                             ["3.5", "3.5", "3.50"],
                             ["7/2", "31/2", "3 1/2"],
-                            ["2/3", "2/3  .6666  .6667  0.666  0.667", "0.66  .66  0.67  .67"],
-                            ["-1/3", "-1/3  -.3333  -0.333", "-.33  -0.33"],
+                            ["2/3", "2/3,  .6666,  .6667,  0.666,  0.667", "0.66,  .66,  0.67,  .67"],
+                            ["-1/3", "-1/3,  -.3333,  -0.333", "-.33,  -0.33"],
                           ].map((row, i) => (
                             <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                               {row.map((cell, j) => (
-                                <td key={j} className="border border-gray-300 px-2 py-1">{cell}</td>
+                                <td key={j} className="border border-gray-300 px-2 py-1 whitespace-pre-wrap">{cell}</td>
                               ))}
                             </tr>
                           ))}
