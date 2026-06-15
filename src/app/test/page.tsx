@@ -79,21 +79,30 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
   }, [timeLeft]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-      <div className="bg-white border border-gray-200 w-full max-w-sm mx-4 p-6 text-center rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
-        <h1 className="text-lg font-bold text-black mb-2">Break</h1>
-        <p className="text-sm text-black mb-5">
-          Take a short break. The next section will begin automatically.
-        </p>
-        <div className="text-3xl font-bold text-black mb-5 tabular-nums">
-          {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <div className="flex items-start justify-between w-full max-w-4xl mx-auto px-10 gap-16" style={{ fontFamily: "Arial, sans-serif" }}>
+        <div className="flex flex-col items-center gap-6 pt-8">
+          <div className="bg-white rounded-2xl shadow-lg px-10 py-8 text-center">
+            <p className="text-sm text-gray-600 mb-2">Remaining Break Time</p>
+            <p className="text-5xl font-bold text-gray-900 tabular-nums tracking-wider">
+              {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+            </p>
+          </div>
+          <button
+            onClick={onEndBreak}
+            className="px-10 py-3 bg-continue text-black font-bold text-sm rounded-full hover:bg-continue-hover cursor-pointer shadow-lg"
+          >
+            Resume Testing
+          </button>
         </div>
-        <button
-          onClick={onEndBreak}
-          className="w-full py-3 bg-continue text-black font-bold text-sm border border-gray-300 hover:bg-continue-hover cursor-pointer rounded-full"
-        >
-          {timeLeft > 0 ? "Skip Break" : "Start Math Section"}
-        </button>
+        <div className="text-white pt-8 max-w-md space-y-4">
+          <h2 className="text-2xl font-bold">Practice test break:</h2>
+          <p className="text-sm leading-relaxed opacity-80">
+            You can resume this practice test as soon as you are ready to move on. On the test day, you&rsquo;ll wait until the clock counts down. Read below to see how breaks work on the test day.
+          </p>
+          <hr className="border-white/30" />
+          <p className="text-sm font-semibold">Take a Break, Do Not Close Your Device</p>
+        </div>
       </div>
     </div>
   );
@@ -343,11 +352,13 @@ function TestContent() {
       )}
 
       {state.section === "break" && state.breakTimer !== undefined && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-          <div className="bg-white border border-gray-200 p-6 max-w-sm mx-4 text-center rounded-2xl" style={{ fontFamily: "Arial, sans-serif" }}>
-            <h3 className="text-base font-bold text-gray-800 mb-1">Break</h3>
-            <p className="text-sm text-gray-600 mb-5">Timer is paused.</p>
-            <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="w-full py-2 bg-primary text-white text-sm hover:bg-primary-hover cursor-pointer rounded-full">Resume Test</button>
+        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+          <div className="bg-white rounded-2xl shadow-lg px-10 py-8 text-center" style={{ fontFamily: "Arial, sans-serif" }}>
+            <p className="text-sm text-gray-600 mb-2">Remaining Break Time</p>
+            <p className="text-4xl font-bold text-gray-900 mb-6 tabular-nums tracking-wider">
+              {Math.floor(state.breakTimer / 60)}:{String(state.breakTimer % 60).padStart(2, "0")}
+            </p>
+            <button onClick={() => dispatch({ type: "RESUME_BREAK" })} className="px-10 py-3 bg-continue text-black font-bold text-sm rounded-full hover:bg-continue-hover cursor-pointer">Resume Testing</button>
           </div>
         </div>
       )}
