@@ -102,6 +102,17 @@ function BreakScreen({ onEndBreak }: { onEndBreak: () => void }) {
           </p>
           <hr className="border-white/30" />
           <p className="text-sm font-semibold">Take a Break, Do Not Close Your Device</p>
+          <p className="text-sm leading-relaxed opacity-80">
+            After the break, a Resume Testing Now button will appear and you will start the next section.
+          </p>
+          <p className="text-sm font-semibold mt-4">Follow these rules during the break:</p>
+          <ol className="text-sm leading-relaxed opacity-80 list-decimal list-inside space-y-1">
+            <li>Do not disturb students who are still testing</li>
+            <li>Do not exit the app or close your laptop</li>
+            <li>Do not access phones, smartwatches, textbooks, notes, or the internet</li>
+            <li>Do not eat or drink near any testing device</li>
+            <li>Do not speak in testing room; outside the room; do not discuss the exam with anyone</li>
+          </ol>
         </div>
       </div>
     </div>
