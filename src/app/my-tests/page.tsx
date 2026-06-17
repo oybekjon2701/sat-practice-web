@@ -61,6 +61,7 @@ export default function MyTestsPage() {
           </div>
         </Link>
         <nav className="flex items-center gap-6">
+          <Link href="/my-results" className="text-sm font-medium text-slate-600 hover:text-slate-800">My Results</Link>
           <Link href="/dashboard" className="text-sm font-medium text-slate-600 hover:text-slate-800">Dashboard</Link>
           <Link href="/pricing" className="text-sm font-medium text-slate-600 hover:text-slate-800">Pricing</Link>
         </nav>
