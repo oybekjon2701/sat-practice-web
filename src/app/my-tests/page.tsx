@@ -5,13 +5,24 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { testIndex } from "@/data/testIndex";
-import { Trophy, ArrowRight, BookOpen, Calculator, Sparkles, Clock } from "lucide-react";
+import { Trophy, ArrowRight, BookOpen, Calculator, Sparkles, Clock, BarChart3 } from "lucide-react";
 import { getUnfinishedTests } from "@/lib/unfinishedTestsStore";
+
+interface TestResult {
+  id: string;
+  testId: string;
+  testName: string;
+  totalScore: number;
+  readingScore: number;
+  mathScore: number;
+  completedAt: string;
+}
 
 export default function MyTestsPage() {
   const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [unfinished, setUnfinished] = useState<any[]>([]);
+  const [results, setResults] = useState<TestResult[]>([]);
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -25,6 +36,18 @@ export default function MyTestsPage() {
     if (!email) return;
     setUnfinished(getUnfinishedTests(email));
   }, [isSignedIn, user]);
+
+  useEffect(() => {
+    if (!isSignedIn || !user) return;
+    fetch("/api/test-results")
+      .then((r) => r.json())
+      .then((data) => setResults(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, [isSignedIn, user]);
+
+  function resultForTest(testId: string): TestResult | undefined {
+    return results.find((r) => r.testId === testId);
+  }
 
   if (!isLoaded || !isSignedIn || !user) return null;
 
@@ -88,18 +111,25 @@ export default function MyTestsPage() {
         )}
 
         <div className="grid gap-4">
-          {testIndex.map((test) => (
+          {testIndex.map((test) => {
+            const completed = resultForTest(test.id);
+            return (
             <div
               key={test.id}
               className="bg-white rounded-xl border border-slate-200 p-5 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-teal-50 text-sat-teal flex items-center justify-center shrink-0">
-                  <BookOpen className="w-5 h-5" />
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${completed ? "bg-emerald-50 text-emerald-600" : "bg-teal-50 text-sat-teal"}`}>
+                  {completed ? <BarChart3 className="w-5 h-5" /> : <BookOpen className="w-5 h-5" />}
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-semibold text-slate-800">{test.name}</h3>
+                    {completed && (
+                      <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                        Score: {completed.totalScore}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-500">
                     <span className="flex items-center gap-1">
@@ -112,18 +142,29 @@ export default function MyTestsPage() {
                     </span>
                     <span className="text-slate-300">|</span>
                     <span>2 adaptive modules each</span>
+                    {completed && (
+                      <>
+                        <span className="text-slate-300">|</span>
+                        <span className="text-emerald-600 font-medium">{new Date(completed.completedAt).toLocaleDateString()}</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
               <Link
                 href={`/test?mockId=${test.id}`}
-                className="shrink-0 inline-flex items-center gap-1.5 bg-sat-teal text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-sat-teal-hover transition-colors text-sm"
+                className={`shrink-0 inline-flex items-center gap-1.5 font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm ${
+                  completed
+                    ? "bg-white border-2 border-sat-teal text-sat-teal hover:bg-teal-50"
+                    : "bg-sat-teal text-white hover:bg-sat-teal-hover"
+                }`}
               >
-                Start Test
+                {completed ? "Retake" : "Start Test"}
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
-          ))}
+            );
+          })}
         </div>
       </main>
     </div>

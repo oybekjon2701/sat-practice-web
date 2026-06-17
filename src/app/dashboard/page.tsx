@@ -108,7 +108,7 @@ export default function Dashboard() {
           </div>
         </Link>
         <nav className="hidden sm:flex items-center gap-6">
-          <Link href="/my-tests" className="text-sm font-medium text-slate-600 hover:text-slate-800">Practice Tests</Link>
+          <Link href="/my-tests" className="text-sm font-medium text-slate-600 hover:text-slate-800">My Tests</Link>
           <Link href="#courses" className="text-sm font-medium text-slate-600 hover:text-slate-800">Courses</Link>
           <Link href="/pricing" className="text-sm font-medium text-slate-600 hover:text-slate-800">Pricing</Link>
         </nav>
