@@ -499,7 +499,6 @@ function MoreMenu({ show, onClose, isMath, onCalc, onRef, onReview, onBreak, onE
         </button>
         {isMath && (
           <>
-            <button onClick={() => { onCalc(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Calculator</button>
             <button onClick={() => { onRef(); onClose(); }} className="block w-full text-left px-4 py-2.5 text-sm text-gray-700 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">Reference Sheet</button>
           </>
         )}

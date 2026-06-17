@@ -86,28 +86,24 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
 
           {isMath ? (
             <>
-              <div className="flex flex-col items-center gap-0.5">
-                <button onClick={onOpenCalc} className="cursor-pointer p-1 hover:bg-gray-200 rounded transition-colors" title="Calculator">
-                  <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                    <rect x="3" y="2" width="18" height="20" rx="2" />
-                    <line x1="7" y1="8" x2="17" y2="8" />
-                    <line x1="7" y1="12" x2="10" y2="12" />
-                    <line x1="12" y1="12" x2="12" y2="12" strokeWidth={3} />
-                    <line x1="14" y1="12" x2="17" y2="12" />
-                    <line x1="7" y1="16" x2="10" y2="16" />
-                    <line x1="12" y1="16" x2="12" y2="16" strokeWidth={3} />
-                    <line x1="14" y1="16" x2="17" y2="16" />
-                    <line x1="16" y1="8" x2="16" y2="8" strokeWidth={3} />
-                  </svg>
-                </button>
+              <button onClick={onOpenCalc} className="flex flex-col items-center gap-0.5 cursor-pointer hover:bg-gray-200 rounded transition-colors p-1" title="Calculator">
+                <svg className="w-5 h-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                  <rect x="3" y="2" width="18" height="20" rx="2" />
+                  <line x1="7" y1="8" x2="17" y2="8" />
+                  <line x1="7" y1="12" x2="10" y2="12" />
+                  <line x1="12" y1="12" x2="12" y2="12" strokeWidth={3} />
+                  <line x1="14" y1="12" x2="17" y2="12" />
+                  <line x1="7" y1="16" x2="10" y2="16" />
+                  <line x1="12" y1="16" x2="12" y2="16" strokeWidth={3} />
+                  <line x1="14" y1="16" x2="17" y2="16" />
+                  <line x1="16" y1="8" x2="16" y2="8" strokeWidth={3} />
+                </svg>
                 <span className="text-[10px] text-gray-500">Calculator</span>
-              </div>
-              <div className="flex flex-col items-center gap-0.5">
-                <button onClick={onOpenRef} className="cursor-pointer p-1 hover:bg-gray-200 rounded transition-colors font-serif text-gray-700 font-bold text-sm leading-none" title="Reference Sheet">
-                  X<span className="text-[9px] align-super">2</span>
-                </button>
+              </button>
+              <button onClick={onOpenRef} className="flex flex-col items-center gap-0.5 cursor-pointer hover:bg-gray-200 rounded transition-colors p-1" title="Reference Sheet">
+                <span className="font-serif text-gray-700 font-bold text-sm leading-none">X<span className="text-[9px] align-super">2</span></span>
                 <span className="text-[10px] text-gray-500">Reference</span>
-              </div>
+              </button>
             </>
           ) : (
             <div className="flex flex-col items-center gap-0.5">
