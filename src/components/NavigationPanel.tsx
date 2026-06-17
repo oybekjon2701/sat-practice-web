@@ -25,10 +25,10 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
   function handleSubmit() {
     if (state.currentSection === "math" && state.currentModule > 1) {
       dispatch({ type: "SHOW_REVIEW" });
+      onClose();
     } else {
       setShowConfirm(true);
     }
-    onClose();
   }
 
   return (
@@ -36,7 +36,7 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
       {showConfirm && (
         <ConfirmDialog
           message="Are you sure you want to submit this module? Unanswered questions will be marked as skipped."
-          onConfirm={() => { dispatch({ type: "END_MODULE" }); setShowConfirm(false); }}
+          onConfirm={() => { dispatch({ type: "END_MODULE" }); setShowConfirm(false); onClose(); }}
           onCancel={() => setShowConfirm(false)}
         />
       )}

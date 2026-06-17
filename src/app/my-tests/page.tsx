@@ -2,20 +2,29 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { testIndex } from "@/data/testIndex";
-import { Trophy, ArrowRight, BookOpen, Calculator, Sparkles } from "lucide-react";
+import { Trophy, ArrowRight, BookOpen, Calculator, Sparkles, Clock } from "lucide-react";
+import { getUnfinishedTests } from "@/lib/unfinishedTestsStore";
 
 export default function MyTestsPage() {
   const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
+  const [unfinished, setUnfinished] = useState<any[]>([]);
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       router.push("/sign-in");
     }
   }, [isLoaded, isSignedIn, router]);
+
+  useEffect(() => {
+    if (!isSignedIn || !user) { setUnfinished([]); return; }
+    const email = user.emailAddresses?.[0]?.emailAddress || user.id || "";
+    if (!email) return;
+    setUnfinished(getUnfinishedTests(email));
+  }, [isSignedIn, user]);
 
   if (!isLoaded || !isSignedIn || !user) return null;
 
@@ -52,6 +61,32 @@ export default function MyTestsPage() {
       </section>
 
       <main className="max-w-5xl mx-auto px-6 md:px-10 -mt-6 pb-16">
+
+        {unfinished.length > 0 && (
+          <div className="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 md:p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Clock className="w-4 h-4 text-amber-600" />
+              <h2 className="text-sm font-bold text-amber-800">Unfinished Tests</h2>
+            </div>
+            <div className="space-y-2">
+              {unfinished.map((u) => (
+                <div key={u.mockId} className="flex items-center justify-between bg-white rounded-lg border border-amber-100 px-4 py-3">
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800">{u.mockName}</p>
+                    <p className="text-xs text-slate-500">Saved {new Date(u.savedAt).toLocaleString()}</p>
+                  </div>
+                  <Link
+                    href={`/test?mockId=${u.mockId}&resume=1`}
+                    className="text-sm font-semibold text-amber-700 hover:text-amber-900 bg-amber-100 hover:bg-amber-200 px-4 py-1.5 rounded-lg transition-colors"
+                  >
+                    Resume
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="grid gap-4">
           {testIndex.map((test) => (
             <div
