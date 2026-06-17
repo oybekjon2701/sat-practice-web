@@ -936,3 +936,7 @@ export const mock2EnglishModule2: Question[] = [
     correctAnswer: "A", section: "reading",
   },
 ];
+
+export const mock2EnglishM1: Question[] = mock2EnglishModule1;
+export const mock2EnglishM2e: Question[] = mock2EnglishModule2;
+export const mock2EnglishM2h: Question[] = mock2EnglishModule2;

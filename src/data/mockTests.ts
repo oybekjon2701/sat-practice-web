@@ -1,8 +1,38 @@
 import { Module, MockTest, Question } from "@/types";
 import { mathQuestions } from "./math-questions-generated";
 import { mock1MathModule1, mock1MathModule2 } from "./math-mock1-custom";
-import { mock2MathModule1, mock2MathModule2 } from "./mock2-math-custom";
-import { mock2EnglishModule1, mock2EnglishModule2 } from "./mock2-english-custom";
+
+// Custom mock data imports (1-15)
+import { mock1EnglishM1, mock1EnglishM2e, mock1EnglishM2h } from "./mock1-english-custom";
+import { mock1MathM1, mock1MathM2e, mock1MathM2h } from "./mock1-math-custom";
+import { mock2EnglishM1, mock2EnglishM2e, mock2EnglishM2h } from "./mock2-english-custom";
+import { mock2MathM1, mock2MathM2e, mock2MathM2h } from "./mock2-math-custom";
+import { mock3EnglishM1, mock3EnglishM2e, mock3EnglishM2h } from "./mock3-english-custom";
+import { mock3MathM1, mock3MathM2e, mock3MathM2h } from "./mock3-math-custom";
+import { mock4EnglishM1, mock4EnglishM2e, mock4EnglishM2h } from "./mock4-english-custom";
+import { mock4MathM1, mock4MathM2e, mock4MathM2h } from "./mock4-math-custom";
+import { mock5EnglishM1, mock5EnglishM2e, mock5EnglishM2h } from "./mock5-english-custom";
+import { mock5MathM1, mock5MathM2e, mock5MathM2h } from "./mock5-math-custom";
+import { mock6EnglishM1, mock6EnglishM2e, mock6EnglishM2h } from "./mock6-english-custom";
+import { mock6MathM1, mock6MathM2e, mock6MathM2h } from "./mock6-math-custom";
+import { mock7EnglishM1, mock7EnglishM2e, mock7EnglishM2h } from "./mock7-english-custom";
+import { mock7MathM1, mock7MathM2e, mock7MathM2h } from "./mock7-math-custom";
+import { mock8EnglishM1, mock8EnglishM2e, mock8EnglishM2h } from "./mock8-english-custom";
+import { mock8MathM1, mock8MathM2e, mock8MathM2h } from "./mock8-math-custom";
+import { mock9EnglishM1, mock9EnglishM2e, mock9EnglishM2h } from "./mock9-english-custom";
+import { mock9MathM1, mock9MathM2e, mock9MathM2h } from "./mock9-math-custom";
+import { mock10EnglishM1, mock10EnglishM2e, mock10EnglishM2h } from "./mock10-english-custom";
+import { mock10MathM1, mock10MathM2e, mock10MathM2h } from "./mock10-math-custom";
+import { mock11EnglishM1, mock11EnglishM2e, mock11EnglishM2h } from "./mock11-english-custom";
+import { mock11MathM1, mock11MathM2e, mock11MathM2h } from "./mock11-math-custom";
+import { mock12EnglishM1, mock12EnglishM2e, mock12EnglishM2h } from "./mock12-english-custom";
+import { mock12MathM1, mock12MathM2e, mock12MathM2h } from "./mock12-math-custom";
+import { mock13EnglishM1, mock13EnglishM2e, mock13EnglishM2h } from "./mock13-english-custom";
+import { mock13MathM1, mock13MathM2e, mock13MathM2h } from "./mock13-math-custom";
+import { mock14EnglishM1, mock14EnglishM2e, mock14EnglishM2h } from "./mock14-english-custom";
+import { mock14MathM1, mock14MathM2e, mock14MathM2h } from "./mock14-math-custom";
+import { mock15EnglishM1, mock15EnglishM2e, mock15EnglishM2h } from "./mock15-english-custom";
+import { mock15MathM1, mock15MathM2e, mock15MathM2h } from "./mock15-math-custom";
 
 function makeModules(
   mod1: Question[],
@@ -21074,34 +21104,86 @@ function make2Modules(
   ];
 }
 
+const customEnglishSets = [
+  { m1: mock1EnglishM1, m2e: mock1EnglishM2e, m2h: mock1EnglishM2h },
+  { m1: mock2EnglishM1, m2e: mock2EnglishM2e, m2h: mock2EnglishM2h },
+  { m1: mock3EnglishM1, m2e: mock3EnglishM2e, m2h: mock3EnglishM2h },
+  { m1: mock4EnglishM1, m2e: mock4EnglishM2e, m2h: mock4EnglishM2h },
+  { m1: mock5EnglishM1, m2e: mock5EnglishM2e, m2h: mock5EnglishM2h },
+  { m1: mock6EnglishM1, m2e: mock6EnglishM2e, m2h: mock6EnglishM2h },
+  { m1: mock7EnglishM1, m2e: mock7EnglishM2e, m2h: mock7EnglishM2h },
+  { m1: mock8EnglishM1, m2e: mock8EnglishM2e, m2h: mock8EnglishM2h },
+  { m1: mock9EnglishM1, m2e: mock9EnglishM2e, m2h: mock9EnglishM2h },
+  { m1: mock10EnglishM1, m2e: mock10EnglishM2e, m2h: mock10EnglishM2h },
+  { m1: mock11EnglishM1, m2e: mock11EnglishM2e, m2h: mock11EnglishM2h },
+  { m1: mock12EnglishM1, m2e: mock12EnglishM2e, m2h: mock12EnglishM2h },
+  { m1: mock13EnglishM1, m2e: mock13EnglishM2e, m2h: mock13EnglishM2h },
+  { m1: mock14EnglishM1, m2e: mock14EnglishM2e, m2h: mock14EnglishM2h },
+  { m1: mock15EnglishM1, m2e: mock15EnglishM2e, m2h: mock15EnglishM2h },
+];
+
+const customMathSets = [
+  { m1: mock1MathM1, m2e: mock1MathM2e, m2h: mock1MathM2h },
+  { m1: mock2MathM1, m2e: mock2MathM2e, m2h: mock2MathM2h },
+  { m1: mock3MathM1, m2e: mock3MathM2e, m2h: mock3MathM2h },
+  { m1: mock4MathM1, m2e: mock4MathM2e, m2h: mock4MathM2h },
+  { m1: mock5MathM1, m2e: mock5MathM2e, m2h: mock5MathM2h },
+  { m1: mock6MathM1, m2e: mock6MathM2e, m2h: mock6MathM2h },
+  { m1: mock7MathM1, m2e: mock7MathM2e, m2h: mock7MathM2h },
+  { m1: mock8MathM1, m2e: mock8MathM2e, m2h: mock8MathM2h },
+  { m1: mock9MathM1, m2e: mock9MathM2e, m2h: mock9MathM2h },
+  { m1: mock10MathM1, m2e: mock10MathM2e, m2h: mock10MathM2h },
+  { m1: mock11MathM1, m2e: mock11MathM2e, m2h: mock11MathM2h },
+  { m1: mock12MathM1, m2e: mock12MathM2e, m2h: mock12MathM2h },
+  { m1: mock13MathM1, m2e: mock13MathM2e, m2h: mock13MathM2h },
+  { m1: mock14MathM1, m2e: mock14MathM2e, m2h: mock14MathM2h },
+  { m1: mock15MathM1, m2e: mock15MathM2e, m2h: mock15MathM2h },
+];
+
+function hasData(set: { m1: Question[]; m2e: Question[]; m2h: Question[] }) {
+  return set.m1.length > 0 && set.m2e.length > 0 && set.m2h.length > 0;
+}
+
+function normalize(qs: Question[], module: number) {
+  return qs.map((q, i) => ({ ...q, questionNumber: i + 1, module }));
+}
+
 export const mockTests: MockTest[] = Array.from({ length: 15 }, (_, i) => {
   const en = englishForMock(i);
-  if (i === 0) {
-    return {
-      id: "mock-1",
-      name: "Practice Test 1",
-      readingModules: make2Modules(en.m1, en.m2e, 'reading', 32, 32),
-      mathModules: makeModules(mock1MathModule1, mock1MathModule2, mock1MathModule2, 'math', 35, 35),
-    };
-  }
-  if (i === 1) {
-    return {
-      id: "mock-2",
-      name: "Practice Test 2",
-      readingModules: makeModules(
-        mock2EnglishModule1,
-        mock2EnglishModule2.slice(0, 27).map((q, i) => ({ ...q, questionNumber: i + 1, module: 2 })),
-        mock2EnglishModule2.slice(23).map((q, i) => ({ ...q, questionNumber: i + 1, module: 2 })),
-        'reading', 32, 32,
-      ),
-      mathModules: makeModules(mock2MathModule1, mock2MathModule2, mock2MathModule2, 'math', 35, 35),
-    };
-  }
   const math = mathForMock(i);
+  const ce = customEnglishSets[i];
+  const cm = customMathSets[i];
+
+  let readingModules: Module[];
+  if (hasData(ce)) {
+    readingModules = makeModules(
+      normalize(ce.m1, 1),
+      normalize(ce.m2e, 2),
+      normalize(ce.m2h, 2),
+      'reading', 32, 32,
+    );
+  } else {
+    readingModules = make2Modules(en.m1, en.m2e, 'reading', 32, 32);
+  }
+
+  let mathModules: Module[];
+  if (hasData(cm)) {
+    mathModules = makeModules(
+      normalize(cm.m1, 1),
+      normalize(cm.m2e, 2),
+      normalize(cm.m2h, 2),
+      'math', 35, 35,
+    );
+  } else if (i === 0) {
+    mathModules = makeModules(mock1MathModule1, mock1MathModule2, mock1MathModule2, 'math', 35, 35);
+  } else {
+    mathModules = makeModules(math.m1, math.m2e, math.m2h, 'math', 35, 35);
+  }
+
   return {
     id: `mock-${i + 1}`,
     name: `Practice Test ${i + 1}`,
-    readingModules: make2Modules(en.m1, en.m2e, 'reading', 32, 32),
-    mathModules: makeModules(math.m1, math.m2e, math.m2h, 'math', 35, 35),
+    readingModules,
+    mathModules,
   };
 });

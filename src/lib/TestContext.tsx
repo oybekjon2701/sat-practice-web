@@ -4,6 +4,7 @@ import { createContext, useContext, useReducer, useEffect, useRef, ReactNode } f
 import { TestState, SectionType } from "@/types";
 import { mockTests } from "@/data/mockTests";
 import { useUser } from "@clerk/nextjs";
+import { saveUnfinishedTest, removeUnfinishedTest } from "./unfinishedTestsStore";
 
 function getInitialState(mockId: string): TestState {
   const test = mockTests.find((t) => t.id === mockId);
@@ -472,10 +473,26 @@ export function TestProvider({ children, mockId, restore }: TestProviderProps) {
   });
 
   const prevSectionRef = useRef(state.section);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const activeSections = ["testing", "directions", "break"];
+
+  useEffect(() => {
+    if (!user || !activeSections.includes(state.section)) return;
+    const email = user.emailAddresses?.[0]?.emailAddress || user.id || "";
+    if (!email) return;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      saveUnfinishedTest(email, state);
+    }, 2000);
+    return () => { if (saveTimerRef.current) clearTimeout(saveTimerRef.current); };
+  }, [state.section, state.mockId, state.currentQuestionIndex, state.answers, state.timeRemaining, user]);
 
   useEffect(() => {
     if (state.section === "results" && prevSectionRef.current !== "results" && user) {
       saveStateToSession(state);
+      const email = user.emailAddresses?.[0]?.emailAddress || user.id || "";
+      if (email) removeUnfinishedTest(email, state.mockId);
       fetch("/api/test-results", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

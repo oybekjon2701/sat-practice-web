@@ -11,7 +11,7 @@ function ConfirmDialog({ message, onConfirm, onCancel }: { message: string; onCo
         <p className="text-gray-800 font-semibold mb-4 text-sm">{message}</p>
         <div className="flex gap-3 justify-center">
           <button onClick={onCancel} className="px-5 py-2 text-sm border border-gray-200 hover:bg-gray-50 cursor-pointer text-gray-600 bg-white rounded-full">Cancel</button>
-          <button onClick={onConfirm} className="px-5 py-2 text-sm bg-primary text-white hover:bg-primary-hover cursor-pointer font-medium rounded-full">Confirm</button>
+          <button onClick={onConfirm} className="px-5 py-2 text-sm bg-[#0033aa] text-white hover:bg-[#002288] cursor-pointer font-medium rounded-full">Confirm</button>
         </div>
       </div>
     </div>
@@ -25,10 +25,10 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
   function handleSubmit() {
     if (state.currentSection === "math" && state.currentModule > 1) {
       dispatch({ type: "SHOW_REVIEW" });
-      onClose();
     } else {
       setShowConfirm(true);
     }
+    onClose();
   }
 
   return (
@@ -60,9 +60,9 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
                 key={q.id}
                 onClick={() => { dispatch({ type: "GO_TO_QUESTION", index: idx }); onClose(); }}
                 className={`h-9 text-xs font-medium cursor-pointer rounded-lg ${
-                  isCurrent ? "ring-2 ring-primary ring-offset-2" : ""
+                  isCurrent ? "ring-2 ring-[#0033aa] ring-offset-2" : ""
                 } ${
-                  flagged ? "bg-red-50 text-red-600 border border-red-300" : answered ? "bg-primary text-white border border-primary" : "bg-white text-gray-600 border border-gray-300"
+                  flagged ? "bg-red-50 text-red-600 border border-red-300" : answered ? "bg-[#0033aa] text-white border border-[#0033aa]" : "bg-white text-gray-600 border border-gray-300"
                 }`}
               >
                 {q.questionNumber}
@@ -73,7 +73,7 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
 
         <div className="flex items-center gap-4 text-xs text-gray-500 border-t border-gray-100 pt-3 mb-4">
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-sm bg-primary" />Answered
+            <span className="w-3 h-3 rounded-sm bg-[#0033aa]" />Answered
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-sm bg-white border border-gray-300" />Unanswered
@@ -83,8 +83,8 @@ function QuestionGrid({ questions, onClose }: { questions: Question[]; onClose: 
           </div>
         </div>
 
-        <button onClick={handleSubmit} className="w-full py-2.5 bg-primary text-white font-semibold text-sm hover:bg-primary-hover cursor-pointer rounded-full">
-          Review All &amp; Submit
+        <button onClick={handleSubmit} className="w-full py-2.5 bg-[#0033aa] text-white font-semibold text-sm hover:bg-[#002288] cursor-pointer rounded-full">
+          Review All & Submit
         </button>
       </div>
     </div>
@@ -109,9 +109,9 @@ export default function NavigationPanel() {
           onCancel={() => setShowSubmitConfirm(false)}
         />
       )}
-      <div className="h-16 bg-header-bg flex items-center px-6 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif", borderTop: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "top" }}>
+      <div className="h-16 bg-[#edf2fa] flex items-center px-6 justify-between shrink-0" style={{ fontFamily: "Arial, sans-serif", borderTop: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "top" }}>
         <div className="flex items-center gap-2 w-40">
-          <span className="text-xs text-gray-500 font-medium">{state.userName || ""}</span>
+          <span className="text-xs text-gray-500 font-medium">{state.userName || "Student"}</span>
         </div>
 
         <button
@@ -133,7 +133,7 @@ export default function NavigationPanel() {
               dispatch({ type: "NEXT_QUESTION" });
             }
           }}
-          className="h-10 px-8 text-sm bg-primary text-white hover:bg-primary-hover cursor-pointer font-semibold rounded-full transition-colors shadow-sm flex items-center justify-center"
+          className="h-10 px-8 text-sm bg-[#0033aa] text-white hover:bg-[#002288] cursor-pointer font-semibold rounded-full transition-colors shadow-sm flex items-center justify-center"
         >
           {isLast ? "Submit" : "Next"}
         </button>

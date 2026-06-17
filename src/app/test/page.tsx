@@ -6,6 +6,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { FREE_TEST_IDS } from "@/lib/constants";
+import { getUnfinishedTest } from "@/lib/unfinishedTestsStore";
 import TestHeader from "@/components/TestHeader";
 import PassagePanel from "@/components/PassagePanel";
 import AnswerChoice from "@/components/AnswerChoice";
@@ -556,7 +557,8 @@ function TestPageInner() {
 function TestPageWrapper() {
   const searchParams = useSearchParams();
   const mockId = searchParams.get("mockId") || "mock-1";
-  const { isLoaded, isSignedIn } = useUser();
+  const resume = searchParams.get("resume") === "1";
+  const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [accessChecked, setAccessChecked] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
@@ -564,7 +566,12 @@ function TestPageWrapper() {
   useEffect(() => {
     if (!isLoaded) return;
     if (!isSignedIn) { router.push("/sign-in"); return; }
-    if (FREE_TEST_IDS.includes(mockId)) {
+    if (!resume && FREE_TEST_IDS.includes(mockId)) {
+      setHasAccess(true);
+      setAccessChecked(true);
+      return;
+    }
+    if (resume) {
       setHasAccess(true);
       setAccessChecked(true);
       return;
@@ -576,7 +583,17 @@ function TestPageWrapper() {
         setAccessChecked(true);
         if (!d.premium) router.push("/pricing");
       });
-  }, [isLoaded, isSignedIn, mockId, router]);
+  }, [isLoaded, isSignedIn, mockId, router, resume]);
+
+  useEffect(() => {
+    if (!resume || !user) return;
+    const email = user.emailAddresses?.[0]?.emailAddress || user.id || "";
+    if (!email) return;
+    const entry = getUnfinishedTest(email, mockId);
+    if (entry) {
+      sessionStorage.setItem("sat-test-state", JSON.stringify(entry.state));
+    }
+  }, [resume, user, mockId]);
 
   useEffect(() => {
     sessionStorage.removeItem("sat-test-results");
@@ -587,7 +604,7 @@ function TestPageWrapper() {
   }
 
   return (
-    <TestProvider key={mockId} mockId={mockId}>
+    <TestProvider key={mockId} mockId={mockId} restore={resume}>
       <TestPageInner />
     </TestProvider>
   );

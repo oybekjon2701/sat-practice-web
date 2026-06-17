@@ -141,8 +141,8 @@ const triangleData = [
           <tspan fontStyle="italic">3</tspan>
         </text>
         <text x="58" y="44" fontSize="13" fill="#7c3aed" fontFamily="serif" fontStyle="italic" transform="rotate(-52,58,44)">2x</text>
-        <text x="8" y="20" fontSize="11" fill="#6b7280">30\u00b0</text>
-        <text x="108" y="82" fontSize="11" fill="#6b7280">60\u00b0</text>
+        <text x="8" y="20" fontSize="11" fill="#6b7280">{'30\u00b0'}</text>
+        <text x="108" y="82" fontSize="11" fill="#6b7280">{'60\u00b0'}</text>
         <polygon points="10,77 16,85 4,85" fill="#6b7280" />
       </svg>
     ),
@@ -160,8 +160,8 @@ const triangleData = [
           <tspan fontFamily="Arial,sans-serif" fontStyle="normal">{'\u221a'}</tspan>
           <tspan fontStyle="italic">2</tspan>
         </text>
-        <text x="8" y="22" fontSize="11" fill="#6b7280">45\u00b0</text>
-        <text x="70" y="82" fontSize="11" fill="#6b7280">45\u00b0</text>
+        <text x="8" y="22" fontSize="11" fill="#6b7280">{'45\u00b0'}</text>
+        <text x="70" y="82" fontSize="11" fill="#6b7280">{'45\u00b0'}</text>
         <polygon points="10,77 16,85 4,85" fill="#6b7280" />
       </svg>
     ),
@@ -207,7 +207,7 @@ export default function ReferenceSheet({ onClose }: Props) {
             <svg className="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
             </svg>
-            Area &amp; Perimeter
+            Area & Perimeter
           </h2>
           <div className="grid grid-cols-3 gap-3">
             {areaData.map((s) => (
@@ -247,7 +247,7 @@ export default function ReferenceSheet({ onClose }: Props) {
             <svg className="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Special Right Triangles &amp; Pythagorean Theorem
+            Special Right Triangles & Pythagorean Theorem
           </h2>
           <div className="space-y-3">
             {triangleData.map((t) => (
@@ -277,7 +277,7 @@ export default function ReferenceSheet({ onClose }: Props) {
             {constantsData.map((c, i) => (
               <div key={i} className="flex items-center justify-between px-4 py-3">
                 <span className="text-[13px] text-gray-700">{c.label}</span>
-                <span className="text-[13px] font-mono font-bold text-primary">{c.value}</span>
+                <span className="text-[13px] font-mono font-bold text-[#0033aa]">{c.value}</span>
               </div>
             ))}
           </div>

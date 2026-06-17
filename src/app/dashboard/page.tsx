@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useUser, useClerk } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, ShieldCheck, Calendar, LogOut } from "lucide-react";
+import { ArrowRight, BookOpen, Video, BookMarked, Sparkles, ShieldCheck, Calendar, LogOut, Clock } from "lucide-react";
+import { getUnfinishedTests } from "@/lib/unfinishedTestsStore";
 
 const SAT_DATES = [
   { label: "August 22, 2026", value: "2026-08-22" },
@@ -35,6 +36,14 @@ export default function Dashboard() {
   const [selected, setSelected] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [unfinished, setUnfinished] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!isSignedIn || !user) { setUnfinished([]); return; }
+    const email = user.emailAddresses?.[0]?.emailAddress || user.id || "";
+    if (!email) return;
+    setUnfinished(getUnfinishedTests(email));
+  }, [isSignedIn, user]);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -217,7 +226,34 @@ export default function Dashboard() {
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-6 md:px-10 -mt-8">
+        {unfinished.length > 0 && (
+          <section className="max-w-5xl mx-auto px-6 md:px-10 -mt-4">
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 md:p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Clock className="w-4 h-4 text-amber-600" />
+                <h2 className="text-sm font-bold text-amber-800">Unfinished Tests</h2>
+              </div>
+              <div className="space-y-2">
+                {unfinished.map((u) => (
+                  <div key={u.mockId} className="flex items-center justify-between bg-white rounded-lg border border-amber-100 px-4 py-3">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">{u.mockName}</p>
+                      <p className="text-xs text-slate-500">Saved {new Date(u.savedAt).toLocaleString()}</p>
+                    </div>
+                    <Link
+                      href={`/test?mockId=${u.mockId}&resume=1`}
+                      className="text-sm font-semibold text-amber-700 hover:text-amber-900 bg-amber-100 hover:bg-amber-200 px-4 py-1.5 rounded-lg transition-colors"
+                    >
+                      Resume
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section className="max-w-5xl mx-auto px-6 md:px-10 -mt-4">
           <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6 md:p-8">
             <div className="flex items-start justify-between gap-4">
               <div>

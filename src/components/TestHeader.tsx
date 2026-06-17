@@ -46,13 +46,13 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
   }, []);
 
   return (
-    <div className="shrink-0 bg-header-bg" style={{ fontFamily: "Arial, sans-serif" }}>
+    <div className="shrink-0 bg-[#edf2fa]" style={{ fontFamily: "Arial, sans-serif" }}>
       <div className="h-20 flex items-center px-6" style={{ borderBottom: "3px solid transparent", backgroundImage: "repeating-linear-gradient(to right, #000 0, #000 14px, transparent 14px, transparent 22px)", backgroundRepeat: "no-repeat", backgroundSize: "100% 3px", backgroundPosition: "bottom" }}>
         <div className="flex items-center gap-8 w-[320px]">
           <div>
             <h1 className="text-base font-bold text-gray-800">Section 1, Module 1: {sectionLabel}</h1>
             <div className="relative" ref={dirRef}>
-              <button onClick={() => setShowDirections(!showDirections)} className="text-xs text-primary underline cursor-pointer flex items-center gap-0.5">
+              <button onClick={() => setShowDirections(!showDirections)} className="text-xs text-[#0033aa] underline cursor-pointer flex items-center gap-0.5">
                 Directions <span className="text-sm leading-none">▾</span>
               </button>
               {showDirections && (
@@ -122,7 +122,7 @@ export default function TestHeader({ onOpenCalc, onOpenRef, onOpenMore, onOpenHi
                   <line x1="6" y1="12" x2="11" y2="12" />
                 </svg>
               </button>
-              <span className={`text-[10px] ${highlightActive ? "text-primary font-bold" : "text-gray-500"}`}>Highlighting &amp; Notes</span>
+              <span className={`text-[10px] ${highlightActive ? "text-[#0033aa] font-bold" : "text-gray-500"}`}>Highlighting & Notes</span>
             </div>
           )}
 

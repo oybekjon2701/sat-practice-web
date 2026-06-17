@@ -425,3 +425,7 @@ export const mock2MathModule2: Question[] = [
     correctAnswer: "-13", section: "math",
   },
 ];
+
+export const mock2MathM1: Question[] = mock2MathModule1;
+export const mock2MathM2e: Question[] = mock2MathModule2;
+export const mock2MathM2h: Question[] = mock2MathModule2;
