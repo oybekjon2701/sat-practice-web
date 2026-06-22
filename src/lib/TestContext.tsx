@@ -231,8 +231,8 @@ function reducer(state: TestState, action: Action): TestState {
       const isModule1 = state.currentModule === 1;
 
       if (isModule1) {
-        const pct = correct / total;
-        const path = pct >= 0.65 ? "hard" : "easy";
+        const threshold = isReading ? 19 : 17;
+        const path = correct >= threshold ? "hard" : "easy";
         const sectionLabel = isReading ? "Reading & Writing" : "Math";
         const modFields = isReading
           ? { readingModule1Correct: correct, readingModule1Total: total }
