@@ -35,81 +35,107 @@ export const mock1EnglishM1: Question[] = [
   },
   {
     id: "eng_v4_m1_q5", module: 1, questionNumber: 5, type: "mcq", difficulty: "medium",
-    passage: "The following text is from Louise Erdrich's 1986 novel The Beet Queen. ...",
+    passage: `The following text is from Louise Erdrich's 1986 novel The Beet Queen. Celestine takes her infant daughter with her to the butcher shop where she makes sausages.
+
+Sometimes Celestine turned around and met the direct gaze of her daughter, a look so penetrating that Celestine's breath caught. She dropped the spice, the string, the knife she was using, and took the girl up in her arms, ready for her to speak as if a spell had suddenly lifted. When the baby flexed her entire body and struggled to free herself, Celestine put her down. No matter how thorough Celestine's exhaustion, no matter how little sleep she'd had, there was a nerve of excitement running through each hour.
+
+©1986 by Louise Erdrich`,
     stem: "Which choice best states the main purpose of the text?",
     choices: [{ label: "A", text: "To demonstrate Celestine's unhappiness in the workplace" }, { label: "B", text: "To portray Celestine's excitement about her daughter" }, { label: "C", text: "To show that Celestine enjoys imagining her daughter's future life" }, { label: "D", text: "To explain how Celestine's coworkers bond with her daughter" }],
     correctAnswer: "B", section: "reading",
   },
   {
     id: "eng_v4_m1_q6", module: 1, questionNumber: 6, type: "mcq", difficulty: "medium",
-    passage: "A team investigating frugivorous (fruit-eating) birds found that their feeding patterns vary depending on where they live within their habitat range. ...",
+    passage: `A team investigating frugivorous (fruit-eating) birds found that their feeding patterns vary depending on where they live within their habitat range. In forests in Nigeria, the researchers captured birds at four sites: three sites along a 2-kilometer transect from the forest interior to the edge and one site at the boundary between the forest and an agricultural field. The researchers analyzed the birds' stomach contents and found that the farther a site was from the forest edge—that is, the deeper within the forest the birds lived—the more diverse their fruit diet was.
+
+Adapted from Iora et al., "Edge Effects on Frugivorous Birds in the Nigerian Forest"`,
     stem: "Which choice best states the main purpose of the text?",
     choices: [{ label: "A", text: "To discuss how competition for food shapes feeding patterns among frugivorous birds" }, { label: "B", text: "To describe research methods used to study the feeding patterns of frugivorous birds over time" }, { label: "C", text: "To present research findings concerning how location within a habitat affects the feeding patterns of frugivorous birds" }, { label: "D", text: "To explain why habitat boundaries are important for understanding the feeding patterns of frugivorous birds" }],
     correctAnswer: "C", section: "reading",
   },
   {
     id: "eng_v4_m1_q7", module: 1, questionNumber: 7, type: "mcq", difficulty: "medium",
-    passage: "In the 1940s, Carl T. Rowan began his journalism career. ...",
+    passage: "In the 1940s, Carl T. Rowan began his journalism career. He rose to prominence in the 1950s and 1960s as a reporter and syndicated columnist, becoming one of the first African American journalists to write for mainstream American newspapers. Today, Rowan's legacy is preserved by the Carl T. Rowan Project, an organization that seeks to archive and promote the work of Black journalists.",
     stem: "Which choice best describes the overall structure of the text?",
     choices: [{ label: "A", text: "It traces the career of a prominent Black journalist, then highlights an organization that commemorates Rowan's legacy." }, { label: "B", text: "It compares journalism in the 1940s to modern journalism, focusing on the contributions of Carl T. Rowan." }, { label: "C", text: "It summarizes Rowan's achievements and argues for increased recognition of Black journalists." }, { label: "D", text: "It mentions a specific achievement in Black journalistic history, then describes an organization dedicated to upholding that history." }],
     correctAnswer: "D", section: "reading",
   },
   {
     id: "eng_v4_m1_q8", module: 1, questionNumber: 8, type: "mcq", difficulty: "hard",
-    passage: "Though Vasily Grossman's novel Stalingrad is considered inferior to his later masterpiece, Life and Fate, the earlier work nonetheless offers valuable insight into the author's development. ...",
+    passage: "Though Vasily Grossman's novel Stalingrad is considered inferior to his later masterpiece, Life and Fate, the earlier work nonetheless offers valuable insight into the author's development. But Stalingrad has its own complicated history. Grossman's original manuscript was judged too long for publication and had to be heavily abridged; the unabridged version wasn't published in Russia until 2013. Despite the critical reservations and the difficult path to publication, Stalingrad remains worth reading, if only as a window into the evolution of a great writer's craft.",
     stem: "Which choice best describes the overall structure of the text?",
     choices: [{ label: "A", text: "It compares two novels by the same author, then argues that the later novel is superior." }, { label: "B", text: "It traces the critical reception of Stalingrad over time, concluding that the novel deserves more attention." }, { label: "C", text: "It notes a novel's critical reception, addresses the complicated history of its publication, and suggests that the novel is worth studying for what it reveals about the author's development." }, { label: "D", text: "It summarizes the plot of Stalingrad, discusses its historical context, and evaluates its literary merit." }],
     correctAnswer: "C", section: "reading",
   },
   {
     id: "eng_v4_m1_q9", module: 1, questionNumber: 9, type: "mcq", difficulty: "medium",
-    passage: "Vehicle transmissions and many other widely used mechanical systems rely on lubricants to reduce friction between moving parts. Chanaka Kumara and colleagues developed a new coating made from fragments of graphene that, when combined with a drop of oil, achieves superlubricity—a state of virtually no friction. ...",
+    passage: `Vehicle transmissions and many other widely used mechanical systems rely on lubricants to reduce friction between moving parts. Chanaka Kumara and colleagues developed a new coating made from fragments of graphene that, when combined with a drop of oil, achieves superlubricity—a state of virtually no friction. The coating may be applied to surfaces such as steel and carbon nanotubes.
+
+"Superlubricity is still in its early stages," says Kumara, "but we have made it to a state that is near industrial application."`,
     stem: "What does the text most strongly suggest about the coating created by Kumara and colleagues?",
     choices: [{ label: "A", text: "It is unlikely to be useful in systems that already use liquid lubricants." }, { label: "B", text: "It is more expensive to produce than other friction-reducing coatings." }, { label: "C", text: "It is effective only when applied to surfaces made of carbon nanotubes." }, { label: "D", text: "It can likely be used to reduce energy consumption and wear in vehicle transmissions and other common mechanical systems." }],
     correctAnswer: "D", section: "reading",
   },
   {
     id: "eng_v4_m1_q10", module: 1, questionNumber: 10, type: "mcq", difficulty: "hard",
-    passage: "Optimal foraging theory (OFT) predicts that animals will adopt feeding strategies that maximize energy gain relative to energy expended. However, researchers have observed that different species in the same environment sometimes adopt strikingly different foraging strategies. ...",
+    passage: "Optimal foraging theory (OFT) predicts that animals will adopt feeding strategies that maximize energy gain relative to energy expended. However, researchers have observed that different species in the same environment sometimes adopt strikingly different foraging strategies. To explain this, OFT proponents suggest that such differences arise from differences in energetic constraints: species with different energy needs adopt different strategies to meet those needs efficiently.",
     stem: "Information in the text best supports which statement about OFT?",
     choices: [{ label: "A", text: "It fails to account for the fact that some animals prioritize energy efficiency over other needs." }, { label: "B", text: "It is less applicable to species that feed on abundant resources than to those that feed on scarce resources." }, { label: "C", text: "It does not fully explain why closely related species sometimes adopt very different foraging strategies." }, { label: "D", text: "It can account for observations of different species responding differently to similar ecological circumstances." }],
     correctAnswer: "D", section: "reading",
   },
   {
     id: "eng_v4_m1_q11", module: 1, questionNumber: 11, type: "mcq", difficulty: "easy",
-    passage: "High-speed rail (HSR) systems have been widely adopted in many countries, yet the United States has been slow to build HSR infrastructure. A survey of American adults found that a majority support expanding HSR, suggesting that the lack of political will, rather than public opposition, explains the slow adoption. ...",
+    passage: "High-speed rail (HSR) systems have been widely adopted in many countries, yet the United States has been slow to build HSR infrastructure. A survey of American adults found that a majority support expanding HSR, suggesting that the lack of political will, rather than public opposition, explains the slow adoption.",
+    underlinedPart: "The researchers claim that this survey reveals that there is strong support for building more HSR lines in the United States.",
     stem: "Which quotation from a survey respondent would best illustrate the underlined claim?",
     choices: [{ label: "A", text: "I don't know much about high-speed rail, but I'd be willing to learn more." }, { label: "B", text: "High-speed rail is too expensive to build and maintain." }, { label: "C", text: "I think high-speed rail is wonderful. The United States needs to build more high-speed rail lines." }, { label: "D", text: "I prefer driving my own car to taking the train." }],
     correctAnswer: "C", section: "reading",
   },
   {
     id: "eng_v4_m1_q12", module: 1, questionNumber: 12, type: "mcq", difficulty: "medium",
-    passage: "Numbers of the 23 Non-native Tree Species Most Commonly Associated with Damaging Fungus Species, by Country ...",
+    passage: `Numbers of the 23 Non-native Tree Species Reported and the Insect and Fungus Threats to Them
+
+| Country | Trees | Fungi | Insects |
+|---------|-------|-------|---------|
+| Great Britain | 18 | 290 | 120 |
+| Belgium | 4 | 13 | 11 |
+| Poland | 10 | 25 | 105 |
+
+A survey of non-native trees in three countries found that many were associated with damaging fungus and insect species. The researchers concluded that the data show a positive correlation between numbers of non-native tree species and numbers of associated damaging fungus species in a country.`,
     stem: "Which choice best describes data from the table that supports the researchers' conclusion?",
-    imageUrl: "/questions/mock-1/visuals/engv4m1q11.png",
+    imageUrl: "/questions/mock-1/visuals/engv4m1q12.png",
     imageAlt: "Table of non-native tree species and associated damaging fungus species by country",
     choices: [{ label: "A", text: "Poland reported more damaging fungus species than Belgium did." }, { label: "B", text: "Great Britain reported the fewest damaging fungus species of the countries listed." }, { label: "C", text: "Belgium reported more damaging fungus species than Poland did." }, { label: "D", text: "Great Britain reported 290 damaging fungus species, which is more than either Poland or Belgium reported." }],
     correctAnswer: "D", section: "reading",
   },
   {
     id: "eng_v4_m1_q13", module: 1, questionNumber: 13, type: "mcq", difficulty: "easy",
-    passage: "Life Among the Paiutes is an autobiographical work by Sarah Winnemucca, a Paiute author and activist. In the book, Winnemucca describes both the traditional lifeways of the Paiute people and the injustices they suffered at the hands of white settlers. ...",
+    passage: "Life Among the Paiutes is an autobiographical work by Sarah Winnemucca, a Paiute author and activist. In the book, Winnemucca describes both the traditional lifeways of the Paiute people and the injustices they suffered at the hands of white settlers. In the book's preface, she explains her purpose in writing, stating that she hopes to \"correct the many false ideas that white people have about my people.\"",
     stem: "Which quotation from Life Among the Paiutes most effectively illustrates the claim that Winnemucca sought to correct misconceptions about Paiute culture?",
     choices: [{ label: "A", text: "I will now stop writing about myself and tell you about my people." }, { label: "B", text: "The white people think we are like wild animals, but we are not." }, { label: "C", text: "We have always been a peaceful people, and we have always shared what we have." }, { label: "D", text: "Our children are taught to be honest and to respect their elders." }],
     correctAnswer: "A", section: "reading",
   },
   {
     id: "eng_v4_m1_q14", module: 1, questionNumber: 14, type: "mcq", difficulty: "hard",
-    passage: "Average Ratings of Perceived Personality Traits of Dogs, by Iris Color ... Their findings suggest that",
+    passage: `Average Ratings of Perceived Personality Traits of Dogs and Human Willingness to Keep or Interact with Them
+
+| Image ID number | Irises | Not friendly–Friendly | Immature–Mature | Would not keep–keep | Would not interact–interact |
+|-----------------|--------|----------------------|-----------------|-------------------|---------------------------|
+| 20 | light | 2.67 | 4.03 | 1.4 | 1.7 |
+| 14 | light | 2.11 | 3.27 | 1.55 | 1.85 |
+| 6 | dark | 4.03 | 2.95 | 1.85 | 2.15 |
+| 3 | dark | 3.88 | 2.51 | 2.35 | 2.65 |
+
+Their findings suggest that`,
     stem: "Which choice most effectively uses data from the table to complete the text?",
     imageUrl: "/questions/mock-1/visuals/engv4m1q14.png",
     imageAlt: "Table of average ratings of perceived personality traits of dogs by iris color",
-    choices: [{ label: "A", text: "humans' responses to pupil size in dogs extend to iris color, with darker-eyed dogs perceived as more friendly and lighter-eyed dogs as more aggressive." }, { label: "B", text: "dogs with lighter-colored irises are consistently rated as more aggressive than dogs with darker irises." }, { label: "C", text: "iris color has no significant effect on how humans perceive dogs' personalities." }, { label: "D", text: "dogs with medium-colored irises are rated as the most friendly of all dogs surveyed." }],
+    choices: [{ label: "A", text: "humans' responses to pupil size in other people may extend to dogs, as participants responded more positively to images of dogs whose iris colors were likely to make their pupils appear large than they did to images of dogs whose iris colors were unlikely to have that effect." }, { label: "B", text: "dogs with lighter-colored irises are consistently rated as more aggressive than dogs with darker irises." }, { label: "C", text: "iris color has no significant effect on how humans perceive dogs' personalities." }, { label: "D", text: "dogs with medium-colored irises are rated as the most friendly of all dogs surveyed." }],
     correctAnswer: "A", section: "reading",
   },
   {
     id: "eng_v4_m1_q15", module: 1, questionNumber: 15, type: "mcq", difficulty: "medium",
-    passage: "The hwamei and other fruit-eating bird species have been observed consuming fruits and then dispersing seeds in new locations. In many cases, the seeds that pass through birds' digestive tracts have higher germination rates than seeds that do not. This suggests that frugivorous birds play an important ecological role beyond simply feeding themselves. ...",
+    passage: "The hwamei and other fruit-eating bird species have been observed consuming fruits and then dispersing seeds in new locations. In many cases, the seeds that pass through birds' digestive tracts have higher germination rates than seeds that do not. This suggests that frugivorous birds play an important ecological role beyond simply feeding themselves.",
     stem: "Which choice most logically completes the text?",
     choices: [{ label: "A", text: "hwameis and other non-native birds play an important role in maintaining the health of forest ecosystems by dispersing seeds." }, { label: "B", text: "the relationship between frugivorous birds and the plants whose fruits they eat is strictly predatory." }, { label: "C", text: "frugivorous birds are more important for seed dispersal than wind or water." }, { label: "D", text: "without frugivorous birds, many plant species would go extinct within decades." }],
     correctAnswer: "A", section: "reading",
@@ -172,28 +198,28 @@ export const mock1EnglishM1: Question[] = [
   },
   {
     id: "eng_v4_m1_q24", module: 1, questionNumber: 24, type: "mcq", difficulty: "hard",
-    passage: "While researching a topic, a student has taken the following notes: ...",
+    passage: "While researching a topic, a student has taken the following notes:\n- William \"Bill\" Smith was a poet, songwriter, and musician in the 1960s and 1970s.\n- He was born in Mount Vernon, New York in 1927.\n- He was deeply influenced by jazz music and the Black Arts movement.\n- He wrote poetry that blended spiritual themes with social commentary.\n- His work was not widely known during his lifetime.\n- Carolina Bonilla, a scholar who studies Smith's work, notes that Smith was \"disinterested in financial gain\" and was principally motivated by artistic achievement.",
     stem: "The student wants to use a quotation from Bonilla to illustrate the claim about Smith. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
     choices: [{ label: "A", text: "Bonilla states that Smith was uninterested in financial gain." }, { label: "B", text: "According to Bonilla, Smith was \"disinterested in financial gain\" and focused on artistic achievement." }, { label: "C", text: "Smith was a poet who did not care about money." }, { label: "D", text: "Bonilla's research examines Smith's motivations." }],
     correctAnswer: "B", section: "reading",
   },
   {
     id: "eng_v4_m1_q25", module: 1, questionNumber: 25, type: "mcq", difficulty: "medium",
-    passage: "While researching a topic, a student has taken the following notes: ...",
+    passage: "While researching a topic, a student has taken the following notes:\n- The Prophet is a book of prose poems by the Lebanese-American writer Kahlil Gibran.\n- It was first published in 1923 by Alfred A. Knopf.\n- It is Gibran's best-known work.\n- The Prophet entered the public domain in the United States in 2019.\n- Those Barren Leaves is a novel by the English writer Aldous Huxley.\n- It was first published in 1925 by Chatto & Windus.\n- It entered the public domain in the United States in 2021.",
     stem: "The student wants to emphasize the order in which The Prophet and Those Barren Leaves entered the public domain. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
     choices: [{ label: "A", text: "The Prophet and Those Barren Leaves are both works that have entered the public domain." }, { label: "B", text: "Those Barren Leaves entered the public domain before The Prophet did." }, { label: "C", text: "The Prophet entered the public domain in 2019, while Those Barren Leaves followed in 2021." }, { label: "D", text: "The Prophet, published in 1923, entered the public domain in 2019, with Those Barren Leaves, published in 1925, following in 2021." }],
     correctAnswer: "D", section: "reading",
   },
   {
     id: "eng_v4_m1_q26", module: 1, questionNumber: 26, type: "mcq", difficulty: "easy",
-    passage: "While researching a topic, a student has taken the following notes: ...",
+    passage: "While researching a topic, a student has taken the following notes:\n- The A.M. Turing Award is an annual prize given by the Association for Computing Machinery (ACM).\n- The award is named for Alan Turing (1912–1954), a British mathematician.\n- Turing made groundbreaking contributions to computer science, including the development of the Turing machine and the concept of algorithmic computation.\n- The award is often referred to as the \"Nobel Prize of Computing.\"\n- It has been awarded since 1966.\n- Recent winners include Jeffrey D. Ullman (2020) and Robert Metcalfe (2022).",
     stem: "The student wants to explain whom the award is named for. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
     choices: [{ label: "A", text: "The award is named for a famous mathematician." }, { label: "B", text: "The A.M. Turing Award is named for Alan Turing, a British mathematician." }, { label: "C", text: "The A.M. Turing Award is named for groundbreaking British mathematician Alan Turing." }, { label: "D", text: "Alan Turing was a groundbreaking British mathematician." }],
     correctAnswer: "C", section: "reading",
   },
   {
     id: "eng_v4_m1_q27", module: 1, questionNumber: 27, type: "mcq", difficulty: "medium",
-    passage: "While researching a topic, a student has taken the following notes: ...",
+    passage: "While researching a topic, a student has taken the following notes:\n- Isaac Bashevis Singer was a Polish-American writer of short stories and novels.\n- He was born in 1902 and died in 1991.\n- He wrote primarily in Yiddish.\n- He won the Nobel Prize in Literature in 1978.\n- He wrote many short stories, including \"Gimpel the Fool.\"\n- \"Gimpel the Fool\" was Singer's first published short story, originally published in Yiddish in 1945.",
     stem: "The student wants to identify the title of Isaac Bashevis Singer's first published short story. Which choice most effectively uses relevant information from the notes to accomplish this goal?",
     choices: [{ label: "A", text: "Isaac Bashevis Singer wrote a short story called \"Gimpel the Fool.\"" }, { label: "B", text: "Isaac Bashevis Singer's first published short story was called \"Gimpel the Fool.\"" }, { label: "C", text: "\"Gimpel the Fool\" is the title of a story by Isaac Bashevis Singer." }, { label: "D", text: "The first short story Isaac Bashevis Singer published was called \"Gimpel the Fool.\"" }],
     correctAnswer: "B", section: "reading",
