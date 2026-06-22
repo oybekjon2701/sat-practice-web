@@ -1,6 +1,5 @@
 import { Module, MockTest, Question } from "@/types";
 import { mathQuestions } from "./math-questions-generated";
-import { mock1MathModule1, mock1MathModule2 } from "./math-mock1-custom";
 
 // Custom mock data imports (1-15)
 import { mock1EnglishM1, mock1EnglishM2e, mock1EnglishM2h } from "./mock1-english-custom";
@@ -21174,8 +21173,6 @@ export const mockTests: MockTest[] = Array.from({ length: 15 }, (_, i) => {
       normalize(cm.m2h, 2),
       'math', 35, 35,
     );
-  } else if (i === 0) {
-    mathModules = makeModules(mock1MathModule1, mock1MathModule2, mock1MathModule2, 'math', 35, 35);
   } else {
     mathModules = makeModules(math.m1, math.m2e, math.m2h, 'math', 35, 35);
   }

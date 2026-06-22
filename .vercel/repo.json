@@ -1,0 +1,11 @@
+{
+  "remoteName": "origin",
+  "projects": [
+    {
+      "id": "prj_r8Us4lEl6rT8oDjxO5JJ78xFDFlX",
+      "name": "sat-practice-web",
+      "directory": ".",
+      "orgId": "team_D1FNXTzVAMkC1qBiN1C9hCuj"
+    }
+  ]
+}
