@@ -82,7 +82,8 @@ function isTableBlock(text: string): boolean {
 
 function renderTableBlock(text: string) {
   const lines = text.split("\n").filter(l => l.trim());
-  const rows = lines.map(line => line.split("|").map(c => c.trim()));
+  const dataLines = lines.filter(line => !/^\|[-:\s|]+\|?$/.test(line.trim()));
+  const rows = dataLines.map(line => line.split("|").map(c => c.trim()));
   const header = rows[0];
   const body = rows.slice(1);
   return (

@@ -85,7 +85,7 @@ Adapted from Iora et al., "Edge Effects on Frugivorous Birds in the Nigerian For
   },
   {
     id: "eng_v4_m1_q11", module: 1, questionNumber: 11, type: "mcq", difficulty: "easy",
-    passage: "High-speed rail (HSR) systems have been widely adopted in many countries, yet the United States has been slow to build HSR infrastructure. A survey of American adults found that a majority support expanding HSR, suggesting that the lack of political will, rather than public opposition, explains the slow adoption.",
+    passage: "High-speed rail (HSR) systems have been widely adopted in many countries, yet the United States has been slow to build HSR infrastructure. A survey of American adults found that a majority support expanding HSR, suggesting that the lack of political will, rather than public opposition, explains the slow adoption. The researchers claim that this survey reveals that there is strong support for building more HSR lines in the United States.",
     underlinedPart: "The researchers claim that this survey reveals that there is strong support for building more HSR lines in the United States.",
     stem: "Which quotation from a survey respondent would best illustrate the underlined claim?",
     choices: [{ label: "A", text: "I don't know much about high-speed rail, but I'd be willing to learn more." }, { label: "B", text: "High-speed rail is too expensive to build and maintain." }, { label: "C", text: "I think high-speed rail is wonderful. The United States needs to build more high-speed rail lines." }, { label: "D", text: "I prefer driving my own car to taking the train." }],
@@ -103,8 +103,6 @@ Adapted from Iora et al., "Edge Effects on Frugivorous Birds in the Nigerian For
 
 A survey of non-native trees in three countries found that many were associated with damaging fungus and insect species. The researchers concluded that the data show a positive correlation between numbers of non-native tree species and numbers of associated damaging fungus species in a country.`,
     stem: "Which choice best describes data from the table that supports the researchers' conclusion?",
-    imageUrl: "/questions/mock-1/visuals/engv4m1q12.png",
-    imageAlt: "Table of non-native tree species and associated damaging fungus species by country",
     choices: [{ label: "A", text: "Poland reported more damaging fungus species than Belgium did." }, { label: "B", text: "Great Britain reported the fewest damaging fungus species of the countries listed." }, { label: "C", text: "Belgium reported more damaging fungus species than Poland did." }, { label: "D", text: "Great Britain reported 290 damaging fungus species, which is more than either Poland or Belgium reported." }],
     correctAnswer: "D", section: "reading",
   },
@@ -128,8 +126,6 @@ A survey of non-native trees in three countries found that many were associated 
 
 Their findings suggest that`,
     stem: "Which choice most effectively uses data from the table to complete the text?",
-    imageUrl: "/questions/mock-1/visuals/engv4m1q14.png",
-    imageAlt: "Table of average ratings of perceived personality traits of dogs by iris color",
     choices: [{ label: "A", text: "humans' responses to pupil size in other people may extend to dogs, as participants responded more positively to images of dogs whose iris colors were likely to make their pupils appear large than they did to images of dogs whose iris colors were unlikely to have that effect." }, { label: "B", text: "dogs with lighter-colored irises are consistently rated as more aggressive than dogs with darker irises." }, { label: "C", text: "iris color has no significant effect on how humans perceive dogs' personalities." }, { label: "D", text: "dogs with medium-colored irises are rated as the most friendly of all dogs surveyed." }],
     correctAnswer: "A", section: "reading",
   },
